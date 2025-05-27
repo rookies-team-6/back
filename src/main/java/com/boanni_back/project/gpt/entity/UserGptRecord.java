@@ -1,4 +1,6 @@
-package com.boanni_back.project.admin.entity;
+package com.boanni_back.project.gpt.entity;
+
+import com.boanni_back.project.user.entity.User;
 import jakarta.persistence.*;
 
 @Entity

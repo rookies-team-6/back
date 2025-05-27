@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class AdminGlobalExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<Map<String, String>> handleBusinessException(BusinessException e) {
+    @ExceptionHandler(AdminBusinessException.class)
+    public ResponseEntity<Map<String, String>> handleBusinessException(AdminBusinessException e) {
         Map<String, String> error = new HashMap<>();
         error.put("message", e.getMessage());
         error.put("status", e.getHttpStatus().toString());
