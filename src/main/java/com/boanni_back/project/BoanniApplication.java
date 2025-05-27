@@ -9,5 +9,4 @@ public class BoanniApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BoanniApplication.class, args);
 	}
-	//깃 연동 확인
 }
