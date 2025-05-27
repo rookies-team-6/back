@@ -1,4 +1,4 @@
-package com.boanni_back.project.entity;
+package com.boanni_back.project.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
