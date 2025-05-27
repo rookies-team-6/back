@@ -1,0 +1,828 @@
+2025-05-27T11:24:30.774+09:00  INFO 22236 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 22236 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:24:30.776+09:00  INFO 22236 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "prod"
+2025-05-27T11:24:30.839+09:00  INFO 22236 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:24:30.839+09:00  INFO 22236 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:24:31.637+09:00  INFO 22236 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:24:31.662+09:00  INFO 22236 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:24:32.431+09:00  INFO 22236 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:24:32.452+09:00  INFO 22236 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:24:32.452+09:00  INFO 22236 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:24:32.502+09:00  INFO 22236 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:24:32.503+09:00  INFO 22236 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1662 ms
+2025-05-27T11:24:32.625+09:00  WARN 22236 --- [boanni] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Failed to initialize dependency 'dataSourceScriptDatabaseInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception with message: Cannot load driver class: org.mariadb.jdbc.Driver
+2025-05-27T11:24:32.630+09:00  INFO 22236 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-05-27T11:24:32.657+09:00  INFO 22236 --- [boanni] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27T11:24:32.704+09:00 ERROR 22236 --- [boanni] [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Failed to initialize dependency 'dataSourceScriptDatabaseInitializer' of LoadTimeWeaverAware bean 'entityManagerFactory': Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception with message: Cannot load driver class: org.mariadb.jdbc.Driver
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:328) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.4.6.jar:3.4.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.4.6.jar:3.4.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.4.6.jar:3.4.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.4.6.jar:3.4.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.4.6.jar:3.4.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.4.6.jar:3.4.6]
+	at com.boanni_back.project.BoanniApplication.main(BoanniApplication.java:10) ~[main/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.4.6.jar:3.4.6]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception with message: Cannot load driver class: org.mariadb.jdbc.Driver
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:546) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:315) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 15 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception with message: Cannot load driver class: org.mariadb.jdbc.Driver
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:645) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1682) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1628) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 25 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception with message: Cannot load driver class: org.mariadb.jdbc.Driver
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 38 common frames omitted
+Caused by: java.lang.IllegalStateException: Cannot load driver class: org.mariadb.jdbc.Driver
+	at org.springframework.util.Assert.state(Assert.java:101) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.boot.autoconfigure.jdbc.DataSourceProperties.findDriverClassName(DataSourceProperties.java:184) ~[spring-boot-autoconfigure-3.4.6.jar:3.4.6]
+	at org.springframework.boot.autoconfigure.jdbc.DataSourceProperties.determineDriverClassName(DataSourceProperties.java:174) ~[spring-boot-autoconfigure-3.4.6.jar:3.4.6]
+	at org.springframework.boot.autoconfigure.jdbc.PropertiesJdbcConnectionDetails.getDriverClassName(PropertiesJdbcConnectionDetails.java:49) ~[spring-boot-autoconfigure-3.4.6.jar:3.4.6]
+	at org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration.createDataSource(DataSourceConfiguration.java:62) ~[spring-boot-autoconfigure-3.4.6.jar:3.4.6]
+	at org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari.dataSource(DataSourceConfiguration.java:127) ~[spring-boot-autoconfigure-3.4.6.jar:3.4.6]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 41 common frames omitted
+
+2025-05-27T11:25:34.306+09:00  INFO 12064 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 12064 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:25:34.308+09:00  INFO 12064 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "prod"
+2025-05-27T11:25:34.361+09:00  INFO 12064 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:25:34.361+09:00  INFO 12064 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:25:35.240+09:00  INFO 12064 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:25:35.264+09:00  INFO 12064 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:25:36.070+09:00  INFO 12064 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:25:36.086+09:00  INFO 12064 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:25:36.088+09:00  INFO 12064 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:25:36.132+09:00  INFO 12064 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:25:36.132+09:00  INFO 12064 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1770 ms
+2025-05-27T11:25:36.532+09:00  INFO 12064 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:25:36.672+09:00  INFO 12064 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:25:36.711+09:00  INFO 12064 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:25:37.043+09:00  INFO 12064 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:25:37.075+09:00  INFO 12064 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:25:37.157+09:00  INFO 12064 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@68f870e5
+2025-05-27T11:25:37.158+09:00  INFO 12064 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:25:37.181+09:00  WARN 12064 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:25:37.197+09:00  INFO 12064 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 10.11.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:25:37.910+09:00  INFO 12064 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:25:38.056+09:00  INFO 12064 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:25:38.108+09:00  WARN 12064 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:25:38.930+09:00  INFO 12064 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mariadb://127.0.0.1:3307/boot_db?user=boot&password=***'
+2025-05-27T11:25:39.041+09:00  WARN 12064 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: eaf6eab1-4d27-4ecc-8a64-b8237464b8b4
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:25:39.090+09:00  INFO 12064 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:25:39.602+09:00  INFO 12064 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:25:39.671+09:00  INFO 12064 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T11:25:39.683+09:00  INFO 12064 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 5.96 seconds (process running for 6.354)
+2025-05-27T11:26:14.409+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:26:14.414+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "prod"
+2025-05-27T11:26:14.483+09:00  INFO 25128 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:26:14.483+09:00  INFO 25128 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:26:15.356+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:26:15.389+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:26:16.121+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:26:16.138+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:26:16.138+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:26:16.181+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:26:16.182+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1698 ms
+2025-05-27T11:26:16.591+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:26:16.706+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:26:16.739+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:26:17.044+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:26:17.096+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:26:17.172+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@51e8ba68
+2025-05-27T11:26:17.174+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:26:17.192+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MariaDBDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:26:17.207+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 10.11.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:26:17.884+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:26:18.029+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:26:18.071+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:26:18.689+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mariadb://127.0.0.1:3307/boot_db?user=boot&password=***'
+2025-05-27T11:26:18.821+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 6c5fe0cd-9bac-4e21-a0a3-cc972f87bb77
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:26:18.866+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:26:19.264+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:26:19.339+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T11:26:19.353+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 5.398 seconds (process running for 5.819)
+2025-05-27T11:27:53.534+09:00  INFO 1916 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 1916 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:27:53.539+09:00  INFO 1916 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:27:53.635+09:00  INFO 1916 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:27:53.636+09:00  INFO 1916 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:27:54.036+09:00  INFO 25128 --- [boanni] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2025-05-27T11:27:54.046+09:00  INFO 25128 --- [boanni] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-27T11:27:54.427+09:00  INFO 25128 --- [boanni] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-27T11:27:54.435+09:00  INFO 25128 --- [boanni] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:27:54.440+09:00  INFO 25128 --- [boanni] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27T11:27:54.446+09:00  INFO 25128 --- [boanni] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27T11:27:54.651+09:00  INFO 1916 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:27:54.654+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:27:54.654+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:27:54.680+09:00  INFO 1916 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:27:55.053+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:27:55.060+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:27:55.288+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:27:55.289+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:27:55.291+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:27:55.330+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:27:55.331+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 673 ms
+2025-05-27T11:27:55.410+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:27:55.417+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:27:55.444+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:27:55.448+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-05-27T11:27:55.918+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:27:55.920+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-05-27T11:27:55.928+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:27:55.938+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:27:55.974+09:00  INFO 1916 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:27:56.000+09:00  INFO 1916 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:27:56.001+09:00  INFO 1916 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:27:56.075+09:00  INFO 1916 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:27:56.076+09:00  INFO 1916 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2439 ms
+2025-05-27T11:27:56.151+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:27:56.221+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:27:56.405+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:27:56.888+09:00  INFO 1916 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:27:56.960+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:27:56.991+09:00  INFO 1916 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:27:56.991+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 1c0fb0d7-cace-40ac-a4db-4e9f74c0af94
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:27:56.994+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:27:57.072+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:27:57.072+09:00  INFO 1916 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:27:57.085+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T11:27:57.088+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 2.501 seconds (process running for 103.555)
+2025-05-27T11:27:57.096+09:00  INFO 25128 --- [boanni] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-05-27T11:27:57.440+09:00  INFO 1916 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:27:57.474+09:00  INFO 1916 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:27:57.599+09:00  INFO 1916 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:27:57.601+09:00  INFO 1916 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:27:57.617+09:00  WARN 1916 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:27:57.635+09:00  INFO 1916 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:27:58.450+09:00  INFO 1916 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:27:58.491+09:00  INFO 1916 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:27:58.575+09:00  WARN 1916 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:27:59.627+09:00  INFO 1916 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:27:59.795+09:00  WARN 1916 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: cbb4a2e8-15dc-4eb6-82e9-6aeb669cd55f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:27:59.876+09:00  INFO 1916 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:28:00.275+09:00  WARN 1916 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-05-27T11:28:00.310+09:00  WARN 1916 --- [boanni] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-05-27T11:28:00.313+09:00  INFO 1916 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:28:00.329+09:00  WARN 1916 --- [boanni] [restartedMain] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:28:00.330+09:00  INFO 1916 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27T11:28:00.334+09:00  INFO 1916 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27T11:28:00.356+09:00  INFO 1916 --- [boanni] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27T11:28:00.399+09:00 ERROR 1916 --- [boanni] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-05-27T11:34:59.657+09:00  INFO 25128 --- [boanni] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 9 class path changes (0 additions, 9 deletions, 0 modifications)
+2025-05-27T11:34:59.660+09:00  INFO 25128 --- [boanni] [Thread-7] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-27T11:34:59.765+09:00  INFO 25128 --- [boanni] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-27T11:34:59.768+09:00  INFO 25128 --- [boanni] [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:34:59.774+09:00  WARN 25128 --- [boanni] [Thread-7] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:34:59.775+09:00  INFO 25128 --- [boanni] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-05-27T11:34:59.776+09:00  INFO 25128 --- [boanni] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2025-05-27T11:34:59.893+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:34:59.893+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:35:00.090+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:35:00.094+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:35:00.210+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:35:00.211+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:35:00.214+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:35:00.240+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:35:00.240+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 345 ms
+2025-05-27T11:35:00.308+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:35:00.318+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:35:00.377+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:35:00.391+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-05-27T11:35:00.396+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:35:00.396+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-05-27T11:35:00.397+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:35:00.398+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:35:00.436+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:35:00.437+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:35:00.467+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:35:00.598+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:35:00.614+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: aa3455d1-c6d8-48f8-9a59-2d092b1b6f23
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:35:00.615+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:35:00.640+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:35:00.648+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T11:35:00.654+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 0.791 seconds (process running for 527.119)
+2025-05-27T11:35:00.655+09:00  INFO 25128 --- [boanni] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-05-27T11:35:01.674+09:00  INFO 14456 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 14456 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:35:01.678+09:00  INFO 14456 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:35:01.753+09:00  INFO 14456 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:35:01.753+09:00  INFO 14456 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:35:02.056+09:00  INFO 25128 --- [boanni] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 12 class path changes (9 additions, 0 deletions, 3 modifications)
+2025-05-27T11:35:02.058+09:00  INFO 25128 --- [boanni] [Thread-11] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-27T11:35:02.238+09:00  INFO 25128 --- [boanni] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-27T11:35:02.240+09:00  INFO 25128 --- [boanni] [Thread-11] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:35:02.242+09:00  WARN 25128 --- [boanni] [Thread-11] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:35:02.243+09:00  INFO 25128 --- [boanni] [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-05-27T11:35:02.245+09:00  INFO 25128 --- [boanni] [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2025-05-27T11:35:02.428+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:35:02.428+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:35:02.667+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:35:02.670+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:35:02.760+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:35:02.762+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:35:02.762+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:35:02.779+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:35:02.780+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 347 ms
+2025-05-27T11:35:02.821+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:35:02.823+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:35:02.834+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:35:02.835+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2025-05-27T11:35:02.837+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:35:02.837+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2025-05-27T11:35:02.839+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:35:02.839+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:35:02.917+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:35:02.927+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:35:02.941+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:35:03.007+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:35:03.027+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 573e820c-f69f-4a14-8964-b1dc7d65e500
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:35:03.029+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:35:03.043+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:35:03.050+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T11:35:03.052+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 0.695 seconds (process running for 529.517)
+2025-05-27T11:35:03.053+09:00  INFO 25128 --- [boanni] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-05-27T11:35:03.160+09:00  INFO 14456 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:35:03.189+09:00  INFO 14456 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:35:04.008+09:00  INFO 14456 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:35:04.036+09:00  INFO 14456 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:35:04.037+09:00  INFO 14456 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:35:04.097+09:00  INFO 14456 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:35:04.098+09:00  INFO 14456 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2343 ms
+2025-05-27T11:35:04.537+09:00  INFO 14456 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:35:04.620+09:00  INFO 14456 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:35:04.648+09:00  INFO 14456 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:35:04.997+09:00  INFO 14456 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:35:05.054+09:00  INFO 14456 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:35:05.206+09:00  INFO 14456 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:35:05.208+09:00  INFO 14456 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:35:05.228+09:00  WARN 14456 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:35:05.252+09:00  INFO 14456 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:35:05.985+09:00  INFO 14456 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:35:06.028+09:00  INFO 14456 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:35:06.126+09:00  WARN 14456 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:35:07.113+09:00  INFO 14456 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:35:07.214+09:00  WARN 14456 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 46913458-df46-48bd-9662-e58cefac38cf
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:35:07.283+09:00  INFO 14456 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:35:07.748+09:00  WARN 14456 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-05-27T11:35:07.794+09:00  WARN 14456 --- [boanni] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-05-27T11:35:07.802+09:00  INFO 14456 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:35:07.825+09:00  WARN 14456 --- [boanni] [restartedMain] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:35:07.827+09:00  INFO 14456 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27T11:35:07.834+09:00  INFO 14456 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27T11:35:07.862+09:00  INFO 14456 --- [boanni] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27T11:35:07.926+09:00 ERROR 14456 --- [boanni] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-05-27T11:36:01.074+09:00  INFO 15556 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 15556 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:36:01.079+09:00  INFO 15556 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:36:01.133+09:00  INFO 15556 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:36:01.134+09:00  INFO 15556 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:36:01.422+09:00  INFO 25128 --- [boanni] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2025-05-27T11:36:01.423+09:00  INFO 25128 --- [boanni] [Thread-16] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-27T11:36:01.540+09:00  INFO 25128 --- [boanni] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-27T11:36:01.541+09:00  INFO 25128 --- [boanni] [Thread-16] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:36:01.545+09:00  WARN 25128 --- [boanni] [Thread-16] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:36:01.545+09:00  INFO 25128 --- [boanni] [Thread-16] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2025-05-27T11:36:01.546+09:00  INFO 25128 --- [boanni] [Thread-16] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+2025-05-27T11:36:01.640+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:36:01.640+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:36:01.790+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:36:01.795+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:36:01.886+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 9090 (http)
+2025-05-27T11:36:01.887+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:36:01.887+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:36:01.911+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:36:01.911+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 270 ms
+2025-05-27T11:36:01.941+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:36:01.943+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:36:01.949+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:36:01.950+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2025-05-27T11:36:01.951+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection conn30: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:36:01.952+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2025-05-27T11:36:01.952+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:36:01.954+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-5)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:36:02.025+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:36:02.032+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:36:02.045+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:36:02.105+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:36:02.118+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: aadc5a41-2aa1-4a15-8c7a-a7b81c3d3251
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:36:02.119+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:36:02.148+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:36:02.156+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 9090 (http) with context path '/'
+2025-05-27T11:36:02.159+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 0.542 seconds (process running for 588.624)
+2025-05-27T11:36:02.161+09:00  INFO 25128 --- [boanni] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-05-27T11:36:02.203+09:00  INFO 15556 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:36:02.230+09:00  INFO 15556 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:36:03.096+09:00  INFO 15556 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 9090 (http)
+2025-05-27T11:36:03.113+09:00  INFO 15556 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:36:03.115+09:00  INFO 15556 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:36:03.160+09:00  INFO 15556 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:36:03.160+09:00  INFO 15556 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2026 ms
+2025-05-27T11:36:03.611+09:00  INFO 15556 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:36:03.717+09:00  INFO 15556 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:36:03.754+09:00  INFO 15556 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:36:04.075+09:00  INFO 15556 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:36:04.108+09:00  INFO 15556 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:36:04.218+09:00  INFO 15556 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:36:04.220+09:00  INFO 15556 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:36:04.234+09:00  WARN 15556 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:36:04.253+09:00  INFO 15556 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:36:04.919+09:00  INFO 15556 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:36:04.956+09:00  INFO 15556 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:36:05.051+09:00  WARN 15556 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:36:06.005+09:00  INFO 15556 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:36:06.108+09:00  WARN 15556 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: e82ff452-920a-49f2-b5ec-1f1377d04865
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:36:06.187+09:00  INFO 15556 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:36:06.595+09:00  WARN 15556 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-05-27T11:36:06.624+09:00  WARN 15556 --- [boanni] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-05-27T11:36:06.629+09:00  INFO 15556 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:36:06.649+09:00  WARN 15556 --- [boanni] [restartedMain] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:36:06.650+09:00  INFO 15556 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27T11:36:06.654+09:00  INFO 15556 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27T11:36:06.682+09:00  INFO 15556 --- [boanni] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27T11:36:06.737+09:00 ERROR 15556 --- [boanni] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 9090 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 9090 or configure this application to listen on another port.
+
+2025-05-27T11:37:13.458+09:00  INFO 20164 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 20164 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:37:13.462+09:00  INFO 20164 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:37:13.530+09:00  INFO 20164 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:37:13.530+09:00  INFO 20164 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:37:13.713+09:00  INFO 25128 --- [boanni] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2025-05-27T11:37:13.715+09:00  INFO 25128 --- [boanni] [Thread-20] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-27T11:37:13.852+09:00  INFO 25128 --- [boanni] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-27T11:37:13.853+09:00  INFO 25128 --- [boanni] [Thread-20] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:37:13.855+09:00  WARN 25128 --- [boanni] [Thread-20] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:37:13.855+09:00  INFO 25128 --- [boanni] [Thread-20] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown initiated...
+2025-05-27T11:37:13.857+09:00  INFO 25128 --- [boanni] [Thread-20] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown completed.
+2025-05-27T11:37:13.953+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:37:13.954+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:37:14.132+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:37:14.137+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:37:14.220+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:37:14.221+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:37:14.221+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:37:14.243+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:37:14.243+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 288 ms
+2025-05-27T11:37:14.271+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:37:14.276+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:37:14.285+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:37:14.285+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2025-05-27T11:37:14.289+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection conn40: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:37:14.289+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2025-05-27T11:37:14.289+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:37:14.289+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-6)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:37:14.365+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:37:14.370+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:37:14.396+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:37:14.443+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:37:14.453+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 8a8665d7-57a9-44e4-9854-06fa457d3cac
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:37:14.454+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:37:14.471+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:37:14.478+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T11:37:14.480+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 0.555 seconds (process running for 660.944)
+2025-05-27T11:37:14.480+09:00  INFO 25128 --- [boanni] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-05-27T11:37:14.574+09:00  INFO 20164 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:37:14.597+09:00  INFO 20164 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:37:15.559+09:00  INFO 20164 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T11:37:15.580+09:00  INFO 20164 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:37:15.581+09:00  INFO 20164 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:37:15.629+09:00  INFO 20164 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:37:15.630+09:00  INFO 20164 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2099 ms
+2025-05-27T11:37:16.190+09:00  INFO 20164 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:37:16.273+09:00  INFO 20164 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:37:16.309+09:00  INFO 20164 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:37:16.620+09:00  INFO 20164 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:37:16.668+09:00  INFO 20164 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:37:16.800+09:00  INFO 20164 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:37:16.801+09:00  INFO 20164 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:37:16.818+09:00  WARN 20164 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:37:16.837+09:00  INFO 20164 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:37:17.563+09:00  INFO 20164 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:37:17.611+09:00  INFO 20164 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:37:17.764+09:00  WARN 20164 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:37:18.708+09:00  INFO 20164 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:37:18.834+09:00  WARN 20164 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 3197bc1f-ea72-4d18-9f8e-d20d422bcf1c
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:37:18.900+09:00  INFO 20164 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:37:19.371+09:00  WARN 20164 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-05-27T11:37:19.418+09:00  WARN 20164 --- [boanni] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-05-27T11:37:19.422+09:00  INFO 20164 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:37:19.439+09:00  WARN 20164 --- [boanni] [restartedMain] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:37:19.439+09:00  INFO 20164 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27T11:37:19.444+09:00  INFO 20164 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27T11:37:19.464+09:00  INFO 20164 --- [boanni] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27T11:37:19.509+09:00 ERROR 20164 --- [boanni] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2025-05-27T11:40:45.095+09:00  INFO 22692 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 22692 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:40:45.098+09:00  INFO 22692 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:40:45.103+09:00  INFO 25128 --- [boanni] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2025-05-27T11:40:45.104+09:00  INFO 25128 --- [boanni] [Thread-24] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-27T11:40:45.174+09:00  INFO 22692 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:40:45.174+09:00  INFO 22692 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:40:45.232+09:00  INFO 25128 --- [boanni] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-27T11:40:45.233+09:00  INFO 25128 --- [boanni] [Thread-24] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:40:45.235+09:00  WARN 25128 --- [boanni] [Thread-24] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:40:45.235+09:00  INFO 25128 --- [boanni] [Thread-24] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown initiated...
+2025-05-27T11:40:45.235+09:00  INFO 25128 --- [boanni] [Thread-24] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown completed.
+2025-05-27T11:40:45.330+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 25128 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:40:45.330+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:40:45.441+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:40:45.443+09:00  INFO 25128 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:40:45.507+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-05-27T11:40:45.507+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:40:45.508+09:00  INFO 25128 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:40:45.522+09:00  INFO 25128 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:40:45.522+09:00  INFO 25128 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 191 ms
+2025-05-27T11:40:45.546+09:00  INFO 25128 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:40:45.548+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:40:45.557+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:40:45.558+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2025-05-27T11:40:45.559+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-7 - Added connection conn50: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:40:45.559+09:00  INFO 25128 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Start completed.
+2025-05-27T11:40:45.559+09:00  WARN 25128 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:40:45.560+09:00  INFO 25128 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-7)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:40:45.638+09:00  INFO 25128 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:40:45.647+09:00  INFO 25128 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:40:45.664+09:00  WARN 25128 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:40:45.719+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:40:45.751+09:00  WARN 25128 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: c3aeddf7-e561-4638-9bbf-5e99354a2daf
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:40:45.753+09:00  INFO 25128 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:40:45.775+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:40:45.782+09:00  INFO 25128 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-05-27T11:40:45.786+09:00  INFO 25128 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 0.478 seconds (process running for 872.25)
+2025-05-27T11:40:45.788+09:00  INFO 25128 --- [boanni] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-05-27T11:40:46.134+09:00  INFO 22692 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:40:46.164+09:00  INFO 22692 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:40:46.906+09:00  INFO 22692 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-05-27T11:40:46.920+09:00  INFO 22692 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:40:46.921+09:00  INFO 22692 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:40:46.957+09:00  INFO 22692 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:40:46.957+09:00  INFO 22692 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1783 ms
+2025-05-27T11:40:47.367+09:00  INFO 22692 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:40:47.523+09:00  INFO 22692 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:40:47.552+09:00  INFO 22692 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:40:47.886+09:00  INFO 22692 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:40:47.955+09:00  INFO 22692 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:40:48.079+09:00  INFO 22692 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:40:48.081+09:00  INFO 22692 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:40:48.098+09:00  WARN 22692 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:40:48.121+09:00  INFO 22692 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:40:48.829+09:00  INFO 22692 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:40:48.874+09:00  INFO 22692 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:40:48.965+09:00  WARN 22692 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:40:49.975+09:00  INFO 22692 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:40:50.115+09:00  WARN 22692 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: c86e0adf-a76b-4ff4-aa9f-7d096c813842
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:40:50.195+09:00  INFO 22692 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:40:50.695+09:00  WARN 22692 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2025-05-27T11:40:50.737+09:00  WARN 22692 --- [boanni] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-05-27T11:40:50.744+09:00  INFO 22692 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:40:50.760+09:00  WARN 22692 --- [boanni] [restartedMain] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-05-27T11:40:50.761+09:00  INFO 22692 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-27T11:40:50.765+09:00  INFO 22692 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-27T11:40:50.792+09:00  INFO 22692 --- [boanni] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-05-27T11:40:50.847+09:00 ERROR 22692 --- [boanni] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2025-05-27T11:42:57.226+09:00  INFO 17428 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 17428 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T11:42:57.231+09:00  INFO 17428 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T11:42:57.296+09:00  INFO 17428 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T11:42:57.296+09:00  INFO 17428 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T11:42:58.207+09:00  INFO 17428 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T11:42:58.235+09:00  INFO 17428 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 0 JPA repository interfaces.
+2025-05-27T11:42:59.151+09:00  INFO 17428 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2025-05-27T11:42:59.167+09:00  INFO 17428 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T11:42:59.168+09:00  INFO 17428 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T11:42:59.219+09:00  INFO 17428 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T11:42:59.220+09:00  INFO 17428 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1923 ms
+2025-05-27T11:42:59.664+09:00  INFO 17428 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T11:42:59.732+09:00  INFO 17428 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T11:42:59.762+09:00  INFO 17428 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T11:43:00.052+09:00  INFO 17428 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T11:43:00.111+09:00  INFO 17428 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T11:43:00.231+09:00  INFO 17428 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T11:43:00.233+09:00  INFO 17428 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T11:43:00.249+09:00  WARN 17428 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T11:43:00.267+09:00  INFO 17428 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T11:43:00.946+09:00  INFO 17428 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T11:43:00.986+09:00  INFO 17428 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T11:43:01.078+09:00  WARN 17428 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T11:43:02.068+09:00  INFO 17428 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T11:43:02.200+09:00  WARN 17428 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 67225b66-3f1c-4928-981a-e5a73008d636
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T11:43:02.276+09:00  INFO 17428 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T11:43:02.750+09:00  INFO 17428 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T11:43:02.812+09:00  INFO 17428 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2025-05-27T11:43:02.826+09:00  INFO 17428 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 6.077 seconds (process running for 6.501)
+2025-05-27T12:57:37.228+09:00  INFO 26400 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Starting BoanniApplication using Java 17.0.14 with PID 26400 (C:\sk\backend\project\build\classes\java\main started by yondu in C:\sk\backend\project)
+2025-05-27T12:57:37.233+09:00  INFO 26400 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : The following 1 profile is active: "test"
+2025-05-27T12:57:37.302+09:00  INFO 26400 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-27T12:57:37.302+09:00  INFO 26400 --- [boanni] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-27T12:57:38.187+09:00  INFO 26400 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-27T12:57:38.216+09:00  INFO 26400 --- [boanni] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 0 JPA repository interfaces.
+2025-05-27T12:57:39.166+09:00  INFO 26400 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-27T12:57:39.194+09:00  INFO 26400 --- [boanni] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-27T12:57:39.194+09:00  INFO 26400 --- [boanni] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-05-27T12:57:39.248+09:00  INFO 26400 --- [boanni] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-27T12:57:39.248+09:00  INFO 26400 --- [boanni] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1944 ms
+2025-05-27T12:57:39.690+09:00  INFO 26400 --- [boanni] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-27T12:57:39.781+09:00  INFO 26400 --- [boanni] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-05-27T12:57:39.814+09:00  INFO 26400 --- [boanni] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-27T12:57:40.150+09:00  INFO 26400 --- [boanni] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-27T12:57:40.194+09:00  INFO 26400 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-27T12:57:40.306+09:00  INFO 26400 --- [boanni] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-05-27T12:57:40.307+09:00  INFO 26400 --- [boanni] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-27T12:57:40.324+09:00  WARN 26400 --- [boanni] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-27T12:57:40.342+09:00  INFO 26400 --- [boanni] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-27T12:57:41.029+09:00  INFO 26400 --- [boanni] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-27T12:57:41.074+09:00  INFO 26400 --- [boanni] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-27T12:57:41.156+09:00  WARN 26400 --- [boanni] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-27T12:57:42.128+09:00  INFO 26400 --- [boanni] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2025-05-27T12:57:42.260+09:00  WARN 26400 --- [boanni] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 23126089-cb41-4e04-97ba-b1159347648a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-27T12:57:42.345+09:00  INFO 26400 --- [boanni] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-27T12:57:42.841+09:00  INFO 26400 --- [boanni] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-27T12:57:42.936+09:00  INFO 26400 --- [boanni] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-27T12:57:42.952+09:00  INFO 26400 --- [boanni] [restartedMain] c.boanni_back.project.BoanniApplication  : Started BoanniApplication in 6.198 seconds (process running for 6.596)
