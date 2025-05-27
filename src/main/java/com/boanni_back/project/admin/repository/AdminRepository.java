@@ -1,5 +1,7 @@
 package com.boanni_back.project.admin.repository;
 
+import com.boanni_back.project.user.entity.EmployeeType;
+import com.boanni_back.project.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
-    Optional<Admin> findByEmail(String email);
+public interface AdminRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.employee_type = :type")
-    List<Admin> findByEmployeeType(@Param("type") EmployeeType employeeType);
+    List<User> findByEmployeeType(@Param("type") EmployeeType employeeType);
 }

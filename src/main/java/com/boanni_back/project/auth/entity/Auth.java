@@ -2,7 +2,7 @@ package com.boanni_back.project.auth.entity;
 
 import jakarta.persistence.*;
 
-@Entity
+//@Entity
 public class Auth {
 
 }

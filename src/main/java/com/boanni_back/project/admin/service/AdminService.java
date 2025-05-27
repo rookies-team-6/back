@@ -3,6 +3,8 @@ package com.boanni_back.project.admin.service;
 import com.boanni_back.project.admin.exception.AdminBusinessException;
 import com.boanni_back.project.admin.exception.AdminErrorCode;
 import com.boanni_back.project.admin.repository.AdminRepository;
+import com.boanni_back.project.user.entity.EmployeeType;
+import com.boanni_back.project.user.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,11 @@ public class AdminService {
         this.adminRepository = adminRepository;
     }
 
-    public List<Admin> getAllUsers() {
+    public List<User> getAllUsers() {
         return adminRepository.findAll();
     }
 
-    public Admin getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         return adminRepository.findByEmail(email)
                 .orElseThrow(() -> new AdminBusinessException(AdminErrorCode.USER_NOT_FOUND, email));
     }
@@ -33,14 +35,14 @@ public class AdminService {
     }
 
     public void promoteUserToAdmin(Long id) {
-        Admin user = adminRepository.findById(id)
+        User user = adminRepository.findById(id)
                 .orElseThrow(() -> new AdminBusinessException(AdminErrorCode.USER_NOT_FOUND, id));
 
         user.setEmployee_type(EmployeeType.ADMIN);
         adminRepository.save(user);
     }
 
-    public List<Admin> getUsersByEmployeeType(EmployeeType employeeType) {
+    public List<User> getUsersByEmployeeType(EmployeeType employeeType) {
         return adminRepository.findByEmployeeType(employeeType);
     }
 
