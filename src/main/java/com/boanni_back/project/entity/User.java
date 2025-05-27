@@ -3,7 +3,7 @@ package com.boanni_back.project.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class User {
     private String username;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "employee_type", nullable = false)
     private EmployeeType employee_type;
 
     @Column(nullable = false)
