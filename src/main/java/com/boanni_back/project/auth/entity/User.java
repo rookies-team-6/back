@@ -1,4 +1,4 @@
-package com.boanni_back.project.entity;
+package com.boanni_back.project.auth.entity;
 
 import jakarta.persistence.*;
 

@@ -1,4 +1,4 @@
-package com.boanni_back.project.entity;
+package com.boanni_back.project.user.entity;
 
 public enum EmployeeType {
     TRAINEE,   // 교육생
