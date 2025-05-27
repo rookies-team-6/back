@@ -1,5 +1,6 @@
 package com.boanni_back.project.auth.entity;
 
+import com.boanni_back.project.user.entity.EmployeeType;
 import jakarta.persistence.*;
 
 @Entity
