@@ -1,4 +1,4 @@
-package com.boanni_back.project.admin.exception;
+package com.boanni_back.project.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class AdminGlobalExceptionHandler {
+public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AdminBusinessException.class)
-    public ResponseEntity<Map<String, String>> handleBusinessException(AdminBusinessException e) {
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, String>> handleBusinessException(BusinessException e) {
         Map<String, String> error = new HashMap<>();
         error.put("message", e.getMessage());
         error.put("status", e.getHttpStatus().toString());
