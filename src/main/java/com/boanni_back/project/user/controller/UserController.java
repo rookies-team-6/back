@@ -1,7 +1,7 @@
 package com.boanni_back.project.user.controller;
 
-import com.boanni_back.project.user.entity.EmployeeType;
-import com.boanni_back.project.user.entity.User;
+import com.boanni_back.project.auth.entity.EmployeeType;
+import com.boanni_back.project.auth.entity.User;
 import com.boanni_back.project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

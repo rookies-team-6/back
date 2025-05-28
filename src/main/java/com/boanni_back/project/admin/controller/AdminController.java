@@ -1,7 +1,7 @@
 //package com.boanni_back.project.admin.controller;
 //
 //import com.boanni_back.project.admin.service.AdminService;
-//import com.boanni_back.project.user.entity.EmployeeType;
+//import com.boanni_back.project.auth.entity.EmployeeType;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
 //

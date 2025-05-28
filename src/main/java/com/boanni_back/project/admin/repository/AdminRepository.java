@@ -1,7 +1,7 @@
 //package com.boanni_back.project.admin.repository;
 //
 //import com.boanni_back.project.admin.entity.Admin;
-//import com.boanni_back.project.user.entity.EmployeeType;
+//import com.boanni_back.project.auth.entity.EmployeeType;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Query;
 //import org.springframework.data.repository.query.Param;
