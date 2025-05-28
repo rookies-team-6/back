@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface AdminRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByEmail(String email);
 
-    @Query("SELECT u FROM User u WHERE u.employee_type = :type")
+    @Query("SELECT u FROM Users u WHERE u.employee_type = :type")
     List<Users> findByEmployeeType(@Param("type") EmployeeType employeeType);
 }

@@ -2,8 +2,14 @@ package com.boanni_back.project.auth.entity;
 
 import com.boanni_back.project.auth.entity.EmployeeType;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class Users {
     @Id
@@ -13,7 +19,7 @@ public class Users {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String pwd;
 
     @Column(nullable = false)
