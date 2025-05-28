@@ -4,7 +4,7 @@
 //import com.boanni_back.project.admin.exception.AdminBusinessException;
 //import com.boanni_back.project.admin.exception.AdminErrorCode;
 //import com.boanni_back.project.admin.repository.AdminRepository;
-//import com.boanni_back.project.user.entity.EmployeeType;
+//import com.boanni_back.project.auth.entity.EmployeeType;
 //import org.springframework.stereotype.Service;
 //
 //import java.util.List;
