@@ -1,6 +1,6 @@
 package com.boanni_back.project.gpt.entity;
 
-import com.boanni_back.project.auth.entity.User;
+import com.boanni_back.project.auth.entity.Users;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,5 +25,5 @@ public class UserGptRecord {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users users;
 }
