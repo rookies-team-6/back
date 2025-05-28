@@ -18,7 +18,7 @@ public class Users {
     private String email;
 
     @Column(nullable = false)
-    private String pwd;
+    private String password;
 
     @Column(nullable = false)
     private String username;
@@ -31,5 +31,5 @@ public class Users {
     private int score;
 
     @Column(nullable = false)
-    private int current_question_index;
+    private Long current_question_index;
 }
