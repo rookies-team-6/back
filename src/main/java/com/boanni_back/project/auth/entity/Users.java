@@ -1,14 +1,15 @@
-package com.boanni_back.project.user.entity;
+package com.boanni_back.project.auth.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "users")
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,7 +17,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String pwd;
 
     @Column(nullable = false)
@@ -30,5 +31,5 @@ public class User {
     private int score;
 
     @Column(nullable = false)
-    private boolean quiz_completed;
+    private int current_question_index;
 }
