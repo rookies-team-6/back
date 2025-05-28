@@ -1,8 +1,11 @@
 package com.boanni_back.project.gpt.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Setter @Getter
 @Table(name = "question")
 public class Question {
     @Id
