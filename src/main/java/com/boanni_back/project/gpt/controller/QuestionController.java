@@ -24,6 +24,12 @@ public class QuestionController {
         return ResponseEntity.ok(questions);
     }
 
+    // 보안 문제 개별 조회 - Users의 current_question_index 참고
+    @GetMapping("/{userId}")
+    public ResponseEntity<QuestionDto.Response> getQuestionByIndex(@PathVariable Long userId){
+        return ResponseEntity.ok(questionService.getQuestionByIndex(userId));
+    }
+
     // 보안 문제 생성 (관리자만 허용)
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')") // <-- 중요: 관리자만 허용
