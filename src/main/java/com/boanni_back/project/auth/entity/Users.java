@@ -1,14 +1,12 @@
 package com.boanni_back.project.auth.entity;
 
-import com.boanni_back.project.auth.entity.EmployeeType;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Table(name = "users")
 public class Users {
@@ -20,18 +18,20 @@ public class Users {
     private String email;
 
     @Column(nullable = false)
-    private String pwd;
+    private String password;
 
     @Column(nullable = false)
     private String username;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "employee_type", nullable = false)
-    private EmployeeType employee_type;
+    private EmployeeType employeeType;
 
     @Column(nullable = false)
-    private int score;
+    @Builder.Default
+    private int score=0;
 
+    @Builder.Default
     @Column(nullable = false)
-    private boolean quiz_completed;
+    private Long currentQuestionIndex=-1L;
 }
