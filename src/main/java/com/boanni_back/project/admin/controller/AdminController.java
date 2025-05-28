@@ -1,8 +1,8 @@
 package com.boanni_back.project.admin.controller;
 
 import com.boanni_back.project.admin.service.AdminService;
-import com.boanni_back.project.user.entity.EmployeeType;
-import com.boanni_back.project.user.entity.User;
+import com.boanni_back.project.auth.entity.EmployeeType;
+import com.boanni_back.project.auth.entity.Users;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,21 +19,21 @@ public class AdminController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = adminService.getAllUsers();
+    public ResponseEntity<List<Users>> getAllUsers() {
+        List<Users> users = adminService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        User user = adminService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Users> getUserByEmail(@PathVariable String email) {
+        Users users = adminService.getUserByEmail(email);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<User>> getUsersByType(@PathVariable String type) {
+    public ResponseEntity<List<Users>> getUsersByType(@PathVariable String type) {
         EmployeeType employeeType = EmployeeType.valueOf(type.toUpperCase());
-        List<User> users = adminService.getUsersByEmployeeType(employeeType);
+        List<Users> users = adminService.getUsersByEmployeeType(employeeType);
         return ResponseEntity.ok(users);
     }
 
