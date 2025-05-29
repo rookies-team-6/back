@@ -36,3 +36,4 @@ public class Users {
     @Column(nullable = false)
     private Long currentQuestionIndex=-1L;
 }
+
