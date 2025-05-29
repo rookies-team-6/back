@@ -1,12 +1,12 @@
-package com.boanni_back.project.gpt.service;
+package com.boanni_back.project.ai.service;
 
 import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
-import com.boanni_back.project.gpt.controller.dto.QuestionDto;
-import com.boanni_back.project.gpt.entity.Question;
-import com.boanni_back.project.gpt.repository.QuestionRepository;
+import com.boanni_back.project.ai.controller.dto.QuestionDto;
+import com.boanni_back.project.ai.entity.Question;
+import com.boanni_back.project.ai.repository.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
