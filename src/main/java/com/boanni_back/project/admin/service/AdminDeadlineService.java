@@ -5,19 +5,17 @@ import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor //생성자 어노테이션 주입
 public class AdminDeadlineService {
 
     private final AdminRepository adminRepository;
-
-    public AdminDeadlineService(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
-    }
 
     public AdminDeadlineDto getDeadline(Long id) {
         Users user = adminRepository.findById(id)
