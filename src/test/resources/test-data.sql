@@ -6,3 +6,11 @@ VALUES
 ('trainee2@boanni.com', 'pw4', '수강생2', 30, 2, 'TRAINEE', NULL, NULL),
 ('trainee3@boanni.com', 'pw5', '수강생3', 45, 2, 'TRAINEE', NULL, NULL),
 ('emp2@boanni.com', 'pw6', '사원2', 60, 3, 'EMPLOYEE', NULL, NULL);
+
+INSERT INTO question (id, question) VALUES
+(1, '질문1'),
+(2, '질문2'),
+(3, '질문3'),
+(4, '질문4'),
+(5, '질문5');
+
