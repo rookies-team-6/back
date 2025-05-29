@@ -5,10 +5,9 @@ import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController  {
@@ -16,7 +15,7 @@ public class AuthController  {
     private final UsersService usersService;
 
     @GetMapping("/verify")
-    public ResponseEntity<String> verifyEmployeeNum(@RequestParam String employeeNum){
+    public ResponseEntity<String> verifyEmployeeNum(@RequestParam("employeenum") String employeeNum){
         employeeAuthService.verifyEmployeeAuth(employeeNum);
         return ResponseEntity.ok().build();
     }
