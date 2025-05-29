@@ -17,7 +17,7 @@ public class UserAiRecordController {
 
     private final UserAiRecordService userAiRecordService;
 
-    // 이용자 답변 입력
+    // 이용자 답변 등록
     @PostMapping
     public ResponseEntity<UserAiRecordDto.Response> saveUserAnswer(@RequestBody UserAiRecordDto.Request request) {
         UserAiRecordDto.Response response = userAiRecordService.saveUserAnswer(request);
