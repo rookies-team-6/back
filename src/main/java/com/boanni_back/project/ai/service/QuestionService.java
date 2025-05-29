@@ -26,7 +26,7 @@ public class QuestionService {
         return questionRepository.findAll()
                 .stream()
                 .map(QuestionDto.Response::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // 보안 문제 개별 조회
@@ -40,7 +40,8 @@ public class QuestionService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
 
         // 다음 질문 index로 넘어감
-        user.setCurrentQuestionIndex(index + 1);
+        // 보류
+        //user.setCurrentQuestionIndex(index + 1);
         adminRepository.save(user);
 
         return QuestionDto.Response.fromEntity(question);
