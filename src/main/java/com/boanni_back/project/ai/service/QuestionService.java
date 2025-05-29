@@ -30,21 +30,21 @@ public class QuestionService {
     }
 
     // 보안 문제 개별 조회
-    @Transactional
-    public QuestionDto.Response getQuestionByIndex(Long userId) {
-        Users user = adminRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
-        Long index = user.getCurrent_question_index();
-
-        Question question = questionRepository.findById(index)
-                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
-
-        // 다음 질문 index로 넘어감
-        user.setCurrent_question_index(index + 1);
-        adminRepository.save(user);
-
-        return QuestionDto.Response.fromEntity(question);
-    }
+//    @Transactional
+//    public QuestionDto.Response getQuestionByIndex(Long userId) {
+//        Users user = adminRepository.findById(userId)
+//                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
+//        Long index = user.getCurrent_question_index();
+//
+//        Question question = questionRepository.findById(index)
+//                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
+//
+//        // 다음 질문 index로 넘어감
+//        user.setCurrent_question_index(index + 1);
+//        adminRepository.save(user);
+//
+//        return QuestionDto.Response.fromEntity(question);
+//    }
 
     // 보안 문제 생성
     public QuestionDto.Response createQuestion(QuestionDto.Request request) {

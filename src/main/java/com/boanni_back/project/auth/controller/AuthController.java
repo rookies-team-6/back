@@ -4,6 +4,7 @@ import com.boanni_back.project.auth.controller.dto.SignUpRequestDTO;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,13 @@ public class AuthController  {
     @GetMapping("/verify")
     public ResponseEntity<String> verifyEmployeeNum(@RequestParam("employeenum") String employeeNum){
         employeeAuthService.verifyEmployeeAuth(employeeNum);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body("사원 확인이 완료되었습니다.");
     }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody SignUpRequestDTO request){
         usersService.saveUser(request);
-        return ResponseEntity.ok("회원가입 완료");
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
     }
 }
 
