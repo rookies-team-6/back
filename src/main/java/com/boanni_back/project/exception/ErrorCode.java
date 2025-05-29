@@ -15,7 +15,8 @@ public enum ErrorCode {
     AUTH_PASSWORD_NOT_EQUAL_ERROR("A002","일치하지 않는 비밀번호입니다.",HttpStatus.BAD_REQUEST),
     AUTH_USER_DUPLICATE_ERROR("A003","중복된 유저 이름입니다.",HttpStatus.BAD_REQUEST),
     AUTH_NOT_INCLUDED_EMPLOYEE_NUMBER_ERROR("A004","존재하지 않는 사원 타입입니다.",HttpStatus.BAD_REQUEST),
-    AUTH_EMAIL_DUPLICATE_ERROR("A005","중복된 이메일입니다.",HttpStatus.BAD_REQUEST);
+    AUTH_EMAIL_DUPLICATE_ERROR("A005","중복된 이메일입니다.",HttpStatus.BAD_REQUEST),
+    INDEX_NOT_FOUND("U002", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND);
 
     private final String code;
     private final String message;
