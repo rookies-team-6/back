@@ -5,18 +5,16 @@ import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor //생성자 어노테이션 주입
 public class AdminProcessService {
 
     private final AdminRepository adminRepository;
 
     private final int TOTAL_QUESTIONS = 5;
-
-    public AdminProcessService(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
-    }
 
     public AdminProcessDto getUserProgress(Long userId) {
         Users user = adminRepository.findById(userId)
