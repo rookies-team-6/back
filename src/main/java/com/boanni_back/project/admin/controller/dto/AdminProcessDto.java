@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class AdminProcessDto {
     private Long userId;
     private String username;
-    private double progress;
+    private String progress;
 }

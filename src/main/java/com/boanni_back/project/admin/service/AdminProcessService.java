@@ -25,7 +25,8 @@ public class AdminProcessService {
         long totalQuestions = questionRepository.count();
 
         double progress = (index < 0 || totalQuestions == 0) ? 0.0 : (index / (double) totalQuestions) * 100.0;
+        String progressStr = String.format("%.0f%%", progress);
 
-        return new AdminProcessDto(user.getId(), user.getUsername(), progress);
+        return new AdminProcessDto(user.getId(), user.getUsername(), progressStr);
     }
 }
