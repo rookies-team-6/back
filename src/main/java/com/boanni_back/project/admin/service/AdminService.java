@@ -1,10 +1,10 @@
 package com.boanni_back.project.admin.service;
 
-import com.boanni_back.project.exception.BusinessException;
-import com.boanni_back.project.exception.ErrorCode;
 import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
+import com.boanni_back.project.exception.BusinessException;
+import com.boanni_back.project.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class AdminService {
         Users users = adminRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
 
-        users.setEmployee_type(EmployeeType.ADMIN);
+        users.setEmployeeType(EmployeeType.ADMIN);
         adminRepository.save(users);
     }
 
