@@ -3,6 +3,8 @@ package com.boanni_back.project.admin.service;
 import com.boanni_back.project.admin.controller.dto.AdminScoreDto;
 import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
+import com.boanni_back.project.exception.BusinessException;
+import com.boanni_back.project.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class AdminScoreService {
 
     public AdminScoreDto getUserScoreById(Long id) {
         Users users = adminRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
         return new AdminScoreDto(users.getId(), users.getUsername(), users.getScore());
     }
 

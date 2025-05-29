@@ -3,6 +3,8 @@ package com.boanni_back.project.auth.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,5 +37,11 @@ public class Users {
     @Builder.Default
     @Column(nullable = false)
     private Long currentQuestionIndex=-1L;
+
+    @Column(name = "start_date", nullable = true)
+    private LocalDate startDate;
+
+    @Column(name = "end_date", nullable = true)
+    private LocalDate endDate;
 }
 
