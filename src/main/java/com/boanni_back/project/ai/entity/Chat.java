@@ -1,5 +1,5 @@
 package com.boanni_back.project.ai.entity;
 
 //@Entity
-public class Ai {
+public class Chat {
 }
