@@ -33,7 +33,7 @@ public class AdminProcessServiceTest {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId", is(1)))
                 .andExpect(jsonPath("$.username", is("수강생1")))
-                .andExpect(jsonPath("$.progress", closeTo(20.0, 0.01)))
+                .andExpect(jsonPath("$.progress", is("20%")))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
