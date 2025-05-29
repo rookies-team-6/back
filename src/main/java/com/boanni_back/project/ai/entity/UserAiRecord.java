@@ -8,7 +8,7 @@ import lombok.Getter;
 @Entity
 @Builder
 @Getter
-@Table(name = "user_gpt_record")
+@Table(name = "user_ai_record")
 public class UserAiRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,7 @@ public class UserAiRecord {
     @Column(columnDefinition = "TEXT")
     private String aiAnswer;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isBookMarked = false;
 
