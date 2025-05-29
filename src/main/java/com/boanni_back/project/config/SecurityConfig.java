@@ -1,9 +1,12 @@
 package com.boanni_back.project.config;
 
+import com.boanni_back.project.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,7 +29,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationConfiguration authenticationConfiguration;
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
+        return configuration.getAuthenticationManager();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,11 +53,9 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
 //                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
                     .anyRequest().authenticated()
-            );
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // ⭐️ 필수
+            )
+            .addFilterBefore(new LoginFilter(authenticationManager(authenticationConfiguration)),UsernamePasswordAuthenticationFilter.class);
         return http.build();
-
-//        .httpBasic(withDefaults());
     }
 
     @Bean
