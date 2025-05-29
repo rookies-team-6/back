@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-
 @Builder
 @Table(name = "users")
 public class Users {
@@ -38,4 +36,3 @@ public class Users {
     @Column(nullable = false)
     private Long currentQuestionIndex=-1L;
 }
-

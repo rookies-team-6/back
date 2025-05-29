@@ -38,7 +38,7 @@ public class AdminService {
         Users users = adminRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
 
-        users.setEmployee_type(EmployeeType.ADMIN);
+        users.setEmployeeType(EmployeeType.ADMIN);
         adminRepository.save(users);
     }
 
