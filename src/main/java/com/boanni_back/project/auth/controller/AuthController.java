@@ -1,5 +1,6 @@
 package com.boanni_back.project.auth.controller;
 
+import com.boanni_back.project.auth.controller.dto.SignInRequestDTO;
 import com.boanni_back.project.auth.controller.dto.SignUpRequestDTO;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.UsersService;
@@ -26,5 +27,10 @@ public class AuthController  {
         usersService.saveUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
     }
+
+//    @PostMapping("/signin")
+//    public ResponseEntity<String> signIn(@RequestBody SignInRequestDTO request){
+//
+//    }
 }
 
