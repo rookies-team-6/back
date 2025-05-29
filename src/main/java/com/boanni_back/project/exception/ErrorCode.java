@@ -15,8 +15,11 @@ public enum ErrorCode {
     AUTH_PASSWORD_NOT_EQUAL_ERROR("A002","일치하지 않는 비밀번호입니다.",HttpStatus.BAD_REQUEST),
     AUTH_USER_DUPLICATE_ERROR("A003","중복된 유저 이름입니다.",HttpStatus.BAD_REQUEST),
     AUTH_NOT_INCLUDED_EMPLOYEE_NUMBER_ERROR("A004","존재하지 않는 사원 타입입니다.",HttpStatus.BAD_REQUEST),
-    AUTH_EMAIL_DUPLICATE_ERROR("A005","중복된 이메일입니다.",HttpStatus.BAD_REQUEST);
-    INDEX_NOT_FOUND("U002", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND);
+    AUTH_EMAIL_DUPLICATE_ERROR("A005","중복된 이메일입니다.",HttpStatus.BAD_REQUEST),
+    INDEX_NOT_FOUND("U002", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
+    USER_DEADLINE_NOT_FOUND("U010", "입력한 학습 기간이 없습니다. ID: %s", HttpStatus.NOT_FOUND),
+    USER_DEADLINE_BEFORE_TODAY("U011", "시작일은 오늘 이후여야 합니다.", HttpStatus.BAD_REQUEST),
+    USER_DEADLINE_BEFORE_START("U012", "종료일은 시작일보다 이후여야 합니다.", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String message;
