@@ -1,6 +1,6 @@
-package com.boanni_back.project.gpt.controller.dto;
+package com.boanni_back.project.ai.controller.dto;
 
-import com.boanni_back.project.gpt.entity.Question;
+import com.boanni_back.project.ai.entity.Question;
 import lombok.*;
 
 public class QuestionDto {
