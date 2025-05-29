@@ -9,9 +9,10 @@ import com.boanni_back.project.ai.repository.UserAiRecordRepository;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class UserAiRecordService {
     private final QuestionRepository questionRepository;
     private final AdminRepository adminRepository;
 
+    // 사용자 답변 저장
     public UserAiRecordDto.Response saveUserAnswer(UserAiRecordDto.Request request) {
         // 연관 엔티티 조회
         Question question = questionRepository.findById(request.getQuestionId())
@@ -39,6 +41,13 @@ public class UserAiRecordService {
 
         // Dto로 응답
         return UserAiRecordDto.Response.fromEntity(record);
+    }
+
+    public List<UserAiRecordDto.Response> getUserAnswer() {
+        return userAiRecordRepository.findAll()
+                .stream()
+                .map(UserAiRecordDto.Response::fromEntity)
+                .toList();
     }
 }
 
