@@ -18,23 +18,23 @@ public class AdminService {
     private final AdminRepository adminRepository;
 
     //모든 회원 조회
-    public List<UsersDto> getAllUsers() {
+    public List<UsersDto.Response> getAllUsers() {
         return adminRepository.findAll().stream()
-                .map(UsersDto::fromEntity)
+                .map(UsersDto.Response::fromEntity)
                 .toList();
     }
 
     //해당 email 회원 조회
-    public UsersDto getUserByEmail(String email) {
+    public UsersDto.Response getUserByEmail(String email) {
         return adminRepository.findByEmail(email)
-                .map(UsersDto::fromEntity)
+                .map(UsersDto.Response::fromEntity)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, email));
     }
 
     //employee_type으로 회원 조회
-    public List<UsersDto> getUsersByEmployeeType(EmployeeType employeeType) {
+    public List<UsersDto.Response> getUsersByEmployeeType(EmployeeType employeeType) {
         return adminRepository.findByEmployeeType(employeeType).stream()
-                .map(UsersDto::fromEntity)
+                .map(UsersDto.Response::fromEntity)
                 .toList();
     }
 

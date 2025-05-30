@@ -24,26 +24,18 @@ public class AdminProcessServiceTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void getProgress_ValidUserId() throws Exception {
-        long userId = 1L;
-
-        ResultActions result = mockMvc.perform(get("/admin/users/progress/" + userId));
-
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId", is(1)))
-                .andExpect(jsonPath("$.username", is("수강생1")))
-                .andExpect(jsonPath("$.progress", is("20%")))
+    void getProgress_validUserId_shouldRenderProgressView() throws Exception {
+        mockMvc.perform(get("/admin/users/progress/1"))
                 .andExpect(status().isOk())
+                .andExpect(view().name("admin/progress"))
+                .andExpect(model().attributeExists("progress"))
                 .andDo(print());
     }
 
     @Test
-    void getProgress_NotExistsUserId() throws Exception {
-        long userId = 999L;
-        ResultActions result = mockMvc.perform(get("/admin/users/progress/" + userId));
-
-        result.andExpect(status().is4xxClientError())
-                .andExpect(status().isOk())
+    void getProgress_invalidUserId_shouldReturnErrorViewOr4xx() throws Exception {
+        mockMvc.perform(get("/admin/users/progress/999"))
+                .andExpect(status().is4xxClientError())
                 .andDo(print());
     }
 }
