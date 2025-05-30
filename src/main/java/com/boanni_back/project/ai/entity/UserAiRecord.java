@@ -2,13 +2,14 @@ package com.boanni_back.project.ai.entity;
 
 import com.boanni_back.project.auth.entity.Users;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Builder
-@Getter
-@Table(name = "user_gpt_record")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter @Setter
+@Table(name = "user_ai_record")
 public class UserAiRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,7 @@ public class UserAiRecord {
     @Column(columnDefinition = "TEXT")
     private String aiAnswer;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isBookMarked = false;
 
