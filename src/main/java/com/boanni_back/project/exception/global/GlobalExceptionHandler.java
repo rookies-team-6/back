@@ -2,37 +2,56 @@ package com.boanni_back.project.exception.global;
 
 import com.boanni_back.project.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.UUID;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 @Slf4j
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler implements ResponseBodyAdvice<Object> {
+
+    private final HttpServletRequest request;
+
 
     // BusinessException 발생했을 시
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(
             BusinessException e, HttpServletRequest request) {
-        ErrorResponse response = new ErrorResponse();
-        response.setTimestamp(LocalDateTime.now());
-        response.setStatusCode(e.getHttpStatus().value());
-        response.setMessage(e.getMessage());
-        response.setCode(e.getErrorCode().getCode());
-        response.setPath(request.getRequestURI());
 
-        log.error("Unhandled BusinessException: ", e);
-        return new ResponseEntity<ErrorResponse>(response, e.getHttpStatus());
+        CustomError error = new CustomError(
+                e.getErrorCode().getCode(),
+                e.getMessage(),
+                null, // 상세 필드 없음
+                request.getRequestURI(),
+                request.getMethod()
+        );
+
+        ErrorResponse response = new ErrorResponse(
+                false,
+                error,
+                LocalDateTime.now(),
+                UUID.randomUUID().toString()
+        );
+        return new ResponseEntity<>(response, e.getHttpStatus());
     }
 
     // 400, JSON 요청 형식이 틀릴 시
@@ -45,7 +64,8 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "잘못된 요청 형식입니다. JSON 문법을 확인해주세요.",
                 "INVALID_REQUEST_FORMAT",
-                request.getRequestURI()
+                request.getRequestURI(),
+                request.getMethod()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -60,29 +80,42 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "서버 오류가 발생했습니다. 다시 시도해주세요.",
                 "INTERNAL_SERVER_ERROR",
-                request.getRequestURI()
+                request.getRequestURI(),
+                request.getMethod()
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // validation 검증 실패 시
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException e, HttpServletRequest request) {
+
         log.error("Unhandled ValidException: ", e);
 
-        Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getFieldErrors().forEach((error) -> {
-                errors.put(error.getField(), error.getDefaultMessage());
-        });
+        List<ErrorDetail> details = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> new ErrorDetail(
+                        error.getField(),
+                        error.getDefaultMessage(),
+                        error.getRejectedValue()))
+                .toList();
 
-        ValidationErrorResponse response =
-                new ValidationErrorResponse(
-                        LocalDateTime.now(),
-                        HttpStatus.BAD_REQUEST.value(), //400
-                        "Validation Failed",
-                        errors
-                );
+        CustomError error = new CustomError(
+                "VALIDATION_ERROR",
+                "입력값이 올바르지 않습니다",
+                details,
+                request.getRequestURI(),
+                request.getMethod()
+        );
+
+        ErrorResponse response = new ErrorResponse(
+                false,
+                error,
+                LocalDateTime.now(),
+                UUID.randomUUID().toString()
+        );
 
         return ResponseEntity.badRequest().body(response);
     }
@@ -97,7 +130,8 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "필수 요청 파라미터가 누락되었습니다: " + e.getParameterName(),
                 "MISSING_REQUEST_PARAM",
-                request.getRequestURI()
+                request.getRequestURI(),
+                request.getMethod()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -116,19 +150,61 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 message,
                 "INVALID_PARAM_TYPE",
-                request.getRequestURI()
+                request.getRequestURI(),
+                request.getMethod()
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     // 공통 에러 응답 메서드
-    private ErrorResponse createErrorResponse(HttpStatus status, String message, String code, String path) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setTimestamp(LocalDateTime.now());
-        errorResponse.setStatusCode(status.value());
-        errorResponse.setMessage(message);
-        errorResponse.setCode(code);
-        errorResponse.setPath(path);
-        return errorResponse;
+    private ErrorResponse createErrorResponse(HttpStatus status, String message, String code, String path, String method) {
+        CustomError error = new CustomError(
+                code,
+                message,
+                null,
+                path,
+                method
+        );
+
+        return new ErrorResponse(
+                false,
+                error,
+                LocalDateTime.now(),
+                UUID.randomUUID().toString()
+        );
     }
+
+    // 성공 시
+    @Override
+    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        return !returnType.getParameterType().equals(ErrorResponse.class);
+    }
+
+    @Override
+    public Object beforeBodyWrite(Object body,
+                                  @NonNull MethodParameter returnType,
+                                  @NonNull MediaType selectedContentType,
+                                  @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+                                  @NonNull ServerHttpRequest serverHttpRequest,
+                                  @NonNull ServerHttpResponse serverHttpResponse) {
+
+        if (body instanceof ErrorResponse) {
+            return body;  // 에러 응답은 그대로 반환
+        }
+
+        if (body instanceof SuccessResponse) {
+            return body;  // 이미 래핑된 경우
+        }
+
+        // 성공 응답 자동 래핑
+        return new SuccessResponse<>(
+                true,
+                body,
+                "요청이 성공적으로 처리되었습니다.",
+                LocalDateTime.now(),
+                UUID.randomUUID().toString()
+        );
+    }
+
+
 }

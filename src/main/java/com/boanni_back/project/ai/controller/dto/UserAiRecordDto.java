@@ -6,9 +6,9 @@ import lombok.*;
 
 public class UserAiRecordDto {
 
-    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
     @Builder
     public static class Request {
         private Long questionId;
@@ -16,9 +16,9 @@ public class UserAiRecordDto {
         private String userAnswer;
     }
 
-    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
     @Builder
     public static class Response {
         private Long id;
