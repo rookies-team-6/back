@@ -20,33 +20,29 @@ class AdminScoreServiceTest {
     private MockMvc mockMvc;
 
     @Test
-    void shouldGetAllUserScores() throws Exception {
+    void getAllUserScores_shouldRenderScoreListView() throws Exception {
         mockMvc.perform(get("/admin/users/scores"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", not(empty())))
-                .andExpect(jsonPath("$[0].username", notNullValue()))
-                .andExpect(jsonPath("$[0].score", greaterThanOrEqualTo(0)))
-                .andExpect(status().isOk())
+                .andExpect(view().name("admin/scores/list"))
+                .andExpect(model().attributeExists("scores"))
                 .andDo(print());
     }
 
     @Test
-    void shouldGetUserScoreById() throws Exception {
-        mockMvc.perform(get("/admin/users/scores/{id}", 1L)) // test-data.sql 기준
+    void getUserScoreById_shouldRenderScoreDetailView() throws Exception {
+        mockMvc.perform(get("/admin/users/scores/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.score", isA(Integer.class)))
-                .andExpect(jsonPath("$.username", notNullValue()))
-                .andExpect(status().isOk())
+                .andExpect(view().name("admin/scores/detail"))
+                .andExpect(model().attributeExists("score"))
                 .andDo(print());
     }
 
     @Test
-    void shouldGetScoresSortedDesc() throws Exception {
+    void getScoresSortedDesc_shouldRenderSortedScoreView() throws Exception {
         mockMvc.perform(get("/admin/users/scores/sorted"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].score", greaterThanOrEqualTo(0)))
-                .andExpect(jsonPath("$[0].username", notNullValue()))
-                .andExpect(status().isOk())
+                .andExpect(view().name("admin/scores/sorted"))
+                .andExpect(model().attributeExists("scores"))
                 .andDo(print());
     }
 }

@@ -4,14 +4,15 @@ import com.boanni_back.project.admin.controller.dto.AdminScoreDto;
 import com.boanni_back.project.admin.service.AdminScoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users/scores")
 public class AdminScoreController {
@@ -19,19 +20,25 @@ public class AdminScoreController {
 
     //모든 회원의 점수(score) 조회
     @GetMapping
-    public ResponseEntity<List<AdminScoreDto>> getAllScores() {
-        return ResponseEntity.ok(adminScoreService.getAllUserScores());
+    public String getAllScores(Model model) {
+        List<AdminScoreDto.Response> scores = adminScoreService.getAllUserScores();
+        model.addAttribute("scores", scores);
+        return "admin/scores/list";
     }
 
     //해당 id 회원의 점수(score) 조회
     @GetMapping("/{id}")
-    public ResponseEntity<AdminScoreDto> getUserScore(@PathVariable Long id) {
-        return ResponseEntity.ok(adminScoreService.getUserScoreById(id));
+    public String getUserScore(@PathVariable Long id, Model model) {
+        AdminScoreDto.Response score = adminScoreService.getUserScoreById(id);
+        model.addAttribute("score", score);
+        return "admin/scores/detail";
     }
 
     //모든 회원의 점수(score) 내림차순 조회
     @GetMapping("/sorted")
-    public ResponseEntity<List<AdminScoreDto>> getScoresSortedDesc() {
-        return ResponseEntity.ok(adminScoreService.getScoresSortedDesc());
+    public String getScoresSortedDesc(Model model) {
+        List<AdminScoreDto.Response> scores = adminScoreService.getScoresSortedDesc();
+        model.addAttribute("scores", scores);
+        return "admin/scores/sorted";
     }
 }

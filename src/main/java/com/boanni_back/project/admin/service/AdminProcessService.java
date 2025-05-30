@@ -16,7 +16,7 @@ public class AdminProcessService {
     private final AdminRepository adminRepository;
     private final QuestionRepository questionRepository;
 
-    public AdminProcessDto getUserProgress(Long userId) {
+    public AdminProcessDto.Response getUserProgress(Long userId) {
         Users user = adminRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
 
@@ -27,6 +27,6 @@ public class AdminProcessService {
         double progress = (index < 0 || totalQuestions == 0) ? 0.0 : (index / (double) totalQuestions) * 100.0;
         String progressStr = String.format("%.0f%%", progress);
 
-        return AdminProcessDto.fromEntity(user, progressStr);
+        return AdminProcessDto.Response.fromEntity(user, progressStr);
     }
 }
