@@ -16,9 +16,9 @@ public class ChatController {
     private final ChatService chatService;
 
     // test : json으로 prompt 요청 -> 응답
-    @PostMapping("/test/{id}")
-    public ResponseEntity<ChatDto.Response> testGroq(@PathVariable Long id) {
-        ChatDto.Response response = chatService.processChatAnswer(id);
+    @PostMapping("/test/{userId}")
+    public ResponseEntity<ChatDto.Response> testGroq(@PathVariable Long userId) {
+        ChatDto.Response response = chatService.processChatAnswer(userId);
         return ResponseEntity.ok(response);
     }
 }
