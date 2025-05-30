@@ -18,23 +18,23 @@ public class AdminScoreService {
     private final AdminRepository adminRepository;
 
     //모든 회원의 점수 조회
-    public List<AdminScoreDto> getAllUserScores() {
+    public List<AdminScoreDto.Response> getAllUserScores() {
         return adminRepository.findAll().stream()
-                .map(AdminScoreDto::fromEntity)
+                .map(AdminScoreDto.Response::fromEntity)
                 .toList();
     }
 
     //해당 id 회원의 점수 조회
-    public AdminScoreDto getUserScoreById(Long id) {
+    public AdminScoreDto.Response getUserScoreById(Long id) {
         return adminRepository.findById(id)
-                .map(AdminScoreDto::fromEntity)
+                .map(AdminScoreDto.Response::fromEntity)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
     }
 
     //점수 내림차순 조회
-    public List<AdminScoreDto> getScoresSortedDesc() {
+    public List<AdminScoreDto.Response> getScoresSortedDesc() {
         return adminRepository.findAllByOrderByScoreDesc().stream()
-                .map(AdminScoreDto::fromEntity)
+                .map(AdminScoreDto.Response::fromEntity)
                 .toList();
     }
 }

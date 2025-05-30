@@ -21,41 +21,46 @@ class AdminServiceTest {
     private MockMvc mockMvc;
 
     @Test
-    void getAllUsers_returnsUserList() throws Exception {
+    void getAllUsers_rendersUserListView() throws Exception {
         mockMvc.perform(get("/admin/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(6)))
+                .andExpect(view().name("admin/users/list"))
+                .andExpect(model().attributeExists("users"))
                 .andDo(print());
     }
 
     @Test
-    void getUserByEmail_returnsSingleUser() throws Exception {
+    void getUserByEmail_rendersUserDetailView() throws Exception {
         mockMvc.perform(get("/admin/users/emp1@boanni.com"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("사원1")))
+                .andExpect(view().name("admin/users/detail"))
+                .andExpect(model().attributeExists("user"))
                 .andDo(print());
     }
 
     @Test
-    void getUsersByType_returnsFilteredUsers() throws Exception {
-        mockMvc.perform(get("/admin/users/type/trainee"))
+    void getUsersByType_rendersFilteredListView() throws Exception {
+        mockMvc.perform(get("/admin/users/type/employee"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(3)))
-                .andExpect(jsonPath("$[0].employee_type", is("TRAINEE")))
+                .andExpect(view().name("admin/users/list_by_type"))
+                .andExpect(model().attributeExists("users"))
+                .andExpect(model().attributeExists("type"))
                 .andDo(print());
     }
 
     @Test
-    void deleteUserById_returnsNoContent() throws Exception {
-        mockMvc.perform(delete("/admin/users/1"))
-                .andExpect(status().isNoContent())
+    void deleteUserById_redirectsToUserList() throws Exception {
+        mockMvc.perform(post("/admin/users/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/users"))
                 .andDo(print());
     }
 
     @Test
-    void promoteUserToAdmin_returnsOk() throws Exception {
-        mockMvc.perform(patch("/admin/users/2/role"))
-                .andExpect(status().isOk())
+    void promoteUserToAdmin_redirectsToUserList() throws Exception {
+        mockMvc.perform(post("/admin/users/2/role"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/users"))
                 .andDo(print());
     }
 }
