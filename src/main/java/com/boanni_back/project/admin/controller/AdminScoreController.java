@@ -19,18 +19,18 @@ public class AdminScoreController {
         this.adminScoreService = adminScoreService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<AdminScoreDto>> getAllScores() {
-        return ResponseEntity.ok(adminScoreService.getAllUserScores());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<AdminScoreDto> getUserScore(@PathVariable Long id) {
-        return ResponseEntity.ok(adminScoreService.getUserScoreById(id));
-    }
-
-    @GetMapping("/sorted")
-    public ResponseEntity<List<AdminScoreDto>> getScoresSortedDesc() {
-        return ResponseEntity.ok(adminScoreService.getScoresSortedDesc());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<AdminScoreDto>> getAllScores() {
+//        return ResponseEntity.ok(adminScoreService.getAllUserScores());
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<AdminScoreDto> getUserScore(@PathVariable Long id) {
+//        return ResponseEntity.ok(adminScoreService.getUserScoreById(id));
+//    }
+//
+//    @GetMapping("/sorted")
+//    public ResponseEntity<List<AdminScoreDto>> getScoresSortedDesc() {
+//        return ResponseEntity.ok(adminScoreService.getScoresSortedDesc());
+//    }
 }

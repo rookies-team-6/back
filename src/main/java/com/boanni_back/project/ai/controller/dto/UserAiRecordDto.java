@@ -25,7 +25,7 @@ public class UserAiRecordDto {
         private String userAnswer;
         private String gptAnswer;
         private boolean isBookMarked;
-        private Long questionId;
+        private QuestionDto.Response question;
         private Long userId;
 
         public static Response fromEntity(UserAiRecord record) {
@@ -34,7 +34,7 @@ public class UserAiRecordDto {
                     .userAnswer(record.getUserAnswer())
                     .gptAnswer(record.getAiAnswer())
                     .isBookMarked(record.isBookMarked())
-                    .questionId(record.getQuestion().getId())
+                    .question(QuestionDto.Response.fromEntity(record.getQuestion()))
                     .userId(record.getUsers().getId())
                     .build();
         }

@@ -2,6 +2,8 @@ package com.boanni_back.project.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -10,6 +12,7 @@ import lombok.*;
 @Builder
 @Table(name = "users")
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,20 +23,32 @@ public class Users {
     @Column(nullable = false)
     private String password;
 
-
-    @Column(nullable = false)
-    private String username;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "employee_type", nullable = false)
+    @Column(nullable = false)
     private EmployeeType employeeType;
 
     @Column(nullable = false)
     @Builder.Default
-    private int score=0;
+    private int score = 0;
 
     @Builder.Default
     @Column(nullable = false)
-    private Long currentQuestionIndex=-1L;
+    private Long currentQuestionIndex = 1L;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createAt;
+
+    @Column(nullable = false)
+    private LocalDate questionSolveDeadline;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employeeNum", nullable = false)
+    private EmployeeNumber employeeNumber;
+
+    @PrePersist
+    public void prePersist() {
+        this.createAt = LocalDateTime.now();
+        this.questionSolveDeadline = LocalDate.now().plusYears(1);
+    }
 }
 
