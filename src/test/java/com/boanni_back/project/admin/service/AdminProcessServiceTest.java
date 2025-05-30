@@ -15,7 +15,6 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Sql(scripts = "/test-data.sql")
 public class AdminProcessServiceTest {
 
     @Autowired
