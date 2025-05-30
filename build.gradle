@@ -20,13 +20,21 @@ configurations {
 }
 
 repositories {
+	// 기본 중앙 저장소
 	mavenCentral()
+	//저장소 정보 추가
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven {
+		name = 'Central Portal Snapshots'
+		url = 'https://central.sonatype.com/repository/maven-snapshots/'
+	}
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
@@ -40,9 +48,12 @@ dependencies {
 	// 자동 재시작
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
+
+	// Groq(OpenAI compatible) Spring AI 의존성
+	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6'
 }
 
 tasks.named('test') {
