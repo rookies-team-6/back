@@ -17,23 +17,21 @@ import java.util.List;
 public class AdminScoreController {
     private final AdminScoreService adminScoreService;
 
-
-    public AdminScoreController(AdminScoreService adminScoreService) {
-        this.adminScoreService = adminScoreService;
+    //모든 회원의 점수(score) 조회
+    @GetMapping
+    public ResponseEntity<List<AdminScoreDto>> getAllScores() {
+        return ResponseEntity.ok(adminScoreService.getAllUserScores());
     }
-//    모든 회원의 점수(score) 조회
-//    @GetMapping
-//    public ResponseEntity<List<AdminScoreDto>> getAllScores() {
-//        return ResponseEntity.ok(adminScoreService.getAllUserScores());
-//    }
-//    해당 id 회원의 점수(score) 조회
-//    @GetMapping("/{id}")
-//    public ResponseEntity<AdminScoreDto> getUserScore(@PathVariable Long id) {
-//        return ResponseEntity.ok(adminScoreService.getUserScoreById(id));
-//    }
-//    모든 회원의 점수(score) 내림차순 조회
-//    @GetMapping("/sorted")
-//    public ResponseEntity<List<AdminScoreDto>> getScoresSortedDesc() {
-//        return ResponseEntity.ok(adminScoreService.getScoresSortedDesc());
-//    }
+
+    //해당 id 회원의 점수(score) 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<AdminScoreDto> getUserScore(@PathVariable Long id) {
+        return ResponseEntity.ok(adminScoreService.getUserScoreById(id));
+    }
+
+    //모든 회원의 점수(score) 내림차순 조회
+    @GetMapping("/sorted")
+    public ResponseEntity<List<AdminScoreDto>> getScoresSortedDesc() {
+        return ResponseEntity.ok(adminScoreService.getScoresSortedDesc());
+    }
 }

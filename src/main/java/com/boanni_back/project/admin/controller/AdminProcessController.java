@@ -18,7 +18,8 @@ public class AdminProcessController {
 
     //해당 id 회원의 학습 진행률 매핑
     @GetMapping("/progress/{id}")
-    public ResponseEntity<AdminProcessDto> getProgress(@PathVariable Long id) {
-        return ResponseEntity.ok(adminProcessService.getUserProgress(id));
+    public ResponseEntity<AdminProcessDto> getUserProgress(@PathVariable Long id) {
+        AdminProcessDto adminProgressDto = adminProcessService.getUserProgress(id);
+        return ResponseEntity.ok(adminProgressDto);
     }
 }
