@@ -11,6 +11,7 @@ import lombok.*;
 @Getter @Setter
 @Table(name = "user_ai_record")
 public class UserAiRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

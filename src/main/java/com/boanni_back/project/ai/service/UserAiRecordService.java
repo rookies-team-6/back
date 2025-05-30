@@ -60,5 +60,26 @@ public class UserAiRecordService {
                 .map(UserAiRecordDto.Response::fromEntity)
                 .toList();
     }
+
+    // 북마크 체크
+    public UserAiRecordDto.Response saveBookedmarked(UserAiRecordDto.BookmarkedRequest request) {
+        // 유저와 문제 조회
+        Question question = questionRepository.findById(request.getQuestionId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, request.getQuestionId()));
+
+        Users user = adminRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
+
+        // 기록 조회
+        UserAiRecord record = userAiRecordRepository.findByUsersIdAndQuestionId(user.getId(), question.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RECORD_NOT_FOUND, user.getId(), question.getId()));
+
+        // isBookMarked 값 설정
+        record.setBookMarked(!record.isBookMarked());
+
+        userAiRecordRepository.save(record);
+        return UserAiRecordDto.Response.fromEntity(record);
+
+    }
 }
 

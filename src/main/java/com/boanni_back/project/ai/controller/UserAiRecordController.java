@@ -28,4 +28,11 @@ public class UserAiRecordController {
         UserAiRecordDto.Response response = userAiRecordService.saveUserAnswer(request);
         return ResponseEntity.ok(response);
     }
+
+    // 북마크 체크
+    @PostMapping("/bookmarked")
+    public ResponseEntity<UserAiRecordDto.Response> saveBookmarked(@RequestBody UserAiRecordDto.BookmarkedRequest request){
+        UserAiRecordDto.Response response = userAiRecordService.saveBookedmarked(request);
+        return ResponseEntity.ok(response);
+    }
 }
