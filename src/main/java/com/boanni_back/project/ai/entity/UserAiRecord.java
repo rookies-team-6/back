@@ -8,10 +8,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @Table(name = "user_ai_record")
-
 public class UserAiRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +21,7 @@ public class UserAiRecord {
     @Column(columnDefinition = "TEXT")
     private String aiAnswer;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isBookMarked = false;
 

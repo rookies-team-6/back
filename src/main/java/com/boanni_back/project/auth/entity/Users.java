@@ -2,18 +2,19 @@ package com.boanni_back.project.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import java.time.LocalDate;
+
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Table(name = "users")
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,13 +38,19 @@ public class Users {
     private Long currentQuestionIndex = 1L;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
 
     @Column(nullable = false)
     private LocalDate questionSolveDeadline;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employeeNum", nullable = false)
-    private EmployeeNumber employeeNumber;    //createdAt에 1년 더한 날짜를 questionSolveDeadline에 저장  @PrePersist    public void prePersist() {        this.createdAt = LocalDateTime.now();        this.questionSolveDeadline = LocalDate.now().plusYears(1);    }
+    private EmployeeNumber employeeNumber;
+
+    @PrePersist
+    public void prePersist() {
+        this.createAt = LocalDateTime.now();
+        this.questionSolveDeadline = LocalDate.now().plusYears(1);
+    }
 }
 
