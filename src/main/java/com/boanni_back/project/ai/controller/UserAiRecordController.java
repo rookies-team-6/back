@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user-ai-record")
 @RequiredArgsConstructor
+@RequestMapping("/api/user-ai-record")
 public class UserAiRecordController {
 
     private final UserAiRecordService userAiRecordService;
