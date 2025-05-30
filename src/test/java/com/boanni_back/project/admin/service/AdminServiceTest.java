@@ -1,4 +1,4 @@
-package com.boanni_back.project;
+package com.boanni_back.project.admin.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Sql(scripts = "/test-data.sql")
-class AdminMvcControllerTest {
+class AdminServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
