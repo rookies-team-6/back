@@ -3,13 +3,13 @@ package com.boanni_back.project.admin.controller;
 import com.boanni_back.project.admin.controller.dto.AdminProcessDto;
 import com.boanni_back.project.admin.service.AdminProcessService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users")
 public class AdminProcessController {
@@ -18,7 +18,9 @@ public class AdminProcessController {
 
     //해당 id 회원의 학습 진행률 매핑
     @GetMapping("/progress/{id}")
-    public ResponseEntity<AdminProcessDto> getProgress(@PathVariable Long id) {
-        return ResponseEntity.ok(adminProcessService.getUserProgress(id));
+    public String getUserProgress(@PathVariable Long id, Model model) {
+        AdminProcessDto.Response response = adminProcessService.getUserProgress(id);
+        model.addAttribute("progress", response);
+        return "admin/progress";
     }
 }
