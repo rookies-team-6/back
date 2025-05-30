@@ -5,17 +5,22 @@ import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
 import com.boanni_back.project.ai.service.UserAiRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/user-ai-record")
 @RequiredArgsConstructor
+@RequestMapping("/api/user-ai-record")
 public class UserAiRecordController {
 
     private final UserAiRecordService userAiRecordService;
+
+    // 이용자 답변 조회
+    @GetMapping
+    public ResponseEntity<List<UserAiRecordDto.Response>> getUserAnswer(){
+        return ResponseEntity.ok(userAiRecordService.getUserAnswer());
+    }
 
     // 이용자 답변 등록
     @PostMapping

@@ -22,8 +22,8 @@ public class UsersService {
         employeeTypeCheck(request);
 //        SecurityConfig에서 BCryptPasswordEncoder bean 등록 필요하고
 //        security config 설정한 후에 비밀번호 인코딩 진행
-        Users user=Users.builder().username(request.getUsername()).email(request.getEmail()).password(request.getPassword()).employeeType(request.getEmployeeType()).build();
-        usersRepository.save(user);
+//        Users user=Users.builder().username(request.getUsername()).email(request.getEmail()).password(request.getPassword()).employeeType(request.getEmployeeType()).build();
+//        usersRepository.save(user);
 
     }
 
@@ -36,9 +36,9 @@ public class UsersService {
     }
 
     private void userDuplicateCheck(SignUpRequestDTO request) {
-        if(usersRepository.findByUsername(request.getUsername()).isPresent()){
-            throw new BusinessException(ErrorCode.AUTH_USER_DUPLICATE_ERROR);
-        }
+//        if(usersRepository.findByUsername(request.getUsername()).isPresent()){
+//            throw new BusinessException(ErrorCode.AUTH_USER_DUPLICATE_ERROR);
+//        }
     }
 
     private void emailDuplicateCheck(SignUpRequestDTO request) {
