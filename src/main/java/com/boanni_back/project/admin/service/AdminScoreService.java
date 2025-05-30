@@ -5,35 +5,36 @@ import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminScoreService {
 
     private final AdminRepository adminRepository;
 
-    public AdminScoreService(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
+    //모든 회원의 점수 조회
+    public List<AdminScoreDto> getAllUserScores() {
+        return adminRepository.findAll().stream()
+                .map(AdminScoreDto::fromEntity)
+                .toList();
     }
 
-//    public List<AdminScoreDto> getAllUserScores() {
-//        return adminRepository.findAll().stream()
-//                .map(u -> new AdminScoreDto(u.getId(), u.getUsername(), u.getScore()))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public AdminScoreDto getUserScoreById(Long id) {
-//        Users users = adminRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
-//        return new AdminScoreDto(users.getId(), users.getUsername(), users.getScore());
-//    }
-//
-//    public List<AdminScoreDto> getScoresSortedDesc() {
-//        return adminRepository.findAllByOrderByScoreDesc().stream()
-//                .map(u -> new AdminScoreDto(u.getId(), u.getUsername(), u.getScore()))
-//                .collect(Collectors.toList());
-//    }
+    //해당 id 회원의 점수 조회
+    public AdminScoreDto getUserScoreById(Long id) {
+        return adminRepository.findById(id)
+                .map(AdminScoreDto::fromEntity)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
+    }
+
+    //점수 내림차순 조회
+    public List<AdminScoreDto> getScoresSortedDesc() {
+        return adminRepository.findAllByOrderByScoreDesc().stream()
+                .map(AdminScoreDto::fromEntity)
+                .toList();
+    }
 }
