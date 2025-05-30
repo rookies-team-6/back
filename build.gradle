@@ -35,6 +35,12 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	// JJWT API
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	// 런타임 시 실제 구현체
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	// JSON 파싱 (Jackson 사용 시)
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	// properties 값 자동 바인딩
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	// 자동 재시작

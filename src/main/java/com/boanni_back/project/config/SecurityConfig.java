@@ -53,8 +53,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
 //                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
                     .anyRequest().authenticated()
-            )
-            .addFilterBefore(new LoginFilter(authenticationManager(authenticationConfiguration)),UsernamePasswordAuthenticationFilter.class);
+            );
+//        userDetailService implements userDetail interface ->
         return http.build();
     }
 
