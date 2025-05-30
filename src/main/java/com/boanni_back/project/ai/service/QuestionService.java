@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +25,11 @@ public class QuestionService {
         return questionRepository.findAll()
                 .stream()
                 .map(QuestionDto.Response::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // 보안 문제 개별 조회
+<<<<<<< HEAD
 //    @Transactional
 //    public QuestionDto.Response getQuestionByIndex(Long userId) {
 //        Users user = adminRepository.findById(userId)
@@ -45,6 +45,21 @@ public class QuestionService {
 //
 //        return QuestionDto.Response.fromEntity(question);
 //    }
+=======
+    @Transactional
+    public QuestionDto.Response getQuestionByIndex(Long userId) {
+        Users user = adminRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
+        Long index = user.getCurrentQuestionIndex();
+
+        Question question = questionRepository.findById(index)
+                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
+
+        adminRepository.save(user);
+
+        return QuestionDto.Response.fromEntity(question);
+    }
+>>>>>>> 24b595bb43af42420feb4546c63135f413106339
 
     // 보안 문제 생성
     public QuestionDto.Response createQuestion(QuestionDto.Request request) {
