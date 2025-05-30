@@ -38,9 +38,6 @@ public class QuestionService {
         Question question = questionRepository.findById(index)
                 .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
 
-        // 다음 질문 index로 넘어감
-        // 보류
-        //user.setCurrentQuestionIndex(index + 1);
         adminRepository.save(user);
 
         return QuestionDto.Response.fromEntity(question);

@@ -18,12 +18,14 @@ public enum ErrorCode {
     AUTH_EMAIL_DUPLICATE_ERROR("A005","중복된 이메일입니다.",HttpStatus.BAD_REQUEST),
 
     // Question 관련 에러
-    INDEX_NOT_FOUND("Q002", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
+    INDEX_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
+    NO_MORE_QUESTION("Q002", "더 이상 문제가 없습니다. 마지막 문제 INDEX : %s", HttpStatus.NOT_FOUND),
     // record answer 관련 에러
     ANSWER_NOT_FOUND("A001", "해당하는 답변을 찾을 수 없습니다. User id : %s & Question id : %s", HttpStatus.NOT_FOUND),
     // Chat ai 응답 처리
     API_SERVER_ERROR("AI001", "AI 응답 처리 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     API_RESPONSE_TYPE_ERROR("AI002", "응답에 JSON 형식이 포함되어 있지 않습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+
 
     private final String code;
     private final String message;
