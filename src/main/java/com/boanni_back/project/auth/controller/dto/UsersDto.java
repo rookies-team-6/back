@@ -30,6 +30,7 @@ public class UsersDto {
         private Long id;
         private String email;
         private String employeeType;
+        private String employeeNumber;
         private int score;
         private Long currentQuestionIndex;
         private String username;
@@ -40,6 +41,7 @@ public class UsersDto {
                     .id(user.getId())
                     .email(user.getEmail())
                     .employeeType(user.getEmployeeType().name())
+                    .employeeNumber(user.getEmployeeNumber().getEmployeeNum())
                     .score(user.getScore())
                     .currentQuestionIndex(user.getCurrentQuestionIndex())
                     .username(user.getEmployeeNumber().getUsername())
@@ -52,6 +54,7 @@ public class UsersDto {
                     .id(json.get("id").asLong())
                     .email(json.get("email").asText())
                     .employeeType(json.get("employeeType").asText())
+                    .employeeNumber(json.get("employeeNum").asText())
                     .score(json.get("score").asInt())
                     .currentQuestionIndex(json.get("currentQuestionIndex").asLong())
                     .username(json.get("username").asText())
@@ -59,4 +62,3 @@ public class UsersDto {
         }
     }
 }
-
