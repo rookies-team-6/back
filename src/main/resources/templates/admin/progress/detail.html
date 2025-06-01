@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>사용자 학습 진행률</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<h1>사용자 학습 진행률</h1>
+
+<div>
+  <p><strong>이름:</strong> <span th:text="${progress.username}"></span></p>
+  <p><strong>현재 문제 번호:</strong> <span th:text="${progress.currentQuestionIndex}"></span></p>
+  <p><strong>총 학습 진행률:</strong> <span th:text="${progress.progress}"></span></p>
+</div>
+
+<a th:href="@{/admin/users}" class="btn">Back to User List</a>
+</body>
+</html>

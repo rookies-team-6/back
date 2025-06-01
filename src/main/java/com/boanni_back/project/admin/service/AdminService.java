@@ -28,7 +28,7 @@ public class AdminService {
     public UsersDto.Response getUserByEmail(String email) {
         return adminRepository.findByEmail(email)
                 .map(UsersDto.Response::fromEntity)
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, email));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND_BY_EMAIL, email));
     }
 
     //employee_type으로 회원 조회
@@ -39,19 +39,17 @@ public class AdminService {
     }
 
     //해당 id 회원 삭제
-    public void deleteUserById(Long id) {
-        if (!adminRepository.existsById(id)) {
-            throw new BusinessException(ErrorCode.USER_NOT_FOUND, id);
-        }
-        adminRepository.deleteById(id);
-    }
-
-    public void promoteUserToAdmin(Long id) {
-        Users users = adminRepository.findById(id)
+    public Users deleteUserById(Long id) {
+        Users user = adminRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
-
-        users.setEmployeeType(EmployeeType.ADMIN);
-        adminRepository.save(users);
+        adminRepository.delete(user);
+        return user;
     }
-    
+
+    public Users promoteUserToAdmin(Long id) {
+        Users user = adminRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
+        user.setEmployeeType(EmployeeType.ADMIN);
+        return adminRepository.save(user);
+    }
 }

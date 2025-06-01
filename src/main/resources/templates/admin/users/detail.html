@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>회원 상세</title>
+</head>
+<body>
+<h1>회원 상세</h1>
+<ul>
+  <li>ID: <span th:text="${user.id}"></span></li>
+  <li>Email: <span th:text="${user.email}"></span></li>
+  <li>이름: <span th:text="${user.username}"></span></li>
+  <li>사번: <span th:text="${user.employeeNumber}"></span></li>
+  <li>직무: <span th:text="${user.employeeType}"></span></li>
+  <li>점수: <span th:text="${user.score}"></span></li>
+  <li>현재 문제 번호: <span th:text="${user.currentQuestionIndex}"></span></li>
+</ul>
+<a href="/admin/users">목록으로</a>
+</body>
+</html>
