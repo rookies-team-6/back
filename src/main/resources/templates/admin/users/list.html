@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>회원 목록</title>
+  <title>관리자 페이지</title>
 </head>
 <body>
 <h1>회원 목록</h1>
+
+<form id="emailSearchForm">
+  <input type="text" id="emailInput" placeholder="이메일로 검색"/>
+  <button type="submit">검색</button>
+</form>
+
+<form id="typeSearchForm">
+  <select id="typeSelect">
+    <option value="TRAINEE">TRAINEE</option>
+    <option value="EMPLOYEE">EMPLOYEE</option>
+    <option value="ADMIN">ADMIN</option>
+  </select>
+  <button type="submit">유형별 조회</button>
+</form>
+
+<!-- 이메일 조회 event -->
+<script>
+  document.getElementById("emailSearchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = encodeURIComponent(document.getElementById("emailInput").value);
+    window.location.href = `/admin/users/email/${email}`;
+  });
+</script>
+
+<!-- 회원 유형 조회 event -->
+<script>
+  document.getElementById("typeSearchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const type = document.getElementById("typeSelect").value;
+    window.location.href = `/admin/users/type/${type}`;
+  });
+</script>
+
 <table border="1">
   <thead>
   <tr>
@@ -13,8 +46,12 @@
     <th>이름</th>
     <th>사번</th>
     <th>회원 유형</th>
-    <th>점수</th>
     <th>현재 문제</th>
+    <th>점수</th>
+    <th>진행률</th>
+    <th>가입일</th>
+    <th>학습 마감일</th>
+    <th>마감일 수정</th>
     <th>회원 탈퇴</th>
     <th>권한 변경</th>
   </tr>
@@ -26,11 +63,26 @@
     <td th:text="${user.username}"></td>
     <td th:text="${user.employeeNumber}"></td>
     <td th:text="${user.employeeType}"></td>
-    <td th:text="${user.score}"></td>
     <td th:text="${user.currentQuestionIndex}"></td>
+    <td th:text="${user.score}"></td>
+    <td>
+      <div style="width: 100px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
+        <div th:style="'width:' + ${user.progressPercent} + '%; height: 16px; ' +
+                   (${user.progressPercent} >= 80 ? 'background-color:#28a745;' :
+                    (${user.progressPercent} >= 50 ? 'background-color:#ffc107;' :
+                     'background-color:#dc3545;'))">
+        </div>
+      </div>
+      <span th:text="${user.progress}"></span>
+    </td>
+    <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${user.questionSolveDeadline}"></td>
+    <td>
+      <a th:href="@{/admin/users/deadline/{id}/edit(id=${user.id})}">마감일 수정</a>
+    </td>
     <td>
       <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post">
-        <button type="submit">강제 탈퇴시키기</button>
+        <button type="submit">강제 탈퇴</button>
       </form>
     </td>
     <td>

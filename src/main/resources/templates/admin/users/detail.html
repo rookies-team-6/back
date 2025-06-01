@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>회원 상세</title>
+  <title>회원 상세 정보 페이지</title>
 </head>
 <body>
-<h1>회원 상세</h1>
+<h1>회원 상세 정보</h1>
 <ul>
   <li>ID: <span th:text="${user.id}"></span></li>
-  <li>Email: <span th:text="${user.email}"></span></li>
+  <li>이메일: <span th:text="${user.email}"></span></li>
   <li>이름: <span th:text="${user.username}"></span></li>
   <li>사번: <span th:text="${user.employeeNumber}"></span></li>
-  <li>직무: <span th:text="${user.employeeType}"></span></li>
-  <li>점수: <span th:text="${user.score}"></span></li>
+  <li>회원 유형: <span th:text="${user.employeeType}"></span></li>
   <li>현재 문제 번호: <span th:text="${user.currentQuestionIndex}"></span></li>
+  <li>점수: <span th:text="${user.score}"></span></li>
+  <li>가입일: <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></span></li>
+  <li>학습 마감일: <span th:text="${user.questionSolveDeadline}"></span></li>
 </ul>
 <a href="/admin/users">목록으로</a>
 </body>
