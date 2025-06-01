@@ -3,6 +3,7 @@ package com.boanni_back.project.ai.controller;
 import com.boanni_back.project.ai.controller.dto.QuestionDto;
 import com.boanni_back.project.ai.service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/questions")
+
 public class QuestionController {
 
     private final QuestionService questionService;

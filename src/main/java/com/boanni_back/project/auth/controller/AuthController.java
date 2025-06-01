@@ -1,6 +1,7 @@
 package com.boanni_back.project.auth.controller;
 
 import com.boanni_back.project.auth.controller.dto.*;
+import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.UsersService;
 import com.boanni_back.project.jwt.JwtTokenProvider;
@@ -34,9 +35,10 @@ public class AuthController  {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignUpRequestDTO request){
-        usersService.saveUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 완료");
+    public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO request){
+        EmployeeType employeeType=employeeAuthService.getEmployeeType(request.getEmployeeNum());
+        SignUpResponseDTO response=usersService.saveUser(request,employeeType);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/me")
@@ -45,7 +47,7 @@ public class AuthController  {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody SignInRequestDTO request){
+    public ResponseEntity<SignInResponseDTO> signIn(@RequestBody SignInRequestDTO request){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -54,8 +56,10 @@ public class AuthController  {
         // 2) 인증 성공 시 JWT 생성
         String token = jwtTokenProvider.generateToken(authentication);
 
+        SignInResponseDTO response = new SignInResponseDTO(token, "Bearer");
+
         // 3) 토큰 응답
-        return ResponseEntity.ok(new SignInResponseDTO(token, "Bearer"));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
 }

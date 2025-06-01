@@ -1,8 +1,10 @@
 package com.boanni_back.project.ai.service;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class PromptService {
     // 프롬프트 구성
     public String buildPrompt(String question, String userAnswer) {

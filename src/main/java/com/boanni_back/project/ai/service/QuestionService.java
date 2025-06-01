@@ -9,12 +9,14 @@ import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -29,23 +31,7 @@ public class QuestionService {
     }
 
     // 보안 문제 개별 조회
-<<<<<<< HEAD
-//    @Transactional
-//    public QuestionDto.Response getQuestionByIndex(Long userId) {
-//        Users user = adminRepository.findById(userId)
-//                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
-//        Long index = user.getCurrent_question_index();
-//
-//        Question question = questionRepository.findById(index)
-//                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
-//
-//        // 다음 질문 index로 넘어감
-//        user.setCurrent_question_index(index + 1);
-//        adminRepository.save(user);
-//
-//        return QuestionDto.Response.fromEntity(question);
-//    }
-=======
+
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
         Users user = adminRepository.findById(userId)
@@ -59,7 +45,6 @@ public class QuestionService {
 
         return QuestionDto.Response.fromEntity(question);
     }
->>>>>>> 24b595bb43af42420feb4546c63135f413106339
 
     // 보안 문제 생성
     public QuestionDto.Response createQuestion(QuestionDto.Request request) {

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SuccessResponse<T> {
     private boolean success;
+    private int code;  // <-- HTTP 상태코드 추가
     private T data;
     private String message;
     private LocalDateTime timestamp;

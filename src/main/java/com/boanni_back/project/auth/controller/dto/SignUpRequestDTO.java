@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class SignUpRequestDTO {
+    @NotBlank
     private String employeeNum;
 
     @NotBlank(message="이메일을 입력해주세요.")
