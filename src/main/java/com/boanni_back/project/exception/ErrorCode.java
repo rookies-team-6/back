@@ -20,6 +20,8 @@ public enum ErrorCode {
     // Question 관련 에러
     INDEX_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
     NO_MORE_QUESTION("Q002", "더 이상 문제가 없습니다. 마지막 문제 INDEX : %s", HttpStatus.NOT_FOUND),
+    NO_QUESTION("Q003", "문제 내용이 비어있습니다. 문제를 입력해주세요.", HttpStatus.NOT_FOUND),
+
     // record answer 관련 에러
     ANSWER_NOT_FOUND("A001", "해당하는 답변을 찾을 수 없습니다. User ID : %s & Question ID : %s", HttpStatus.NOT_FOUND),
     RECORD_NOT_FOUND("A002", "해당하는 기록을 찾을 수 없습니다. User ID : %s & Question ID : %s", HttpStatus.NOT_FOUND),

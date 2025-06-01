@@ -2,7 +2,6 @@ package com.boanni_back.project.ai.controller;
 
 
 import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
-import com.boanni_back.project.ai.entity.UserAiRecord;
 import com.boanni_back.project.ai.service.UserAiRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
