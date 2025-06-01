@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class VerifyResponseDTO {
+public class SignUpResponseDTO {
     private String employeeNum;
+    private String email;
 }

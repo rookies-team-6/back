@@ -18,8 +18,7 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")         // application.properties에 설정
     private String secretKey;
 
-    @Value("${jwt.expiration-ms}")   // 예: 3600000 (1시간)
-    private long validityInMilliseconds;
+    private final long expirationTime = 1000L * 60 * 60;
 
     private Key key;
 
@@ -33,7 +32,7 @@ public class JwtTokenProvider {
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + validityInMilliseconds);
+        Date expiry = new Date(now.getTime() + expirationTime);
 
         return Jwts.builder()
                 .setSubject(username)
