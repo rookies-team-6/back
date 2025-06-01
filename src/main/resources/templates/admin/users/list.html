@@ -12,10 +12,10 @@
     <th>이메일</th>
     <th>이름</th>
     <th>사번</th>
-    <th>직무</th>
+    <th>회원 유형</th>
     <th>점수</th>
     <th>현재 문제</th>
-    <th>삭제</th>
+    <th>회원 탈퇴</th>
     <th>권한 변경</th>
   </tr>
   </thead>
@@ -30,7 +30,7 @@
     <td th:text="${user.currentQuestionIndex}"></td>
     <td>
       <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post">
-        <button type="submit">삭제</button>
+        <button type="submit">강제 탈퇴시키기</button>
       </form>
     </td>
     <td>
