@@ -81,5 +81,32 @@ public class UserAiRecordService {
         return UserAiRecordDto.Response.fromEntity(record);
 
     }
+
+    // 자신이 푼 문제 조회
+    public List<UserAiRecordDto.Response> getSolvedRecord(Long userId) {
+        // users에서 currentIndex만 필요함
+        Long currentIndex = adminRepository.findCurrentQuestionIndexById(userId);
+        if(currentIndex<=1){
+            throw new BusinessException(ErrorCode.SOLVED_RECORD_NOT_FOUND, userId);
+        }
+
+        List<UserAiRecord> records = userAiRecordRepository.findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(userId, currentIndex)
+                .orElseThrow(() -> new BusinessException(ErrorCode.SOLVED_RECORD_NOT_FOUND, userId));
+
+        return records.stream()
+                .map(UserAiRecordDto.Response::fromEntity)
+                .toList();
+    }
+
+    // 푼 문제 중 북마크한 문제 조회
+    public List<UserAiRecordDto.Response> getBookMarkedRecord(Long userId) {
+        List<UserAiRecord> records = userAiRecordRepository.findByUsersIdAndIsBookMarkedTrue(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARKED_RECORD_NOT_FOUND, userId));
+
+        return records.stream()
+                .map(UserAiRecordDto.Response::fromEntity)
+                .toList();
+
+    }
 }
 
