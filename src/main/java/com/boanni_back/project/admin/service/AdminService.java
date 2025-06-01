@@ -1,6 +1,7 @@
 package com.boanni_back.project.admin.service;
 
 import com.boanni_back.project.admin.repository.AdminRepository;
+import com.boanni_back.project.ai.repository.QuestionRepository;
 import com.boanni_back.project.auth.controller.dto.UsersDto;
 import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
@@ -10,19 +11,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
     private final AdminRepository adminRepository;
+    private final QuestionRepository questionRepository;
 
     //모든 회원 조회
     public List<UsersDto.Response> getAllUsers() {
+        long totalQuestions = questionRepository.count();
         return adminRepository.findAll().stream()
-                .map(UsersDto.Response::fromEntity)
-                .toList();
+                .map(user -> UsersDto.Response.fromEntityWithProgress(user, totalQuestions))
+                .collect(Collectors.toList());
     }
+
 
     //해당 email 회원 조회
     public UsersDto.Response getUserByEmail(String email) {
