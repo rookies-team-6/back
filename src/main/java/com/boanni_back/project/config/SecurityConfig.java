@@ -1,6 +1,5 @@
 package com.boanni_back.project.config;
 
-import com.boanni_back.project.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -48,13 +46,11 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
-                    .requestMatchers("/auth/login", "/auth/signup", "/h2-console/**").permitAll()
-//                        ADMIN 권한이 있어야 이용 가능하다.
+                    .requestMatchers("/auth/verify**","/auth/signin", "/auth/signup", "/h2-console/**").permitAll()
+////                        ADMIN 권한이 있어야 이용 가능하다.
                     .requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
-//                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
-                    .anyRequest().authenticated()
+////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
             );
-//        userDetailService implements userDetail interface ->
         return http.build();
     }
 

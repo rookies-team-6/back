@@ -4,6 +4,7 @@ package com.boanni_back.project.ai.controller;
 import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
 import com.boanni_back.project.ai.service.UserAiRecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user-ai-record")
+
 public class UserAiRecordController {
 
     private final UserAiRecordService userAiRecordService;

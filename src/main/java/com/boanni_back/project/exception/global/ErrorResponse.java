@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ErrorResponse {
     private boolean success;
+    private int code;
     private CustomError error;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss E a", timezone = "Asia/Seoul")

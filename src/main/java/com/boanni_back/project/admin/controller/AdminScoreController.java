@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping("/admin/users/scores")
 public class AdminScoreController {
     private final AdminScoreService adminScoreService;
