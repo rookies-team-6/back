@@ -23,6 +23,8 @@ public enum ErrorCode {
     // record answer 관련 에러
     ANSWER_NOT_FOUND("A001", "해당하는 답변을 찾을 수 없습니다. User ID : %s & Question ID : %s", HttpStatus.NOT_FOUND),
     RECORD_NOT_FOUND("A002", "해당하는 기록을 찾을 수 없습니다. User ID : %s & Question ID : %s", HttpStatus.NOT_FOUND),
+    SOLVED_RECORD_NOT_FOUND("A003", "해당 사용자가 푼 문제 기록을 찾을 수 없습니다. User ID : %s", HttpStatus.NOT_FOUND),
+    BOOKMARKED_RECORD_NOT_FOUND("A004", "해당 사용자가 북마크한 기록을 찾을 수 없습니다. User ID : %s", HttpStatus.NOT_FOUND),
     // Chat ai 응답 처리
     API_SERVER_ERROR("AI001", "AI 응답 처리 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     API_RESPONSE_TYPE_ERROR("AI002", "응답에 JSON 형식이 포함되어 있지 않습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
