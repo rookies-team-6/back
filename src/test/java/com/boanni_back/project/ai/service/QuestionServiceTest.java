@@ -1,6 +1,8 @@
 package com.boanni_back.project.ai.service;
 
 import com.boanni_back.project.admin.repository.AdminRepository;
+import com.boanni_back.project.auth.entity.EmployeeNumber;
+import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
@@ -38,13 +40,20 @@ class QuestionServiceTest {
 
     @BeforeEach
     void setUp() {
-        mockUser = new Users();
-        mockUser.setId(1L);
-        mockUser.setCurrent_question_index(100L);
+        mockUser = Users.builder()
+                .id(1L)
+                .email("test@user.com")
+                .password("encodedPassword123")
+                .employeeType(EmployeeType.EMPLOYEE)
+                .score(0)
+                .currentQuestionIndex(100L)
+                .employeeNumber(mock(EmployeeNumber.class))  // 또는 직접 생성
+                .build();
 
-        mockQuestion = new Question();
-        mockQuestion.setId(100L);
-        mockQuestion.setQuestion("질문1");
+        mockQuestion = Question.builder()
+                        .id(100L)
+                        .question("question1~")
+                        .build();
     }
 
     // 모든 문제 조회 테스트
@@ -52,7 +61,7 @@ class QuestionServiceTest {
     void getAllQuestions_returnsQuestionDtoList() {
         List<Question> questions = Arrays.asList(
                 mockQuestion,
-                new Question(101L, "질문2")
+                Question.builder().id(101L).question("question2 is ~~~").build()
         );
 
         when(questionRepository.findAll()).thenReturn(questions);
@@ -61,7 +70,7 @@ class QuestionServiceTest {
 
         assertThat(responses).hasSize(2);
         assertThat(responses.get(1).getId()).isEqualTo(101L);
-        assertThat(responses.get(1).getQuestion()).isEqualTo("질문2");
+        assertThat(responses.get(1).getQuestion()).isEqualTo("question2 is ~~~");
     }
 
     // index를 통한 조회 테스트
@@ -76,8 +85,8 @@ class QuestionServiceTest {
 
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(100L);
-        assertThat(response.getQuestion()).isEqualTo("질문1");
-        assertThat(mockUser.getCurrent_question_index()).isEqualTo(101L);
+        assertThat(response.getQuestion()).isEqualTo("question1~");
+        assertThat(mockUser.getCurrentQuestionIndex()).isEqualTo(100L);
         verify(adminRepository).save(mockUser);
     }
 
@@ -86,11 +95,10 @@ class QuestionServiceTest {
     void getQuestionByIndex_userNotFound_throwsBusinessException() {
         when(adminRepository.findById(999L)).thenReturn(Optional.empty());
 
-        BusinessException exception = catchThrowableOfType(
-                () -> questionService.getQuestionByIndex(999L),
-                BusinessException.class);
-
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUND);
+        assertThatThrownBy(() -> questionService.getQuestionByIndex(999L))
+                .isInstanceOf(BusinessException.class)
+                .extracting("errorCode")
+                .isEqualTo(ErrorCode.USER_NOT_FOUND);
     }
 
     @Test
@@ -98,28 +106,28 @@ class QuestionServiceTest {
         when(adminRepository.findById(1L)).thenReturn(Optional.of(mockUser));
         when(questionRepository.findById(100L)).thenReturn(Optional.empty());
 
-        BusinessException exception = catchThrowableOfType(
-                () -> questionService.getQuestionByIndex(1L),
-                BusinessException.class);
-
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INDEX_NOT_FOUND);
+        assertThatThrownBy(() -> questionService.getQuestionByIndex(1L))
+                .isInstanceOf(BusinessException.class)
+                .extracting("errorCode")
+                .isEqualTo(ErrorCode.INDEX_NOT_FOUND);
     }
 
     // 생성 테스트
     @Test
     void createQuestion_savesAndReturnsQuestionDto() {
         QuestionDto.Request request = new QuestionDto.Request();
-        request.setQuestion("새 질문");
+        request.setQuestion("new question is ha");
 
-        Question savedQuestion = new Question();
-        savedQuestion.setId(200L);
-        savedQuestion.setQuestion("새 질문");
+        Question savedQuestion = Question.builder()
+                                .id(200L)
+                                .question("new question is ha")
+                                .build();
 
         when(questionRepository.save(any(Question.class))).thenReturn(savedQuestion);
 
         QuestionDto.Response response = questionService.createQuestion(request);
 
         assertThat(response.getId()).isEqualTo(200L);
-        assertThat(response.getQuestion()).isEqualTo("새 질문");
+        assertThat(response.getQuestion()).isEqualTo("new question is ha");
     }
 }

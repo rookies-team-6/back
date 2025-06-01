@@ -46,7 +46,7 @@ class UsersServiceTest {
         SignUpRequestDTO dto = makeValidRequest();
 
         when(usersRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
-        when(usersRepository.findByUsername(dto.getUsername())).thenReturn(Optional.empty());
+        //when(usersRepository.findByUsername(dto.getUsername())).thenReturn(Optional.empty());
 
         assertThatCode(() -> usersService.saveUser(dto))
                 .doesNotThrowAnyException();
@@ -81,8 +81,8 @@ class UsersServiceTest {
         SignUpRequestDTO dto = makeValidRequest();
 
         when(usersRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
-        when(usersRepository.findByUsername(dto.getUsername()))
-                .thenReturn(Optional.of(mock(Users.class)));
+        //when(usersRepository.findByUsername(dto.getUsername()))
+                //.thenReturn(Optional.of(mock(Users.class)));
 
         assertThatThrownBy(() -> usersService.saveUser(dto))
                 .isInstanceOf(BusinessException.class)
@@ -95,7 +95,7 @@ class UsersServiceTest {
         dto.setEmployeeType(EmployeeType.ADMIN); // 잘못된 타입
 
         when(usersRepository.findByEmail(dto.getEmail())).thenReturn(Optional.empty());
-        when(usersRepository.findByUsername(dto.getUsername())).thenReturn(Optional.empty());
+        //when(usersRepository.findByUsername(dto.getUsername())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> usersService.saveUser(dto))
                 .isInstanceOf(BusinessException.class)
