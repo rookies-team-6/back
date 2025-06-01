@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users/deadline")
@@ -47,4 +49,13 @@ public class AdminDeadlineController {
         redirectAttributes.addFlashAttribute("successMessage", "마감일이 성공적으로 수정되었습니다.");
         return "redirect:/admin/users/deadline/" + id;
     }
+
+    //학습 마감일이 지난 회원 목록 조회
+    @GetMapping("/expired")
+    public String getExpiredUsers(Model model) {
+        List<AdminDeadlineDto.Response> expired = adminDeadlineService.getUsersWithExpiredDeadline();
+        model.addAttribute("expiredUsers", expired);
+        return "admin/deadline/expired";
+    }
+
 }

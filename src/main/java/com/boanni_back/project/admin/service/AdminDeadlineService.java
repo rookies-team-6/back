@@ -7,8 +7,11 @@ import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor //생성자 어노테이션 주입
@@ -45,4 +48,15 @@ public class AdminDeadlineService {
         return adminRepository.save(user);
     }
 
+    //관리자가 회원의 학습 마감일을 확인하는 메서드
+    @Transactional(readOnly = true)
+    public List<AdminDeadlineDto.Response> getUsersWithExpiredDeadline() {
+        LocalDate today = LocalDate.now();
+        return adminRepository.findByQuestionSolveDeadlineBefore(today).stream()
+                .map(user -> AdminDeadlineDto.Response.fromEntity(user, user.getQuestionSolveDeadline()))
+                .toList();
+    }
+
+    //추후에 학습 마감일이 지난 회원은 문제를 풀이 못 하도록 하는 메서드 추가
+    //문제 풀이 관련 Service에 추가해야 할 것 같습니다!
 }

@@ -98,4 +98,15 @@ public class AdminDeadlineServiceTest {
                 .andExpect(redirectedUrl("/admin/users/deadline/1"))
                 .andDo(print());
     }
+
+    //마감일 지난 회원 리스트 조회 테스트
+    @WithMockUser(roles = "ADMIN")
+    @Test
+    void getExpiredUsersList() throws Exception {
+        mockMvc.perform(get("/admin/users/deadline/expired"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("expiredUsers"))
+                .andExpect(view().name("admin/deadline/expired"))
+                .andDo(print());
+    }
 }
