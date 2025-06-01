@@ -18,4 +18,7 @@ public interface AdminRepository extends JpaRepository<Users, Long> {
     List<Users> findByEmployeeType(@Param("type") EmployeeType employeeType);
 
     List<Users> findAllByOrderByScoreDesc();
+
+    @Query("SELECT u.currentQuestionIndex FROM Users u WHERE u.id = :id")
+    Long findCurrentQuestionIndexById(@Param("id") Long id);
 }
