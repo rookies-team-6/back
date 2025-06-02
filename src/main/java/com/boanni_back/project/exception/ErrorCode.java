@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     USER_NOT_FOUND("U001", "해당 사용자를 찾을 수 없습니다. ID: %s", HttpStatus.NOT_FOUND),
     EMPLOYEE_AUTH_ERROR("EA001","존재하지 않는 사번이거나 가입 완료된 사번입니다.",HttpStatus.NOT_FOUND),
+    EMPLOYEE_AUTH_NOT_EQUAL_USERNAME_EMPLOYEE_NUMBER("EA002","사용자 이름과 사번이 일치하지 않습니다.",HttpStatus.BAD_REQUEST),
+    EMPLOYEE_AUTH_NOT_FOUNT_TYPE("EA003","사원 타입을 찾을 수 없습니다.",HttpStatus.INTERNAL_SERVER_ERROR),
 
     //    AUTH 관련 에러입니다.
     //    AUTH_EMAIL_FORMAT_ERROR("A001","형식에 맞지 않는 이메일입니다.",HttpStatus.BAD_REQUEST),
@@ -16,6 +18,8 @@ public enum ErrorCode {
     AUTH_USER_DUPLICATE_ERROR("A003","중복된 유저 이름입니다.",HttpStatus.BAD_REQUEST),
     AUTH_NOT_INCLUDED_EMPLOYEE_NUMBER_ERROR("A004","존재하지 않는 사원 타입입니다.",HttpStatus.BAD_REQUEST),
     AUTH_EMAIL_DUPLICATE_ERROR("A005","중복된 이메일입니다.",HttpStatus.BAD_REQUEST),
+    AUTH_REGISTERED_EMPLOYEE_NUMBER_ERROR("A006","이미 가입된 사원 번호입니다.",HttpStatus.BAD_REQUEST),
+    AUTH_EMAIL_NOT_FOUND("A007","가입되지 않은 이메일입니다.",HttpStatus.NOT_FOUND),
 
     // Question 관련 에러
     INDEX_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
