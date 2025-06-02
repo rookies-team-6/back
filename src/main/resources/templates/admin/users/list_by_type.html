@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${type} + ' 목록'"></title>
+</head>
+<body>
+<h1 th:text="${type} + ' 목록'"></h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>이메일</th>
+    <th>이름</th>
+    <th>사번</th>
+    <th>회원 유형</th>
+    <th>현재 문제</th>
+    <th>점수</th>
+    <th>가입일</th>
+    <th>학습 마감일</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.email}"></td>
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.employeeNumber}"></td>
+    <td th:text="${user.employeeType}"></td>
+    <td th:text="${user.currentQuestionIndex}"></td>
+    <td th:text="${user.score}"></td>
+    <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${user.questionSolveDeadline}"></td>
+  </tr>
+  </tbody>
+</table>
+<a href="/admin/users">전체 목록으로</a>
+</body>
+</html>
