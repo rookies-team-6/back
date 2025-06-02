@@ -11,7 +11,6 @@ import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,8 +21,9 @@ public class ChatService {
     private final AdminRepository adminRepository;
     private final QuestionRepository questionRepository;
     private final UserAiRecordRepository userAiRecordRepository;
-    private final PromptService promptService;
-    private final GroqService groqService;
+    //private final GroqPromptService promptService;
+    private final GptPromptService gptPromptService;
+    private final AiConditionService aiConditionService;
 
     // 기본
     public ChatDto.Response processChatAnswer(Long userId) {
@@ -41,10 +41,10 @@ public class ChatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.ANSWER_NOT_FOUND, userId, index));
 
         // Groq API에 전송할 프롬프트 구성
-        String prompt = promptService.buildPrompt(question.getQuestion(), userRecord.getUserAnswer());
+        String prompt = gptPromptService.buildPrompt(question.getQuestion(), userRecord.getUserAnswer());
 
         // Groq API 호출
-         ChatDto.Response response = groqService.getChatResponse(prompt);
+         ChatDto.Response response = aiConditionService.getChatResponse(prompt);
 
         // UserAiRecord와 Users 업데이트
         userRecord.setAiAnswer(response.getModel_answer());
