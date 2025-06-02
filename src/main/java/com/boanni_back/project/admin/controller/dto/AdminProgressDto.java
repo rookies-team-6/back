@@ -6,14 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class AdminScoreDto {
+public class AdminProgressDto {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     public static class Request {
-        private Long userId; //점수 업데이트 요청 시
+        private Long userId;
     }
 
     @Data
@@ -21,15 +21,17 @@ public class AdminScoreDto {
     @AllArgsConstructor
     @Builder
     public static class Response {
-        private Long id;
+        private Long userId;
         private String username;
-        private int score;
+        private Long currentQuestionIndex;
+        private String progress;
 
-        public static Response fromEntity(Users user) {
+        public static Response fromEntity(Users user, String progress) {
             return Response.builder()
-                    .id(user.getId())
+                    .userId(user.getId())
                     .username(user.getEmployeeNumber().getUsername())
-                    .score(user.getScore())
+                    .currentQuestionIndex(user.getCurrentQuestionIndex())
+                    .progress(progress)
                     .build();
         }
     }

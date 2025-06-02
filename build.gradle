@@ -60,6 +60,8 @@ dependencies {
 
 	// Groq(OpenAI compatible) Spring AI 의존성
 	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6'
+	//thymelesf 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

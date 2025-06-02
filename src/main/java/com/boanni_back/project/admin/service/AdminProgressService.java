@@ -1,6 +1,6 @@
 package com.boanni_back.project.admin.service;
 
-import com.boanni_back.project.admin.controller.dto.AdminProcessDto;
+import com.boanni_back.project.admin.controller.dto.AdminProgressDto;
 import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import com.boanni_back.project.auth.entity.Users;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor //생성자 어노테이션 주입
-public class AdminProcessService {
+public class AdminProgressService {
 
     private final AdminRepository adminRepository;
     private final QuestionRepository questionRepository;
 
-    public AdminProcessDto getUserProgress(Long userId) {
+    public AdminProgressDto.Response getUserProgress(Long userId) {
         Users user = adminRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
 
@@ -27,6 +27,6 @@ public class AdminProcessService {
         double progress = (index < 0 || totalQuestions == 0) ? 0.0 : (index / (double) totalQuestions) * 100.0;
         String progressStr = String.format("%.0f%%", progress);
 
-        return new AdminProcessDto(user.getId(), user.getUsername(), progressStr);
+        return AdminProgressDto.Response.fromEntity(user, progressStr);
     }
 }
