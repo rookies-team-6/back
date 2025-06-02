@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>점수 내림차순 정렬</title>
+</head>
+<body>
+<h1>회원 점수 (내림차순)</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>순위</th>
+    <th>ID</th>
+    <th>이름</th>
+    <th>점수</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="score, stat : ${scores}">
+    <td th:text="${stat.index + 1}"></td>
+    <td th:text="${score.id}"></td>
+    <td th:text="${score.username}"></td>
+    <td th:text="${score.score}"></td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{'/admin/users/scores'}">전체 점수 보기</a>
+</body>
+</html>
