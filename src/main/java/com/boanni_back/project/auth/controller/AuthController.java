@@ -1,30 +1,66 @@
 package com.boanni_back.project.auth.controller;
 
-import com.boanni_back.project.auth.controller.dto.SignUpRequestDTO;
+import com.boanni_back.project.auth.controller.dto.*;
+import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.UsersService;
+import com.boanni_back.project.jwt.JwtTokenProvider;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController  {
     private final EmployeeAuthService employeeAuthService;
     private final UsersService usersService;
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+
+//    사원 번호 확인 컨트롤러
     @GetMapping("/verify")
-    public ResponseEntity<String> verifyEmployeeNum(@RequestParam String employeeNum){
-        employeeAuthService.verifyEmployeeAuth(employeeNum);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<VerifyResponseDTO> verifyEmployeeNum(@ModelAttribute VerifyRequestDTO request){
+        VerifyResponseDTO response=employeeAuthService.verifyEmployeeAuth(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignUpRequestDTO request){
-        usersService.saveUser(request);
-        return ResponseEntity.ok("회원가입 완료");
+    public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO request){
+        EmployeeType employeeType=employeeAuthService.getEmployeeType(request.getEmployeeNum());
+        SignUpResponseDTO response=usersService.saveUser(request,employeeType);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<String> me(@AuthenticationPrincipal UserDetails userDetails){
+        return ResponseEntity.ok().body(userDetails.getUsername());
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<SignInResponseDTO> signIn(@RequestBody SignInRequestDTO request){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 2) 인증 성공 시 JWT 생성
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        SignInResponseDTO response = new SignInResponseDTO(token, "Bearer");
+
+        // 3) 토큰 응답
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }
 

@@ -33,8 +33,8 @@ public class Users {
     @Builder.Default
     private int score = 0;
 
-    @Builder.Default
     @Column(nullable = false)
+    @Builder.Default
     private Long currentQuestionIndex = 1L;
 
     @Column(nullable = false, updatable = false)

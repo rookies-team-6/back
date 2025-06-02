@@ -9,12 +9,14 @@ import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -29,6 +31,7 @@ public class QuestionService {
     }
 
     // 보안 문제 개별 조회
+
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
         Users user = adminRepository.findById(userId)

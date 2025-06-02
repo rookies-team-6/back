@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 public class SignUpRequestDTO {
-    @NotBlank(message="사용자 이름을 입력해주세요.")
-    private String username;
+    @NotBlank
+    private String employeeNum;
 
     @NotBlank(message="이메일을 입력해주세요.")
     @Pattern(
@@ -22,6 +22,4 @@ public class SignUpRequestDTO {
     @NotBlank(message="비밀번호 확인을 입력해주세요.")
     private String passwordCheck;
 
-    @NotBlank(message="사원 타입을 입력해주세요.")
-    private EmployeeType employeeType;
 }
