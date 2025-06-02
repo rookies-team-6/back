@@ -20,6 +20,15 @@ public class UserAiRecordDto {
     @AllArgsConstructor
     @Getter
     @Builder
+    public static class BookmarkedRequest{
+        private Long questionId;
+        private Long userId;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Builder
     public static class Response {
         private Long id;
         private String userAnswer;

@@ -20,5 +20,8 @@ public interface AdminRepository extends JpaRepository<Users, Long> {
 
     List<Users> findAllByOrderByScoreDesc();
 
+    @Query("SELECT u.currentQuestionIndex FROM Users u WHERE u.id = :id")
+    Long findCurrentQuestionIndexById(@Param("id") Long id);
+  
     List<Users> findByQuestionSolveDeadlineBefore(LocalDate date);
 }

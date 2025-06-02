@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter @Setter
 @Table(name = "user_ai_record")
 public class UserAiRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,10 +19,12 @@ public class UserAiRecord {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String userAnswer;
 
+    @Setter
     @Column(columnDefinition = "TEXT")
     private String aiAnswer;
 
     @Builder.Default
+    @Setter
     @Column(nullable = false)
     private boolean isBookMarked = false;
 
