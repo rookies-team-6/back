@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>마감일 수정</title>
+</head>
+<body>
+<h1>마감일 수정</h1>
+
+<form th:action="@{|/admin/users/deadline/${deadlineDto.userId}|}" method="post" th:object="${deadlineDto}">
+  <input type="hidden" name="_method" value="patch"/>
+  <label>기존 마감일:
+    <input type="text" th:value="${deadlineDto.oldDeadline}" readonly/>
+  </label>
+  <br/>
+  <label>새 마감일:
+    <input type="date" th:field="*{newDeadline}" required/>
+  </label>
+  <br/>
+  <button type="submit">수정</button>
+</form>
+
+<a th:href="@{|/admin/users/deadline/${deadlineDto.userId}|}">뒤로</a>
+</body>
+</html>
