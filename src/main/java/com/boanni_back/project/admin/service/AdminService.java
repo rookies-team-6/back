@@ -1,6 +1,7 @@
 package com.boanni_back.project.admin.service;
 
 import com.boanni_back.project.admin.repository.AdminRepository;
+import com.boanni_back.project.ai.repository.QuestionRepository;
 import com.boanni_back.project.auth.controller.dto.UsersDto;
 import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
@@ -10,25 +11,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 
     private final AdminRepository adminRepository;
+    private final QuestionRepository questionRepository;
 
     //모든 회원 조회
     public List<UsersDto.Response> getAllUsers() {
+        long totalQuestions = questionRepository.count();
         return adminRepository.findAll().stream()
-                .map(UsersDto.Response::fromEntity)
-                .toList();
+                .map(user -> UsersDto.Response.fromEntityWithProgress(user, totalQuestions))
+                .collect(Collectors.toList());
     }
+
 
     //해당 email 회원 조회
     public UsersDto.Response getUserByEmail(String email) {
         return adminRepository.findByEmail(email)
                 .map(UsersDto.Response::fromEntity)
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, email));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND_BY_EMAIL, email));
     }
 
     //employee_type으로 회원 조회
@@ -39,19 +44,17 @@ public class AdminService {
     }
 
     //해당 id 회원 삭제
-    public void deleteUserById(Long id) {
-        if (!adminRepository.existsById(id)) {
-            throw new BusinessException(ErrorCode.USER_NOT_FOUND, id);
-        }
-        adminRepository.deleteById(id);
-    }
-
-    public void promoteUserToAdmin(Long id) {
-        Users users = adminRepository.findById(id)
+    public Users deleteUserById(Long id) {
+        Users user = adminRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
-
-        users.setEmployeeType(EmployeeType.ADMIN);
-        adminRepository.save(users);
+        adminRepository.delete(user);
+        return user;
     }
-    
+
+    public Users promoteUserToAdmin(Long id) {
+        Users user = adminRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, id));
+        user.setEmployeeType(EmployeeType.ADMIN);
+        return adminRepository.save(user);
+    }
 }

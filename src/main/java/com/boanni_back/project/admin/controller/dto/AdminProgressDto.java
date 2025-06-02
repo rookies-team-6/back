@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class AdminProcessDto {
+public class AdminProgressDto {
 
     @Data
     @NoArgsConstructor
@@ -23,12 +23,14 @@ public class AdminProcessDto {
     public static class Response {
         private Long userId;
         private String username;
+        private Long currentQuestionIndex;
         private String progress;
 
         public static Response fromEntity(Users user, String progress) {
             return Response.builder()
                     .userId(user.getId())
                     .username(user.getEmployeeNumber().getUsername())
+                    .currentQuestionIndex(user.getCurrentQuestionIndex())
                     .progress(progress)
                     .build();
         }
