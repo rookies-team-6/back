@@ -9,12 +9,14 @@ import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -29,6 +31,7 @@ public class QuestionService {
     }
 
     // 보안 문제 개별 조회
+
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
         Users user = adminRepository.findById(userId)
@@ -45,8 +48,14 @@ public class QuestionService {
 
     // 보안 문제 생성
     public QuestionDto.Response createQuestion(QuestionDto.Request request) {
-        Question question = new Question();
-        question.setQuestion(request.getQuestion());
+        // 문제 비어있을 때
+        if (request.getQuestion() == null || request.getQuestion().trim().isEmpty()) {
+            throw new BusinessException(ErrorCode.NO_QUESTION);
+        }
+
+        Question question = Question.builder()
+                .question(request.getQuestion())
+                .build();
         return QuestionDto.Response.fromEntity(questionRepository.save(question));
     }
 

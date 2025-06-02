@@ -11,6 +11,7 @@ import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+
 public class UserAiRecordService {
 
     private final UserAiRecordRepository userAiRecordRepository;
@@ -59,6 +61,54 @@ public class UserAiRecordService {
                 .stream()
                 .map(UserAiRecordDto.Response::fromEntity)
                 .toList();
+    }
+
+    // 북마크 체크
+    public UserAiRecordDto.Response saveBookedmarked(UserAiRecordDto.BookmarkedRequest request) {
+        // 유저와 문제 조회
+        Question question = questionRepository.findById(request.getQuestionId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, request.getQuestionId()));
+
+        Users user = adminRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
+
+        // 기록 조회
+        UserAiRecord record = userAiRecordRepository.findByUsersIdAndQuestionId(user.getId(), question.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RECORD_NOT_FOUND, user.getId(), question.getId()));
+
+        // isBookMarked 값 설정
+        record.setBookMarked(!record.isBookMarked());
+
+        userAiRecordRepository.save(record);
+        return UserAiRecordDto.Response.fromEntity(record);
+
+    }
+
+    // 자신이 푼 문제 조회
+    public List<UserAiRecordDto.Response> getSolvedRecord(Long userId) {
+        // users에서 currentIndex만 필요함
+        Long currentIndex = adminRepository.findCurrentQuestionIndexById(userId);
+        if(currentIndex<=1){
+            throw new BusinessException(ErrorCode.SOLVED_RECORD_NOT_FOUND, userId);
+        }
+
+        List<UserAiRecord> records = userAiRecordRepository.findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(userId, currentIndex)
+                .orElseThrow(() -> new BusinessException(ErrorCode.SOLVED_RECORD_NOT_FOUND, userId));
+
+        return records.stream()
+                .map(UserAiRecordDto.Response::fromEntity)
+                .toList();
+    }
+
+    // 푼 문제 중 북마크한 문제 조회
+    public List<UserAiRecordDto.Response> getBookMarkedRecord(Long userId) {
+        List<UserAiRecord> records = userAiRecordRepository.findByUsersIdAndIsBookMarkedTrue(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.BOOKMARKED_RECORD_NOT_FOUND, userId));
+
+        return records.stream()
+                .map(UserAiRecordDto.Response::fromEntity)
+                .toList();
+
     }
 }
 

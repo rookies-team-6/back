@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,9 @@ public interface AdminRepository extends JpaRepository<Users, Long> {
     List<Users> findByEmployeeType(@Param("type") EmployeeType employeeType);
 
     List<Users> findAllByOrderByScoreDesc();
+
+    @Query("SELECT u.currentQuestionIndex FROM Users u WHERE u.id = :id")
+    Long findCurrentQuestionIndexById(@Param("id") Long id);
+  
+    List<Users> findByQuestionSolveDeadlineBefore(LocalDate date);
 }

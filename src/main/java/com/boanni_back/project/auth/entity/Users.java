@@ -5,8 +5,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import java.time.LocalDate;
-
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,8 +31,8 @@ public class Users {
     @Builder.Default
     private int score = 0;
 
-    @Builder.Default
     @Column(nullable = false)
+    @Builder.Default
     private Long currentQuestionIndex = 1L;
 
     @Column(nullable = false, updatable = false)
