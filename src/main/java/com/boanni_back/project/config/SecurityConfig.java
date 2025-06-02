@@ -50,6 +50,7 @@ public class SecurityConfig {
 ////                        ADMIN 권한이 있어야 이용 가능하다.
                     .requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
 ////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
+                    .requestMatchers("/api/record/**", "/api/chat/**").permitAll()
             );
         return http.build();
     }
