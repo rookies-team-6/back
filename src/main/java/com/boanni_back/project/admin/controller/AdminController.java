@@ -28,7 +28,7 @@ public class AdminController {
     }
 
     //해당 email로 회원 조회
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public String getUserByEmail(@PathVariable String email, Model model) {
         UsersDto.Response user = adminService.getUserByEmail(email);
         model.addAttribute("user", user);
@@ -55,7 +55,7 @@ public class AdminController {
 
     //관리자로 권한 변경
     //@PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/{id}/role")
+    @PatchMapping("/{id}/role")
     public String promoteToAdmin(@PathVariable Long id) {
         adminService.promoteUserToAdmin(id);
         return "redirect:/admin/users";
