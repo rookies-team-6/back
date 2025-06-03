@@ -14,6 +14,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users/deadline")
+// @PreAuthorize("hasRole('ADMIN')")
 public class AdminDeadlineController {
 
     private final AdminDeadlineService adminDeadlineService;
@@ -44,10 +45,10 @@ public class AdminDeadlineController {
             adminDeadlineService.updateDeadline(request);
         } catch (BusinessException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/admin/users/deadline/" + id; //html 추가 후 수정 예정
+            return "redirect:/admin/users/deadline/" + id;
         }
         redirectAttributes.addFlashAttribute("successMessage", "마감일이 성공적으로 수정되었습니다.");
-        return "redirect:/admin/users/deadline/" + id;
+        return "redirect:/admin/users";
     }
 
     //학습 마감일이 지난 회원 목록 조회
