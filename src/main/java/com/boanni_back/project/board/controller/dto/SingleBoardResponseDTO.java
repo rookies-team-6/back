@@ -1,4 +1,4 @@
-package com.boanni_back.project.board.dto;
+package com.boanni_back.project.board.controller.dto;
 
 import com.boanni_back.project.board.entity.Board;
 import jakarta.validation.constraints.NotBlank;
