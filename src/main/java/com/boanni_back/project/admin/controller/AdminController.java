@@ -3,36 +3,46 @@ package com.boanni_back.project.admin.controller;
 import com.boanni_back.project.admin.service.AdminService;
 import com.boanni_back.project.auth.controller.dto.UsersDto;
 import com.boanni_back.project.auth.entity.EmployeeType;
+import com.boanni_back.project.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users")
+// @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final AdminService adminService;
 
     //모든 회원 조회
     @GetMapping
-    public String getAllUsers(Model model) {
-        List<UsersDto.Response> users = adminService.getAllUsers();
-        model.addAttribute("users", users);
+    public String getAllUsers(@PageableDefault(size = 5) Pageable pageable, Model model) {
+        Page<UsersDto.Response> page = adminService.getAllUsers(pageable);
+        model.addAttribute("users", page.getContent());
+        model.addAttribute("page", page);
         return "admin/users/list";
     }
 
     //해당 email로 회원 조회
     @GetMapping("/email/{email}")
-    public String getUserByEmail(@PathVariable String email, Model model) {
-        UsersDto.Response user = adminService.getUserByEmail(email);
-        model.addAttribute("user", user);
-        return "admin/users/detail";
+    public String getUserByEmail(@PathVariable String email, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            UsersDto.Response user = adminService.getUserByEmail(email);
+            model.addAttribute("user", user);
+            return "admin/users/detail";
+        } catch (BusinessException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/users";
+        }
     }
 
     //employeeType으로 회원 조회
@@ -45,16 +55,31 @@ public class AdminController {
         return "admin/users/list_by_type";
     }
 
+    //해당 username의 회원 조회
+    @GetMapping("/username/{username}")
+    public String getUserByUsername(@PathVariable String username, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            UsersDto.Response user = adminService.getUserByUsername(username);
+            model.addAttribute("user", user);
+            return "admin/users/name";
+        } catch (BusinessException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/admin/users";
+        }
+    }
+
     //해당 id 회원 삭제
-    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/delete")
-    public String deleteUserById(@PathVariable Long id) {
-        adminService.deleteUserById(id);
+    public String deleteUserById(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            adminService.deleteUserById(id);
+        } catch (BusinessException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/admin/users";
     }
 
     //관리자로 권한 변경
-    //@PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/role")
     public String promoteToAdmin(@PathVariable Long id) {
         adminService.promoteUserToAdmin(id);
