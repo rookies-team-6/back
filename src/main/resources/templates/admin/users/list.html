@@ -2,97 +2,199 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>관리자 페이지</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" rel="stylesheet">
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
 </head>
-<body>
-<h1>회원 목록</h1>
+<body style="background-color: #FFFCEE;">
+<!-- 상단 바 -->
+<nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;">
+</nav>
+<div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
+  <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
+    <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
+    <strong style="font-size: 18px;">관리자 페이지</strong>
+  </a>
 
-<form id="emailSearchForm">
-  <input type="text" id="emailInput" placeholder="이메일로 검색"/>
-  <button type="submit">검색</button>
-</form>
+  <div class="me-4 d-flex gap-3">
+    <a href="/admin/users/scores" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
+      회원 점수 조회
+    </a>
+    <a href="/admin/users/progress" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
+      회원 학습률 조회
+    </a>
+  </div>
+</div>
+<!-- 검색 필터 전체 묶음 -->
+<div style="max-width: 95%; margin: 0 auto;" class="mt-4">
+  <h1 class="mb-4">회원 목록</h1>
+  <form id="searchForm" class="row g-2 mb-3 align-items-center">
+    <div class="col-auto">
+      <input type="text" class="form-control" id="emailInput" placeholder="이메일 검색">
+    </div>
+    <div class="col-auto">
+      <button type="submit" id="emailSearchBtn" class="btn btn-primary" name="action" value="email">검색</button>
+    </div>
+    <div class="col-auto">
+      <input type="text" class="form-control" id="usernameInput" placeholder="이름 검색">
+    </div>
+    <div class="col-auto">
+      <button type="submit" id="usernameSearchBtn" class="btn btn-info" name="action" value="username">이름 검색</button>
+    </div>
+    <div class="col-auto">
+      <select id="typeSelect" class="form-select">
+        <option value="TRAINEE">TRAINEE</option>
+        <option value="EMPLOYEE">EMPLOYEE</option>
+        <option value="ADMIN">ADMIN</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <button type="submit" id="typeSearchBtn" class="btn btn-secondary" name="action" value="type">유형별 조회</button>
+    </div>
+  </form>
+  <!-- Flash 메시지 alert -->
+  <div th:if="${errorMessage}">
+    <script th:inline="javascript">
+      alert([[${errorMessage}]]);
+    </script>
+  </div>
+  <script>
+    document.getElementById("searchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-<form id="typeSearchForm">
-  <select id="typeSelect">
-    <option value="TRAINEE">TRAINEE</option>
-    <option value="EMPLOYEE">EMPLOYEE</option>
-    <option value="ADMIN">ADMIN</option>
-  </select>
-  <button type="submit">유형별 조회</button>
-</form>
-
-<!-- 이메일 조회 event -->
-<script>
-  document.getElementById("emailSearchForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = encodeURIComponent(document.getElementById("emailInput").value);
-    window.location.href = `/admin/users/email/${email}`;
+      const clickedButton = e.submitter?.value; // submit을 유발한 버튼의 value
+      if (clickedButton === "email") {
+      const email = encodeURIComponent(document.getElementById("emailInput").value);
+      window.location.href = `/admin/users/email/${email}`;
+    } else if (clickedButton === "username") {
+      const username = encodeURIComponent(document.getElementById("usernameInput").value);
+      window.location.href = `/admin/users/username/${username}`;
+    } else if (clickedButton === "type") {
+      const type = document.getElementById("typeSelect").value;
+      window.location.href = `/admin/users/type/${type}`;
+    }
   });
+  </script>
+</div>
+  <div class="table-responsive" style="max-width: 95%; margin: 0 auto;">
+    <table class="table table-bordered table-hover align-middle text-center" style="min-width: 1200px;">
+      <thead class="table-light" style="background-color: #FFFFFF;">
+      <tr>
+        <th>ID</th>
+        <th>이메일</th>
+        <th>이름</th>
+        <th>사번</th>
+        <th>회원 유형</th>
+        <th>부서 코드</th>
+        <th>현재 문제 번호</th>
+        <th>점수</th>
+        <th>진행률</th>
+        <th>가입일</th>
+        <th>학습 마감일</th>
+        <th>마감일 수정</th>
+        <th>회원 탈퇴</th>
+        <th>권한 변경</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.employeeNumber}"></td>
+        <td th:text="${user.employeeType}"></td>
+        <td th:text="${user.departmentCode + '팀'}"></td>
+        <td th:text="${user.currentQuestionIndex + '번 문제'}"></td>
+        <td th:text="${user.score + '점'}"></td>
+        <td style="min-width: 140px;">
+          <div class="progress" style="height: 24px; position: relative;">
+            <div class="progress-bar"
+                 th:style="'width:' + ${user.progressPercent} + '%; background-color:' +
+              (${user.progressPercent} >= 80 ? '#28a745' :
+              (${user.progressPercent} >= 50 ? '#ffc107' : '#dc3545'))">
+            </div>
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+              <span class="fw-bold" th:text="${user.progress}"></span>
+            </div>
+          </div>
+        </td>
+        <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${user.questionSolveDeadline}"></td>
+        <td>
+          <form th:action="@{/admin/users/deadline/{id}/edit(id=${user.id})}" method="get">
+            <button type="submit" class="btn btn-primary btn-sm">마감일 수정</button>
+          </form>
+        </td>
+        <td>
+          <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post"
+                th:onsubmit="|return confirm('정말로 해당 회원을 강제 탈퇴하시겠습니까?');|">
+            <button type="submit" class="btn btn-danger btn-sm">강제 탈퇴</button>
+          </form>
+        </td>
+        <td>
+          <form th:action="@{/admin/users/{id}/role(id=${user.id})}" method="post"
+                th:onsubmit="|return confirm('정말로 이 회원을 관리자(ADMIN)로 승격하시겠습니까?');|">
+            <input type="hidden" name="_method" value="patch"/>
+            <button type="submit" class="btn btn-success btn-sm">관리자 승격</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+  </table>
+  </div>
+  <nav th:if="${page.totalPages > 1}">
+    <ul class="pagination justify-content-center mt-4">
+      <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+        <a class="page-link" th:href="@{|/admin/users?page=${page.number - 1}|}">이전</a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+          th:classappend="${page.number == i} ? 'active'">
+        <a class="page-link" th:href="@{|/admin/users?page=${i}|}" th:text="${i + 1}">1</a>
+      </li>
+      <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+        <a class="page-link" th:href="@{|/admin/users?page=${page.number + 1}|}">다음</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="mt-5" style="max-width: 95%; margin: 0 auto;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="mb-0">회원 마감일 달력</h1>
+      <a href="/admin/users/deadline/expired" class="btn btn-danger">
+        마감일 지난 회원 보기
+      </a>
+    </div>
+
+    <div id="calendar" class="p-3 border rounded shadow-sm" style="background-color: #FFFFFF;"></div>
+  </div>
+</div>
+
+<!-- FullCalendar용 이벤트 배열 구성 -->
+<script th:inline="javascript">
+  const calendarEvents = [
+    /*[# th:each="user, stat : ${users}" ]*/
+    {
+      title: '[[${user.username}]]',
+      date: [[${#temporals.format(user.questionSolveDeadline, 'yyyy-MM-dd')}]]
+    }/*[# th:if="${!stat.last}"]*/,/*[/]*/
+    /*[/]*/
+  ];
+  console.log(calendarEvents);
 </script>
 
-<!-- 회원 유형 조회 event -->
+
+
 <script>
-  document.getElementById("typeSearchForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const type = document.getElementById("typeSelect").value;
-    window.location.href = `/admin/users/type/${type}`;
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'ko',
+      height: 600,
+      events: calendarEvents
+    });
+    calendar.render();
   });
 </script>
-
-<table border="1">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>이메일</th>
-    <th>이름</th>
-    <th>사번</th>
-    <th>회원 유형</th>
-    <th>현재 문제</th>
-    <th>점수</th>
-    <th>진행률</th>
-    <th>가입일</th>
-    <th>학습 마감일</th>
-    <th>마감일 수정</th>
-    <th>회원 탈퇴</th>
-    <th>권한 변경</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="user : ${users}">
-    <td th:text="${user.id}"></td>
-    <td th:text="${user.email}"></td>
-    <td th:text="${user.username}"></td>
-    <td th:text="${user.employeeNumber}"></td>
-    <td th:text="${user.employeeType}"></td>
-    <td th:text="${user.currentQuestionIndex}"></td>
-    <td th:text="${user.score}"></td>
-    <td>
-      <div style="width: 100px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
-        <div th:style="'width:' + ${user.progressPercent} + '%; height: 16px; ' +
-                   (${user.progressPercent} >= 80 ? 'background-color:#28a745;' :
-                    (${user.progressPercent} >= 50 ? 'background-color:#ffc107;' :
-                     'background-color:#dc3545;'))">
-        </div>
-      </div>
-      <span th:text="${user.progress}"></span>
-    </td>
-    <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-    <td th:text="${user.questionSolveDeadline}"></td>
-    <td>
-      <a th:href="@{/admin/users/deadline/{id}/edit(id=${user.id})}">마감일 수정</a>
-    </td>
-    <td>
-      <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post">
-        <button type="submit">강제 탈퇴</button>
-      </form>
-    </td>
-    <td>
-      <form th:action="@{/admin/users/{id}/role(id=${user.id})}" method="post">
-        <input type="hidden" name="_method" value="patch"/>
-        <button type="submit">관리자 승격</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
 </body>
 </html>

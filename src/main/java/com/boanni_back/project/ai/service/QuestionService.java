@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,7 +32,6 @@ public class QuestionService {
     }
 
     // 보안 문제 개별 조회
-
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
         Users user = adminRepository.findById(userId)
@@ -41,9 +41,15 @@ public class QuestionService {
         Question question = questionRepository.findById(index)
                 .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
 
+        boolean canSolve = !user.getQuestionSolveDeadline().isBefore(LocalDate.now());
+
+        if (!canSolve) {
+            throw new BusinessException(ErrorCode.USER_DEADLINE_EXPIRED, userId);
+        }
+
         adminRepository.save(user);
 
-        return QuestionDto.Response.fromEntity(question);
+        return QuestionDto.Response.fromEntity(question, canSolve);
     }
 
     // 보안 문제 생성
