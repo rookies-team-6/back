@@ -13,7 +13,7 @@ public class AdminScoreDto {
     @AllArgsConstructor
     @Builder
     public static class Request {
-        private Long userId; //점수 업데이트 요청 시
+        private Long userId;
     }
 
     @Data
@@ -21,14 +21,16 @@ public class AdminScoreDto {
     @AllArgsConstructor
     @Builder
     public static class Response {
-        private Long id;
+        private Long userId;
         private String username;
+        private String departmentCode;
         private int score;
 
         public static Response fromEntity(Users user) {
             return Response.builder()
-                    .id(user.getId())
+                    .userId(user.getId())
                     .username(user.getEmployeeNumber().getUsername())
+                    .departmentCode(user.getEmployeeNumber().getDepartmentCode())
                     .score(user.getScore())
                     .build();
         }

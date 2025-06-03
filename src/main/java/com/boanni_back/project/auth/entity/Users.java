@@ -48,7 +48,7 @@ public class Users {
     @PrePersist
     public void prePersist() {
         this.createAt = LocalDateTime.now();
-        this.questionSolveDeadline = LocalDate.now().plusYears(1);
+        this.questionSolveDeadline = LocalDate.now().plusDays(100);
     }
 }
 

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 학습 진행률</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background-color: #FFFCEE;">
+<!-- 상단 바 -->
+<nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;">
+</nav>
+<div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
+  <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
+    <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
+    <strong style="font-size: 18px;">관리자 페이지-학습 진행률 조회</strong>
+  </a>
+  <div class="me-4">
+    <a href="/admin/users" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
+      관리자 메인 페이지로 돌아가기
+    </a>
+  </div>
+</div>
+<div class="container mt-4">
+  <h2>회원 학습 진행률 목록</h2>
+
+  <div class="mb-3 d-flex align-items-center justify-content-start" style="gap: 20px;">
+    <!-- 이름 검색 -->
+    <div class="d-flex align-items-center">
+      <label for="searchInput" class="me-2">이름 검색:</label>
+      <input type="text" id="searchInput" class="form-control me-2" style="width: 200px;">
+      <button class="btn btn-secondary" onclick="searchUser()">조회</button>
+    </div>
+
+    <!-- 진행률 필터 -->
+    <div class="d-flex align-items-center">
+      <label for="progressFilter" class="me-2">진행률 필터:</label>
+      <select id="progressFilter" class="form-select" onchange="filterByProgress()" style="width: 200px;">
+        <option value="ALL">전체</option>
+        <option value="HIGH">80% 이상</option>
+        <option value="MID">50% ~ 79%</option>
+        <option value="LOW">50% 미만</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 진행률 테이블 -->
+  <table class="table table-bordered" id="progressTable" style="background-color: #FFFFFF;">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>이름</th>
+      <th>부서 코드</th>
+      <th>문제 번호</th>
+      <th>진행률</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${progressList}" th:data-percent="${user.progressPercent}">
+      <td th:text="${user.userId}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.departmentCode + '팀'}"></td>
+      <td th:text="${user.currentQuestionIndex + '번 문제'}"></td>
+      <td>
+        <div class="progress" style="height: 20px;">
+          <div class="progress-bar"
+               th:style="'width:' + ${user.progressPercent} + '%; background-color:' +
+                    (${user.progressPercent} >= 80 ? '#28a745' :
+                    (${user.progressPercent} >= 50 ? '#ffc107' : '#dc3545'))"
+               th:text="${user.progress}">
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- 페이지네이션 -->
+  <nav aria-label="Page navigation example" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+        <a class="page-link" th:href="@{'/admin/users/progress'(page=${currentPage - 1})}">이전</a>
+      </li>
+
+      <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+          th:classappend="${i == currentPage} ? 'active'">
+        <a class="page-link" th:href="@{'/admin/users/progress'(page=${i})}" th:text="${i}">1</a>
+      </li>
+
+      <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+        <a class="page-link" th:href="@{'/admin/users/progress'(page=${currentPage + 1})}">다음</a>
+      </li>
+    </ul>
+  </nav>
+
+  <a href="/admin/users" class="btn btn-secondary mt-3">← 목록으로</a>
+  <!-- 진행률 분포 차트 -->
+  <div class="mt-5">
+    <h4>진행률 분포</h4>
+    <canvas id="progressChart" height="100"></canvas>
+  </div>
+</div>
+<script th:inline="javascript">
+  // 전체 회원 데이터를 서버에서 받아옴
+  const allUsers = /*[[${allUsers}]]*/ [];
+
+  // 이름 검색
+  function searchUser() {
+    const input = document.getElementById("searchInput").value.trim();
+    const target = allUsers.find(user => user.username === input);
+
+    if (target) {
+      window.location.href = `/admin/users/progress/${target.userId}`;
+    } else {
+      alert(`해당 이름을 찾을 수 없습니다. 이름: ${input}`);
+    }
+  }
+
+  // 진행률 필터
+  function filterByProgress() {
+    const filter = document.getElementById("progressFilter").value;
+    const rows = document.querySelectorAll("#progressTable tbody tr");
+
+    rows.forEach(row => {
+      const percent = parseInt(row.getAttribute("data-percent"));
+
+      if (
+        filter === "ALL" ||
+        (filter === "HIGH" && percent >= 80) ||
+        (filter === "MID" && percent >= 50 && percent < 80) ||
+        (filter === "LOW" && percent < 50)
+      ) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  }
+
+  // 차트 렌더링 (전체 회원 기준)
+  window.onload = function () {
+    let low = 0, mid = 0, high = 0;
+
+    allUsers.forEach(user => {
+      const percent = user.progressPercent;
+      if (percent < 50) low++;
+      else if (percent < 80) mid++;
+      else high++;
+    });
+
+    const ctx = document.getElementById("progressChart").getContext("2d");
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['50% 미만', '50~79%', '80% 이상'],
+        datasets: [{
+          label: '인원 수',
+          data: [low, mid, high],
+          backgroundColor: ['#dc3545', '#ffc107', '#28a745']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: '인원 수' }
+          },
+          x: {
+            title: { display: true, text: '진행률 구간' }
+          }
+        }
+      }
+    });
+  };
+</script>
+
+</body>
+</html>

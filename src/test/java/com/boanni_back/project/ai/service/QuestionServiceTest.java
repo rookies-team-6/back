@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ class QuestionServiceTest {
     private AdminRepository adminRepository;
 
     private Users mockUser;
+    private Users expiredUser;
     private Question mockQuestion;
 
     @BeforeEach
@@ -47,7 +49,20 @@ class QuestionServiceTest {
                 .employeeType(EmployeeType.EMPLOYEE)
                 .score(0)
                 .currentQuestionIndex(100L)
+                .questionSolveDeadline(LocalDate.now().plusDays(3))
                 .employeeNumber(mock(EmployeeNumber.class))  // 또는 직접 생성
+                .build();
+
+        //마감일이 과거인 사용자 (canSolve = false)
+        expiredUser = Users.builder()
+                .id(2L)
+                .email("expired@user.com")
+                .password("encodedPassword456")
+                .employeeType(EmployeeType.EMPLOYEE)
+                .score(0)
+                .currentQuestionIndex(100L)
+                .questionSolveDeadline(LocalDate.now().minusDays(1))
+                .employeeNumber(mock(EmployeeNumber.class))
                 .build();
 
         mockQuestion = Question.builder()
@@ -73,7 +88,7 @@ class QuestionServiceTest {
         assertThat(responses.get(1).getQuestion()).isEqualTo("question2 is ~~~");
     }
 
-    // index를 통한 조회 테스트
+    // index를 통한 조회 테스트 + 학습 마감일 추가
     @Test
     void getQuestionByIndex_validUserAndIndex_returnsQuestionDto() {
         // 유저, 질문 설정
@@ -86,9 +101,27 @@ class QuestionServiceTest {
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(100L);
         assertThat(response.getQuestion()).isEqualTo("question1~");
+        assertThat(response.isCanSolve()).isTrue();
         assertThat(mockUser.getCurrentQuestionIndex()).isEqualTo(100L);
         verify(adminRepository).save(mockUser);
+        System.out.println("response = " + response);
+        System.out.println("canSolve = " + response.isCanSolve());
     }
+
+    //인덱스 조회 + 마감일 지난 회원
+    @Test
+    void getQuestionByIndex_expiredUser_throwsBusinessException() {
+        when(adminRepository.findById(2L)).thenReturn(Optional.of(expiredUser));
+        when(questionRepository.findById(100L)).thenReturn(Optional.of(mockQuestion));
+
+        assertThatThrownBy(() -> questionService.getQuestionByIndex(2L))
+                .isInstanceOf(BusinessException.class)
+                .extracting("errorCode")
+                .isEqualTo(ErrorCode.USER_DEADLINE_EXPIRED);
+
+        System.out.println("expiredUser deadline = " + expiredUser.getQuestionSolveDeadline());
+    }
+
 
     // 에러 확인
     @Test
