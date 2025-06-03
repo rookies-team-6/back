@@ -1,5 +1,6 @@
 package com.boanni_back.project.jwt;
 
+import com.boanni_back.project.auth.entity.CustomUserDetails;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -30,13 +32,19 @@ public class JwtTokenProvider {
 
     // Authentication 객체로부터 JWT 발급
     public String generateToken(Authentication authentication) {
-        String username = authentication.getName();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationTime);
+        Long id=userDetails.getId();
+
 
         return Jwts.builder()
                 .setSubject(username)
-                .claim("roles", authentication.getAuthorities())
+                .claim("id",id)
+                .claim("roles", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
