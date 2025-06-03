@@ -25,6 +25,7 @@ public enum ErrorCode {
 //    Board 관련 에러입니다.
     BOARD_NOT_FOUND_BY_ID("B001","ID에 해당하는 게시글을 찾을 수 없습니다.",HttpStatus.NOT_FOUND),
     BOARD_FORBIDDEN_USER("B002","작성자와 일치하지 않는 ID입니다.",HttpStatus.FORBIDDEN),
+    BOARD_PAGE_OUT_ERROR("B003","해당 페이지에 게시글이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
 
     // Question 관련 에러
     INDEX_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),

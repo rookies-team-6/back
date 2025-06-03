@@ -3,19 +3,25 @@ package com.boanni_back.project.board.controller;
 import com.boanni_back.project.auth.entity.CustomUserDetails;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.auth.repository.UsersRepository;
-import com.boanni_back.project.board.dto.AllBoardsResponseDTO;
-import com.boanni_back.project.board.dto.SingleBoardResponseDTO;
-import com.boanni_back.project.board.dto.WriteBoardRequestDTO;
+import com.boanni_back.project.board.controller.dto.AllBoardsResponseDTO;
+import com.boanni_back.project.board.controller.dto.SingleBoardResponseDTO;
+import com.boanni_back.project.board.controller.dto.WriteBoardRequestDTO;
 import com.boanni_back.project.board.entity.Board;
 import com.boanni_back.project.board.repository.BoardRepository;
+import com.boanni_back.project.board.service.BoardService;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.util.List;
 
@@ -23,84 +29,53 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
-    private BoardRepository boardRepository;
-    private UsersRepository usersRepository;
+    private final BoardService boardService;
+
+    @GetMapping("/total-pages")
+    public ResponseEntity<Integer> getTotalPages(@RequestParam(defaultValue = "10") int size) {
+        int totalPages = boardService.getTotalPages(size);
+        return ResponseEntity.ok(totalPages);
+    }
 
     @GetMapping
-    public ResponseEntity<List<AllBoardsResponseDTO>> getAllBoards(){
-        List<Board> boards = boardRepository.findAll();
-        List<AllBoardsResponseDTO> response = boards.stream()
-                .map(AllBoardsResponseDTO::new)
-                .toList();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<Page<AllBoardsResponseDTO>> getAllBoards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<AllBoardsResponseDTO> response = boardService.getBoards(page, size);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleBoardResponseDTO> getSingleBoard(@PathVariable Long id){
-        Board board = boardRepository.findByIdWithUser(id).orElseThrow(()->new BusinessException(ErrorCode.BOARD_NOT_FOUND_BY_ID));
-        SingleBoardResponseDTO response=new SingleBoardResponseDTO(board);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        SingleBoardResponseDTO response = boardService.getSingleBoard(id);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<Void> writeBoard(@RequestBody WriteBoardRequestDTO request, Authentication authentication) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
-
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.AUTH_NOT_FOUND_BY_ID));
-
-        Board board = Board.builder()
-                .title(request.getTitle())
-                .contents(request.getContents())
-                .users(user)
-                .build();
-
-        boardRepository.save(board);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Long userId = extractUserId(authentication);
+        boardService.writeBoard(request, userId);
+        return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBoard(@PathVariable Long id,
                                             @RequestBody WriteBoardRequestDTO request,
                                             Authentication authentication) {
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
-
-        Board board = boardRepository.findByIdWithUser(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.BOARD_NOT_FOUND_BY_ID));
-
-        // 소유자 확인
-        if (!board.getUsers().getId().equals(userId)) {
-            throw new BusinessException(ErrorCode.BOARD_FORBIDDEN_USER);
-        }
-
-        board.setTitle(request.getTitle());
-        board.setContents(request.getContents());
-        boardRepository.save(board);
-
+        Long userId = extractUserId(authentication);
+        boardService.updateBoard(id, request, userId);
         return ResponseEntity.ok().build();
     }
 
-    // 게시글 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long id, Authentication authentication) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
-
-        Board board = boardRepository.findByIdWithUser(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.BOARD_NOT_FOUND_BY_ID));
-
-        // 소유자 확인
-        if (!board.getUsers().getId().equals(userId)) {
-            throw new BusinessException(ErrorCode.BOARD_FORBIDDEN_USER);
-        }
-
-        boardRepository.delete(board);
+        Long userId = extractUserId(authentication);
+        boardService.deleteBoard(id, userId);
         return ResponseEntity.noContent().build();
     }
 
-
+    private Long extractUserId(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        return userDetails.getId();
+    }
 }
