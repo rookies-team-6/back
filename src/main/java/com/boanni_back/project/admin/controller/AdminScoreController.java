@@ -15,6 +15,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users/scores")
+// @PreAuthorize("hasRole('ADMIN')")
 public class AdminScoreController {
     private final AdminScoreService adminScoreService;
 
@@ -24,14 +25,6 @@ public class AdminScoreController {
         List<AdminScoreDto.Response> scores = adminScoreService.getAllUserScores();
         model.addAttribute("scores", scores);
         return "admin/scores/list";
-    }
-
-    //해당 id 회원의 점수(score) 조회
-    @GetMapping("/{id}")
-    public String getUserScore(@PathVariable Long id, Model model) {
-        AdminScoreDto.Response score = adminScoreService.getUserScoreById(id);
-        model.addAttribute("score", score);
-        return "admin/scores/detail";
     }
 
     //모든 회원의 점수(score) 내림차순 조회

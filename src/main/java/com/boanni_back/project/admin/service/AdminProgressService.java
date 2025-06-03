@@ -9,24 +9,30 @@ import com.boanni_back.project.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
-@RequiredArgsConstructor //생성자 어노테이션 주입
+@RequiredArgsConstructor
 public class AdminProgressService {
 
     private final AdminRepository adminRepository;
     private final QuestionRepository questionRepository;
 
+    public List<AdminProgressDto.Response> getAllUserProgress() {
+        long totalQuestions = questionRepository.count();
+
+        return adminRepository.findAll().stream()
+                .map(user -> AdminProgressDto.Response.fromEntity(user, totalQuestions))
+                .collect(Collectors.toList());
+    }
+
     public AdminProgressDto.Response getUserProgress(Long userId) {
         Users user = adminRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
 
-        long index = user.getCurrentQuestionIndex();
-        //Question 테이블의 question 갯수를 count하여 계산하는 방식입니다.
         long totalQuestions = questionRepository.count();
 
-        double progress = (index < 0 || totalQuestions == 0) ? 0.0 : (index / (double) totalQuestions) * 100.0;
-        String progressStr = String.format("%.0f%%", progress);
-
-        return AdminProgressDto.Response.fromEntity(user, progressStr);
+        return AdminProgressDto.Response.fromEntity(user, totalQuestions);
     }
 }

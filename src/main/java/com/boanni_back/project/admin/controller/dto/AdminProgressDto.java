@@ -23,15 +23,24 @@ public class AdminProgressDto {
     public static class Response {
         private Long userId;
         private String username;
+        private String departmentCode;
         private Long currentQuestionIndex;
         private String progress;
+        private int progressPercent;
 
-        public static Response fromEntity(Users user, String progress) {
+        public static Response fromEntity(Users user, long totalQuestions) {
+            long index = user.getCurrentQuestionIndex();
+            double percent = (index < 0 || totalQuestions == 0) ? 0.0 : (index / (double) totalQuestions) * 100.0;
+            int progressPercent = (int) percent;
+            String progressStr = String.format("%d%%", progressPercent);
+
             return Response.builder()
                     .userId(user.getId())
                     .username(user.getEmployeeNumber().getUsername())
-                    .currentQuestionIndex(user.getCurrentQuestionIndex())
-                    .progress(progress)
+                    .departmentCode(user.getEmployeeNumber().getDepartmentCode())
+                    .currentQuestionIndex(index)
+                    .progress(progressStr)
+                    .progressPercent(progressPercent)
                     .build();
         }
     }
