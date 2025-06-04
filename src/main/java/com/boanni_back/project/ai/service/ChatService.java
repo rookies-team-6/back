@@ -13,15 +13,18 @@ import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ChatService {
 
     private final UsersRepository usersRepository;
@@ -74,13 +77,14 @@ public class ChatService {
     }
 
     // 그룹 별 키워드 지정
-    public ChatDto.GroqResponse processGroqAnswer(Long userId) {
+    public void processGroqAnswer(Long userId) {
 
-        // userId로 user 가져오기
-        String departmentCode = usersRepository.findEmployeeNumberById(userId);
+        // userId로 departmentCode 가져오기
+        String departmentCode = usersRepository.findDepartmentCodeById(userId);
         if (departmentCode == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND, userId);
         }
+
         List<Users> departmentUsers = usersRepository.findAllByDepartmentCode(departmentCode);
 
         // user로 user가 답한 질문들 모두 가져오기
@@ -103,17 +107,22 @@ public class ChatService {
             Question question = questionRepository.findById(questionId)
                     .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, questionId));
 
-            Group group = Group.builder()
-                    .title(response.getTitle())
-                    .summary(response.getSummary())
-                    .question(question)
-                    .departmentCode(departmentCode) // String으로 저장
-                    .build();
+            Optional<Group> existingGroup = groupRepository.findByQuestionIdAndDepartmentCode(questionId, departmentCode);
 
+            Group group;
+            if (existingGroup.isPresent()) {
+                group = existingGroup.get();
+                group.updateContent(response.getTitle(), response.getSummary());
+            } else {
+                group = Group.builder()
+                        .title(response.getTitle())
+                        .summary(response.getSummary())
+                        .question(question)
+                        .departmentCode(departmentCode)
+                        .build();
+            }
             groupRepository.save(group);
-            lastResponse = response;
         }
-        return lastResponse;
     }
 
 }

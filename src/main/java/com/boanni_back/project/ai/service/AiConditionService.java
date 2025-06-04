@@ -56,17 +56,26 @@ public class AiConditionService {
 
     public ChatDto.GroqResponse getGroqResponse(String userPrompt) {
         try {
-            String systemInstruction = "당신은 글 요약 담당자입니다. JSON 형식으로 결과를 제공합니다.\n";
+            String systemInstruction = "당신은 조직 내 보안 전문가입니다. JSON 형식으로 결과를 제공합니다.\n";
             Prompt prompt = new Prompt(
                     new SystemMessage(systemInstruction),
                     new UserMessage(userPrompt)
             );
 
             ChatResponse response = groqChatModel.call(prompt);
+            // ✅ Groq 응답 원본 로그 추가
+            log.info("Groq 응답 원본: {}", response.getResults());
+
             JsonNode json = getJsonResponse(response);
 
-            return ChatDto.GroqResponse.fromJson(json);
+            // groq json 응답 확인하기
+            JsonNode titleNode = json.get("title");
+            JsonNode summaryNode = json.get("summary");
+            log.info("Groq 응답 titleNode : " + titleNode);
+            log.info("Groq 응답 summaryNode : " + summaryNode);
 
+
+            return ChatDto.GroqResponse.fromJson(json);
         } catch (JsonProcessingException e) {
             log.error("JSON 파싱 실패: {}", e.getMessage(), e);
             throw new BusinessException(ErrorCode.API_RESPONSE_TYPE_ERROR);
@@ -82,13 +91,21 @@ public class AiConditionService {
         String resultText = response.getResult().getOutput().getText();
 
         // JSON 코드 블록 제거 처리
-        resultText = resultText.replaceAll("(?s)```json|```", "").trim();
+        resultText = resultText.replaceAll("(?s)```json.*?```", "").trim();
+
+        // JSON 문자열만 추출 (중괄호{}로 감싸진 부분만)
+        int startIndex = resultText.indexOf("{");
+        int endIndex = resultText.lastIndexOf("}");
+        if (startIndex == -1 || endIndex == -1 || endIndex <= startIndex) {
+            throw new BusinessException(ErrorCode.API_RESPONSE_TYPE_ERROR, "응답에 JSON 형식이 포함되어 있지 않습니다.");
+        }
+        String jsonString = resultText.substring(startIndex, endIndex + 1);
 
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readTree(resultText);
+            return mapper.readTree(jsonString);
         } catch (JsonProcessingException e) {
-            throw new BusinessException(ErrorCode.API_RESPONSE_TYPE_ERROR, "JSON 파싱 실패: " + resultText);
+            throw new BusinessException(ErrorCode.API_RESPONSE_TYPE_ERROR, "JSON 파싱 실패: " + jsonString, e);
         }
     }
 }
