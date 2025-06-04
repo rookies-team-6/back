@@ -58,19 +58,19 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBoard(@PathVariable Long id,
+    public ResponseEntity<Long> updateBoard(@PathVariable Long id,
                                             @RequestBody WriteBoardRequestDTO request,
                                             Authentication authentication) {
         Long userId = extractUserId(authentication);
-        boardService.updateBoard(id, request, userId);
-        return ResponseEntity.ok().build();
+        Long response=boardService.updateBoard(id, request, userId);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<Long> deleteBoard(@PathVariable Long id, Authentication authentication) {
         Long userId = extractUserId(authentication);
-        boardService.deleteBoard(id, userId);
-        return ResponseEntity.noContent().build();
+        Long response=boardService.deleteBoard(id, userId);
+        return ResponseEntity.ok(response);
     }
 
     private Long extractUserId(Authentication authentication) {
