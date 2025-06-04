@@ -18,4 +18,8 @@ public interface UsersRepository extends JpaRepository<Users,Long> {
 
     @Query("SELECT u.groupNum FROM Users u WHERE u.id = :id")
     Long findGroupNumById(@Param("id") Long id);
+
+    @Query("SELECT u FROM Users u JOIN FETCH u.employeeNumber WHERE u.email = :email")
+    Optional<Users> findByEmailWithEmployeeNumber(@Param("email") String email);
+
 }
