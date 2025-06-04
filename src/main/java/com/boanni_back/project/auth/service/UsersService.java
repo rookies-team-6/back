@@ -24,7 +24,9 @@ public class UsersService {
 //       비밀번호 일치 확인
         passwordCheck(request);
 //        이메일중복 확인
-        emailDuplicateCheck(request);
+        if(isEmailDuplicate(request.getEmail())){
+            throw new BusinessException(ErrorCode.AUTH_EMAIL_DUPLICATE_ERROR);
+        }
 
         EmployeeNumber employeeNumber = employeeNumberRepository.findByEmployeeNum(request.getEmployeeNum())
                 .orElseThrow(() -> new BusinessException(ErrorCode.EMPLOYEE_AUTH_ERROR));
@@ -39,16 +41,16 @@ public class UsersService {
                 .build();
 
         usersRepository.save(user);
+
+        employeeNumber.markAsUsed();
+        employeeNumberRepository.save(employeeNumber);
+
         return new SignUpResponseDTO(employeeNumber.getEmployeeNum(),user.getEmail());
     }
 
 
-
-
-    private void emailDuplicateCheck(SignUpRequestDTO request) {
-        if (usersRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new BusinessException(ErrorCode.AUTH_EMAIL_DUPLICATE_ERROR);
-        }
+    public boolean isEmailDuplicate(String email) {
+        return usersRepository.findByEmail(email).isPresent();
     }
 
     private void passwordCheck(SignUpRequestDTO request) {
