@@ -1,14 +1,13 @@
 package com.boanni_back.project.auth.controller.dto;
 
+import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UsersDto {
 
@@ -98,4 +97,32 @@ public class UsersDto {
                     .build();
         }
     }
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class UserHomeResponse {
+        private Long userId;
+        private String name;
+        private Long groupNum;
+        private EmployeeType employeeType;
+        private int personalScore;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class GroupScoreDto {
+        private Long groupNum;
+        private int groupScore;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class UserGroupScoresResponse {
+        private UsersDto.UserHomeResponse user;
+        private List<GroupScoreDto> groupScores;
+    }
+
+
 }
