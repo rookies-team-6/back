@@ -10,6 +10,8 @@ import com.boanni_back.project.ai.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,14 +25,12 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AdminRepository adminRepository;
 
-    // 보안 문제 전체 조회
-    public List<QuestionDto.Response> getAllQuestions() {
-        return questionRepository.findAll()
-                .stream()
-                .map(QuestionDto.Response::fromEntity)
-                .toList();
+    // 보안 문제 전체 조회 페이지네이션 추가
+    public Page<QuestionDto.Response> getAllQuestions(Pageable pageable) {
+        return questionRepository.findAll(pageable)
+                .map(QuestionDto.Response::fromEntity);
     }
-
+    
     // 보안 문제 개별 조회
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
@@ -65,5 +65,10 @@ public class QuestionService {
         return QuestionDto.Response.fromEntity(questionRepository.save(question));
     }
 
+    //문제 키워드 검색
+    public Page<QuestionDto.Response> searchQuestions(String keyword, Pageable pageable) {
+        return questionRepository.findByQuestionContaining(keyword, pageable)
+                .map(QuestionDto.Response::fromEntity);
+    }
 
 }
