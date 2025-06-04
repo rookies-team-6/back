@@ -1,7 +1,7 @@
 package com.boanni_back.project.ai.controller;
 
-import com.boanni_back.project.ai.controller.dto.QuestionDto;
-import com.boanni_back.project.ai.service.QuestionService;
+import com.boanni_back.project.auth.controller.dto.UsersDto;
+import com.boanni_back.project.ai.service.UserService;
 import com.boanni_back.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/questions")
-public class QuestionController {
+@RequestMapping("/api/home")
+public class UserController {
 
-    private final QuestionService questionService;
-  
-    // 보안 문제 개별 조회 - JSON API 유지
-    @GetMapping("/me")
-    public ResponseEntity<QuestionDto.Response> getQuestionByIndex(Authentication authentication) {
+    private final UserService userService;
+
+    @GetMapping
+    public ResponseEntity<UsersDto.UserGroupScoresResponse> getUserWithGroupScores(Authentication authentication) {
         Long userId = SecurityUtil.extractUserId(authentication);
-        return ResponseEntity.ok(questionService.getQuestionByIndex(userId));
+        return ResponseEntity.ok(userService.getUserWithGroupScores(userId));
     }
+
 }
