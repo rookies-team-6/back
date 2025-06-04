@@ -15,7 +15,6 @@ public class AdminDeadlineDto {
     @AllArgsConstructor
     public static class Request {
         private Long userId;
-        private LocalDate questionSolveDeadline; //기존 마감일
         private LocalDate newDeadline; //수정할 마감일
     }
 
@@ -26,6 +25,8 @@ public class AdminDeadlineDto {
     public static class Response {
         private Long userId;
         private String username;
+        private String employeeType;
+        private String departmentCode;
         private LocalDate oldDeadline;
         private LocalDate newDeadline;
 
@@ -33,6 +34,8 @@ public class AdminDeadlineDto {
             return Response.builder()
                     .userId(user.getId())
                     .username(user.getEmployeeNumber().getUsername())
+                    .employeeType(user.getEmployeeType().name())
+                    .departmentCode(user.getEmployeeNumber().getDepartmentCode())
                     .oldDeadline(oldDeadline)
                     .newDeadline(user.getQuestionSolveDeadline())
                     .build();
