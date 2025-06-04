@@ -1,9 +1,13 @@
 package com.boanni_back.project.auth.controller;
 
 import com.boanni_back.project.auth.controller.dto.*;
+import com.boanni_back.project.auth.entity.CustomUserDetails;
 import com.boanni_back.project.auth.entity.EmployeeType;
+import com.boanni_back.project.auth.service.CustomUserDetailsService;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.UsersService;
+import com.boanni_back.project.exception.BusinessException;
+import com.boanni_back.project.exception.ErrorCode;
 import com.boanni_back.project.jwt.JwtTokenProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,8 @@ public class AuthController  {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final CustomUserDetailsService customUserDetailsService;
+
 //    사원 번호 확인 컨트롤러
     @GetMapping("/verify")
     public ResponseEntity<VerifyResponseDTO> verifyEmployeeNum(@ModelAttribute VerifyRequestDTO request){
@@ -47,24 +53,21 @@ public class AuthController  {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<SignInResponseDTO> signIn(@RequestBody SignInRequestDTO request){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // 2) 인증 성공 시 JWT 생성
-        String token = jwtTokenProvider.generateToken(authentication);
-
-        SignInResponseDTO response = new SignInResponseDTO(token, "Bearer");
-
-        // 3) 토큰 응답
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<SignInResponseDTO> signIn(@RequestBody SignInRequestDTO request) {
+        SignInResponseDTO response = usersService.signIn(request);
+        return ResponseEntity.ok(response);
     }
+
     @GetMapping("/email/check")
     public ResponseEntity<Boolean> checkEmailDuplicate(@RequestParam String email){
         boolean isDuplicate = usersService.isEmailDuplicate(email);
         return ResponseEntity.ok(isDuplicate);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<SignInResponseDTO> refreshToken(@RequestBody RefreshTokenRequestDTO request) {
+        SignInResponseDTO response = usersService.refreshToken(request);
+        return ResponseEntity.ok(response);
     }
 }
 
