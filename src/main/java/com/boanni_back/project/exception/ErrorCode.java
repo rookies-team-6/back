@@ -23,6 +23,7 @@ public enum ErrorCode {
     AUTH_REGISTERED_EMPLOYEE_NUMBER_ERROR("A006","이미 가입된 사원 번호입니다.",HttpStatus.BAD_REQUEST),
     AUTH_EMAIL_NOT_FOUND("A007","가입되지 않은 이메일입니다.",HttpStatus.NOT_FOUND),
     AUTH_NOT_FOUND_BY_ID("A008","찾을 수 없는 ID입니다.",HttpStatus.NOT_FOUND),
+    AUTH_INVALID_TOKEN("A009","유효하지 않은 토큰입니다.",HttpStatus.BAD_REQUEST),
 
 //    Board 관련 에러입니다.
     BOARD_NOT_FOUND_BY_ID("B001","ID에 해당하는 게시글을 찾을 수 없습니다.",HttpStatus.NOT_FOUND),
