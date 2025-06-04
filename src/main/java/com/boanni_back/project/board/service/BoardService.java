@@ -5,6 +5,7 @@ import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.board.controller.dto.AllBoardsResponseDTO;
 import com.boanni_back.project.board.controller.dto.SingleBoardResponseDTO;
 import com.boanni_back.project.board.controller.dto.WriteBoardRequestDTO;
+import com.boanni_back.project.board.controller.dto.WriteBoardResponseDTO;
 import com.boanni_back.project.board.entity.Board;
 import com.boanni_back.project.board.repository.BoardRepository;
 import com.boanni_back.project.exception.BusinessException;
@@ -33,14 +34,14 @@ public class BoardService {
     }
 
     // 단일 게시글 조회
-    public SingleBoardResponseDTO getSingleBoard(Long id) {
+    public SingleBoardResponseDTO getSingleBoard(Long id,Long userId) {
         Board board = boardRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.BOARD_NOT_FOUND_BY_ID));
-        return new SingleBoardResponseDTO(board);
+        return new SingleBoardResponseDTO(board,userId);
     }
 
     // 게시글 작성
-    public void writeBoard(WriteBoardRequestDTO request, Long userId) {
+    public WriteBoardResponseDTO writeBoard(WriteBoardRequestDTO request, Long userId) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTH_NOT_FOUND_BY_ID));
 
@@ -51,6 +52,8 @@ public class BoardService {
                 .build();
 
         boardRepository.save(board);
+
+        return new WriteBoardResponseDTO(board.getId());
     }
 
     // 게시글 수정
