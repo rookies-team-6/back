@@ -1,5 +1,6 @@
 package com.boanni_back.project.auth.service;
 
+import com.boanni_back.project.auth.entity.CustomUserDetails;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
@@ -21,14 +22,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Users user = usersRepository.findByEmail(email)
+        Users user = usersRepository.findByEmailWithEmployeeNumber(email)
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
 
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getEmployeeType().name()))
-        );
+
+        return new CustomUserDetails(user);
+
     }
 }

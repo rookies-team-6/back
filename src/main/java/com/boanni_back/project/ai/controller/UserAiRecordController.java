@@ -3,9 +3,10 @@ package com.boanni_back.project.ai.controller;
 
 import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
 import com.boanni_back.project.ai.service.UserAiRecordService;
+import com.boanni_back.project.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,13 +40,15 @@ public class UserAiRecordController {
 
     // 자신이 푼 문제 조회
     @GetMapping("/solved")
-    public ResponseEntity<List<UserAiRecordDto.Response>> getSolvedRecord(@PathVariable Long userId){
+    public ResponseEntity<List<UserAiRecordDto.Response>> getSolvedRecord(Authentication authentication){
+        Long userId = SecurityUtil.extractUserId(authentication);
         return ResponseEntity.ok(userAiRecordService.getSolvedRecord(userId));
     }
 
     // 푼 문제 중 북마크한 문제 조회
-    @GetMapping("/bookmarked")
-    public ResponseEntity<List<UserAiRecordDto.Response>> getBookMarkedRecord(@PathVariable Long userId){
+    @GetMapping("/solved/bookmarked")
+    public ResponseEntity<List<UserAiRecordDto.Response>> getBookMarkedRecord(Authentication authentication){
+        Long userId = SecurityUtil.extractUserId(authentication);
         return ResponseEntity.ok(userAiRecordService.getBookMarkedRecord(userId));
     }
 }

@@ -2,6 +2,8 @@ package com.boanni_back.project.admin.repository;
 
 import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +26,8 @@ public interface AdminRepository extends JpaRepository<Users, Long> {
     Long findCurrentQuestionIndexById(@Param("id") Long id);
   
     List<Users> findByQuestionSolveDeadlineBefore(LocalDate date);
+
+    Page<Users> findAll(Pageable pageable);
+
+    List<Users> findByEmployeeNumber_UsernameContaining(String username);
 }
