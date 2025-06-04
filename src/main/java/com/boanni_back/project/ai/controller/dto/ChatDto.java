@@ -25,4 +25,19 @@ public class ChatDto {
             );
         }
     }
+
+    @Data
+    @AllArgsConstructor
+    public static class GroqResponse {
+        private String title;
+        private String summary;
+
+        // JSON 파싱 → DTO 변환 팩토리 메서드
+        public static GroqResponse fromJson(JsonNode json) {
+            return new GroqResponse(
+                    json.get("title").asText(),
+                    json.get("answer").asText()
+            );
+        }
+    }
 }
