@@ -17,7 +17,7 @@ public class GroupDto {
         private String title;
         private String summary;
         private Long questionId;       // Question 엔티티 대신 ID만 사용
-        private String departmentCode;
+        private Long groupNum;
 
         public static GroupDto.Response fromEntity(Group group) {
             return GroupDto.Response.builder()
@@ -25,7 +25,7 @@ public class GroupDto {
                     .title(group.getTitle())
                     .summary(group.getSummary())
                     .questionId(group.getQuestion().getId())
-                    .departmentCode(group.getDepartmentCode())
+                    .groupNum(group.getGroupNum())
                     .build();
         }
     }

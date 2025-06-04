@@ -26,8 +26,8 @@ public class Group {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Column(name = "department_code", nullable = false)
-    private String departmentCode;
+    @Column(name = "group_num", nullable = false)
+    private Long groupNum;
 
     public void updateContent(String title, String summary) {
         this.title = title;
