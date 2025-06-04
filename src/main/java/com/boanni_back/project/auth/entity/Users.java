@@ -38,8 +38,8 @@ public class Users {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createAt;
 
-    @Column
-    private String departmentCode;
+    @Column(nullable = false)
+    private Long groupNum;
 
     @Column(nullable = false)
     private LocalDate questionSolveDeadline;
