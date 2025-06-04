@@ -46,11 +46,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
-                    .requestMatchers("/auth/verify**","/auth/signin", "/auth/signup", "/h2-console/**").permitAll()
-////                        ADMIN 권한이 있어야 이용 가능하다.
-                    .requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
+                    .requestMatchers("/auth/verify**","/auth/signin", "/auth/signup", "/h2-console/**", "/api/**").permitAll()
 ////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
-                    .requestMatchers("/api/record/**", "/api/chat/**").permitAll()
+                    .requestMatchers("/api/record/**", "/api/chat/**", "/api/chat/**", "/api/group/**").permitAll()
             );
         return http.build();
     }

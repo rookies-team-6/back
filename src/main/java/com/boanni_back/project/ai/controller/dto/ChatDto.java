@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Optional;
+
 public class ChatDto {
 
     @Data
@@ -34,10 +36,10 @@ public class ChatDto {
 
         // JSON 파싱 → DTO 변환 팩토리 메서드
         public static GroqResponse fromJson(JsonNode json) {
-            return new GroqResponse(
-                    json.get("title").asText(),
-                    json.get("answer").asText()
-            );
+            String title = Optional.ofNullable(json.get("title")).map(JsonNode::asText).orElse(null);
+            String summary = Optional.ofNullable(json.get("summary")).map(JsonNode::asText).orElse(null);
+
+            return new GroqResponse(title, summary);
         }
     }
 }

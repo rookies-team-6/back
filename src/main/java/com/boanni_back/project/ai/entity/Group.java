@@ -7,6 +7,7 @@ import lombok.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 @Builder
 @Table(name = "groups")
 public class Group {
@@ -27,4 +28,10 @@ public class Group {
 
     @Column(name = "department_code", nullable = false)
     private String departmentCode;
+
+    public void updateContent(String title, String summary) {
+        this.title = title;
+        this.summary = summary;
+    }
+
 }
