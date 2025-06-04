@@ -34,6 +34,7 @@ public class UsersDto {
         private String email;
         private String employeeType;
         private String employeeNumber;
+        private String departmentCode;
         private int score;
         private Long currentQuestionIndex;
         private String username;
@@ -86,6 +87,7 @@ public class UsersDto {
                     .email(user.getEmail())
                     .employeeType(user.getEmployeeType().name())
                     .employeeNumber(user.getEmployeeNumber().getEmployeeNum())
+                    .departmentCode(user.getEmployeeNumber().getDepartmentCode())
                     .score(user.getScore())
                     .currentQuestionIndex(user.getCurrentQuestionIndex())
                     .username(user.getEmployeeNumber().getUsername())

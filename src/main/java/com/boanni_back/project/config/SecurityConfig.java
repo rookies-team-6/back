@@ -1,5 +1,6 @@
 package com.boanni_back.project.config;
 
+import com.boanni_back.project.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -28,6 +30,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;  // 🔥 추가
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
@@ -47,10 +51,17 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
                     .requestMatchers("/auth/verify**","/auth/signin", "/auth/signup", "/h2-console/**").permitAll()
+                    .requestMatchers("/admin/**", "/api/users/**", "/api/questions/**", "/images/**").permitAll()
+                    .anyRequest().permitAll() //개발 중에만 모두 허용
+                    .requestMatchers("/auth/**", "/h2-console/**").permitAll()
+
 ////                        ADMIN 권한이 있어야 이용 가능하다.
-                    .requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
+                    //.requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
 ////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
-            );
+                    .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // 🔥 조립
+
         return http.build();
     }
 

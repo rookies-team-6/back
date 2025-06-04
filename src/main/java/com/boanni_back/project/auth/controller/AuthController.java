@@ -60,7 +60,11 @@ public class AuthController  {
 
         // 3) 토큰 응답
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
+    }
+    @GetMapping("/email/check")
+    public ResponseEntity<Boolean> checkEmailDuplicate(@RequestParam String email){
+        boolean isDuplicate = usersService.isEmailDuplicate(email);
+        return ResponseEntity.ok(isDuplicate);
     }
 }
 
