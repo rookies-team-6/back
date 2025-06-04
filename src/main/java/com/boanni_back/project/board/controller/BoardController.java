@@ -1,16 +1,14 @@
 package com.boanni_back.project.board.controller;
 
 import com.boanni_back.project.auth.entity.CustomUserDetails;
-import com.boanni_back.project.auth.entity.Users;
-import com.boanni_back.project.auth.repository.UsersRepository;
+
 import com.boanni_back.project.board.controller.dto.AllBoardsResponseDTO;
 import com.boanni_back.project.board.controller.dto.SingleBoardResponseDTO;
 import com.boanni_back.project.board.controller.dto.WriteBoardRequestDTO;
-import com.boanni_back.project.board.entity.Board;
-import com.boanni_back.project.board.repository.BoardRepository;
+
+import com.boanni_back.project.board.controller.dto.WriteBoardResponseDTO;
 import com.boanni_back.project.board.service.BoardService;
-import com.boanni_back.project.exception.BusinessException;
-import com.boanni_back.project.exception.ErrorCode;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,16 +44,17 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SingleBoardResponseDTO> getSingleBoard(@PathVariable Long id){
-        SingleBoardResponseDTO response = boardService.getSingleBoard(id);
+    public ResponseEntity<SingleBoardResponseDTO> getSingleBoard(@PathVariable Long id,Authentication authentication){
+        Long userId = extractUserId(authentication);
+        SingleBoardResponseDTO response = boardService.getSingleBoard(id,userId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<Void> writeBoard(@RequestBody WriteBoardRequestDTO request, Authentication authentication) {
+    public ResponseEntity<WriteBoardResponseDTO> writeBoard(@RequestBody WriteBoardRequestDTO request, Authentication authentication) {
         Long userId = extractUserId(authentication);
-        boardService.writeBoard(request, userId);
-        return ResponseEntity.status(201).build();
+        WriteBoardResponseDTO response = boardService.writeBoard(request, userId);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")

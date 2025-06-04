@@ -23,4 +23,8 @@ public class EmployeeNumber {
 
     @Column(nullable = false)
     private boolean used;
+
+    public void markAsUsed() {
+        this.used = true;
+    }
 }
