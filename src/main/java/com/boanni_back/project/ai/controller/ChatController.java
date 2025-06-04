@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Map;
+
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/chat")
-
 public class ChatController {
 
     private final ChatService chatService;
@@ -24,8 +26,8 @@ public class ChatController {
 
     // groq api 요청
     @PostMapping("/groq/{userId}")
-    public ResponseEntity<ChatDto.GroqResponse> getGroqAnswer(@PathVariable Long userId){
-        ChatDto.GroqResponse response = chatService.processGroqAnswer(userId);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Map<String, String>> getGroqAnswer(@PathVariable Long userId) {
+        chatService.processGroqAnswer(userId);
+        return ResponseEntity.ok(Collections.singletonMap("message", "ok"));
     }
 }

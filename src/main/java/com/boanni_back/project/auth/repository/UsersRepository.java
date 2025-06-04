@@ -16,8 +16,8 @@ public interface UsersRepository extends JpaRepository<Users,Long> {
     Optional<Users> findByEmail(String email);
     Optional<Users> findByEmployeeNumber(EmployeeNumber employeeNumber);
 
-    @Query("SELECT u FROM Users u JOIN u.employeeNumber e WHERE e.departmentCode = :departmentCode")
     List<Users> findAllByDepartmentCode(@Param("departmentCode") String departmentCode);
 
-    String findEmployeeNumberById(Long id);
+    @Query("SELECT u.departmentCode FROM Users u WHERE u.id = :id")
+    String findDepartmentCodeById(@Param("id") Long id);
 }
