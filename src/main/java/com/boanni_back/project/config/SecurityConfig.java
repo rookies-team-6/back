@@ -51,14 +51,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
                     .requestMatchers("/auth/verify**","/auth/signin", "/auth/signup", "/h2-console/**").permitAll()
-                    .requestMatchers("/admin/**", "/api/users/**", "/api/questions/**", "/images/**").permitAll()
-                    .anyRequest().permitAll() //개발 중에만 모두 허용
+                    .requestMatchers("/admin/**", "/api/users/**", "/api/questions/**", "/images/**", "/api/record/**").permitAll()
                     .requestMatchers("/auth/**", "/h2-console/**").permitAll()
 
 ////                        ADMIN 권한이 있어야 이용 가능하다.
                     //.requestMatchers(HttpMethod.POST, "/api/questions").hasRole("ADMIN")
 ////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
                     .anyRequest().authenticated()
+                    //.anyRequest().permitAll() //개발 중에만 모두 허용
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // 🔥 조립
 
