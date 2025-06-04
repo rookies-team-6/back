@@ -57,7 +57,7 @@ public class BoardService {
     }
 
     // 게시글 수정
-    public void updateBoard(Long id, WriteBoardRequestDTO request, Long userId) {
+    public Long updateBoard(Long id, WriteBoardRequestDTO request, Long userId) {
         Board board = boardRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.BOARD_NOT_FOUND_BY_ID));
 
@@ -68,10 +68,12 @@ public class BoardService {
         board.setTitle(request.getTitle());
         board.setContents(request.getContents());
         boardRepository.save(board);
+
+        return board.getId();
     }
 
     // 게시글 삭제
-    public void deleteBoard(Long id, Long userId) {
+    public Long deleteBoard(Long id, Long userId) {
         Board board = boardRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.BOARD_NOT_FOUND_BY_ID));
 
@@ -80,6 +82,8 @@ public class BoardService {
         }
 
         boardRepository.delete(board);
+
+        return board.getId();
     }
 
     public int getTotalPages(int size) {
