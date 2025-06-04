@@ -54,8 +54,8 @@ public class ChatService {
         // Groq API에 전송할 프롬프트 구성
         String prompt = gptPromptService.buildPrompt(question.getQuestion(), userRecord.getUserAnswer());
 
-         // Groq API 호출
-         ChatDto.Response response = aiConditionService.getChatResponse(prompt);
+        // Groq API 호출
+        ChatDto.Response response = aiConditionService.getChatResponse(prompt);
 
         // UserAiRecord와 Users 업데이트
         userRecord.setAiAnswer(response.getModel_answer());
@@ -72,20 +72,20 @@ public class ChatService {
 
     private int calculateNewScore(int currentScore, int addedScore, long num) {
         // 가중 평균으로 점수 누적
-        long total = (long)currentScore * (num-1) + addedScore;
-        return (int)(total / num);
+        long total = (long) currentScore * (num - 1) + addedScore;
+        return (int) (total / num);
     }
 
     // 그룹 별 키워드 지정
     public void processGroqAnswer(Long userId) {
 
-        // userId로 departmentCode 가져오기
-        String departmentCode = usersRepository.findDepartmentCodeById(userId);
-        if (departmentCode == null) {
+        // userId로 groupNum 가져오기
+        Long groupNum = usersRepository.findGroupNumById(userId);
+        if (groupNum == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND, userId);
         }
 
-        List<Users> departmentUsers = usersRepository.findAllByDepartmentCode(departmentCode);
+        List<Users> departmentUsers = usersRepository.findAllByGroupNum(groupNum);
 
         // user로 user가 답한 질문들 모두 가져오기
         Map<Long, List<String>> answersGroupedByQuestion = userAiRecordRepository.findAllByUsersIn(departmentUsers)
@@ -96,7 +96,6 @@ public class ChatService {
                 ));
 
         // 각 질문에 대해 Groq 응답 생성
-        ChatDto.GroqResponse lastResponse = null;   // 임시, 수정하기!
         for (Map.Entry<Long, List<String>> entry : answersGroupedByQuestion.entrySet()) {
             Long questionId = entry.getKey();
             List<String> answers = entry.getValue();
@@ -107,21 +106,24 @@ public class ChatService {
             Question question = questionRepository.findById(questionId)
                     .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, questionId));
 
-            Optional<Group> existingGroup = groupRepository.findByQuestionIdAndDepartmentCode(questionId, departmentCode);
+            Optional<Group> existingGroup = groupRepository.findByQuestionIdAndGroupNum(questionId, groupNum);
 
-            Group group;
-            if (existingGroup.isPresent()) {
-                group = existingGroup.get();
-                group.updateContent(response.getTitle(), response.getSummary());
-            } else {
-                group = Group.builder()
-                        .title(response.getTitle())
-                        .summary(response.getSummary())
-                        .question(question)
-                        .departmentCode(departmentCode)
-                        .build();
-            }
-            groupRepository.save(group);
+            // 기존에 있는거면 업데이트, 아니면 추가
+            existingGroup.ifPresentOrElse(
+                    group -> {
+                        group.updateContent(response.getTitle(), response.getSummary());
+                        groupRepository.save(group);
+                    },
+                    () -> {
+                        Group group = Group.builder()
+                                .title(response.getTitle())
+                                .summary(response.getSummary())
+                                .question(question)
+                                .groupNum(groupNum)
+                                .build();
+                        groupRepository.save(group);
+                    }
+            );
         }
     }
 

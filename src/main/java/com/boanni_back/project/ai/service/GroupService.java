@@ -14,6 +14,7 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
 
+    // group 반환값
     public List<GroupDto.Response> getGroupList() {
         return groupRepository.findAll()
                 .stream()
