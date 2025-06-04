@@ -39,6 +39,9 @@ public class Users {
     private LocalDateTime createAt;
 
     @Column(nullable = false)
+    private Long groupNum;
+
+    @Column(nullable = false)
     private LocalDate questionSolveDeadline;
 
     @OneToOne(fetch = FetchType.LAZY)

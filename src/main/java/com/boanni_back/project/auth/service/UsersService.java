@@ -42,6 +42,9 @@ public class UsersService {
         EmployeeNumber employeeNumber = employeeNumberRepository.findByEmployeeNum(request.getEmployeeNum())
                 .orElseThrow(() -> new BusinessException(ErrorCode.EMPLOYEE_AUTH_ERROR));
 
+        Long groupNum = getGroupNum(employeeNumber.getDepartmentCode());
+        System.out.println(groupNum);
+
         String rawPassword = request.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         Users user = Users.builder()
@@ -49,6 +52,7 @@ public class UsersService {
                 .employeeNumber(employeeNumber)
                 .password(encodedPassword)
                 .employeeType(employeeType)
+                .groupNum(groupNum)
                 .build();
 
         usersRepository.save(user);
@@ -57,6 +61,10 @@ public class UsersService {
         employeeNumberRepository.save(employeeNumber);
 
         return new SignUpResponseDTO(employeeNumber.getEmployeeNum(),user.getEmail());
+    }
+
+    private static Long getGroupNum(String departmentCode) {
+        return Long.parseLong(departmentCode.substring(1));
     }
 
     public SignInResponseDTO signIn(SignInRequestDTO request) {
