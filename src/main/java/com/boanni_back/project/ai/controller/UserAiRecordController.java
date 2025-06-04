@@ -38,13 +38,13 @@ public class UserAiRecordController {
     }
 
     // 자신이 푼 문제 조회
-    @GetMapping("/solved/{userId}")
+    @GetMapping("/solved")
     public ResponseEntity<List<UserAiRecordDto.Response>> getSolvedRecord(@PathVariable Long userId){
         return ResponseEntity.ok(userAiRecordService.getSolvedRecord(userId));
     }
 
     // 푼 문제 중 북마크한 문제 조회
-    @GetMapping("/bookmarked/{userId}")
+    @GetMapping("/bookmarked")
     public ResponseEntity<List<UserAiRecordDto.Response>> getBookMarkedRecord(@PathVariable Long userId){
         return ResponseEntity.ok(userAiRecordService.getBookMarkedRecord(userId));
     }

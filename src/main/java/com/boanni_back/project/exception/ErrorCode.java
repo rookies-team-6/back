@@ -23,7 +23,7 @@ public enum ErrorCode {
     AUTH_EMAIL_NOT_FOUND("A007","가입되지 않은 이메일입니다.",HttpStatus.NOT_FOUND),
 
     // Question 관련 에러
-    INDEX_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
+    QUESTION_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
     NO_MORE_QUESTION("Q002", "더 이상 문제가 없습니다. 마지막 문제 INDEX : %s", HttpStatus.NOT_FOUND),
     NO_QUESTION("Q003", "문제 내용이 비어있습니다. 문제를 입력해주세요.", HttpStatus.NOT_FOUND),
 

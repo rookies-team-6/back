@@ -2,30 +2,31 @@ package com.boanni_back.project.ai.service;
 
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
 public class GroqPromptService {
-    // 프롬프트 구성
-    public String buildPrompt(String question, String userAnswer) {
+
+    // 그룹 요약 프롬프트 구성
+    public String buildPrompt(List<String> answers) {
+
+        // List<String> 형식 String으로 변경
+        String joinedAnswers = answers.stream()
+                .map(answer -> "- " + answer)
+                .collect(Collectors.joining("\n"));
+
+        // 프롬프트
         return """
-            해당 문제에 대해 사용자가 답변을 알맞게 썼는지 채점 기준대로 평가해 점수를 측정해주고, 모범답안을 작성해주세요.
-            답변은 아래있는 JSON 형식으로 한국어로 응답해주세요.
-            채점 기준 (총 100점):
-            - 기술적 조치 (50점)
-            - 정책적 조치 (20점)
-            - 구체성/실현 가능성 (30점)
-            - 예시 포함 여부 (추가 점수 5점)
-            
-            문제:
+            다음은 부서 직원들이 문제에 대한 답변들을 모은 것입니다. 이 내용의 빈도가 많은 문장이나 중요한 점을 정리하여 주세요:
+           
+            직원들의 답변들:
             %s
-            사용자 답변:
-            %s
-            
+           
             {
-              "model_answer": "내용 요약 + 예시(선택)",
-              "score": 숫자 (0~100),
-              "feedback": "간결한 피드백"
+              "title": "중요 내용 정리",
+              "summary": "내용"
             }
-            """.formatted(question, userAnswer);
+            """.formatted(joinedAnswers);
     }
 }

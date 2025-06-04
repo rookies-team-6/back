@@ -19,7 +19,6 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-
 public class UserAiRecordService {
 
     private final UserAiRecordRepository userAiRecordRepository;
@@ -30,7 +29,7 @@ public class UserAiRecordService {
     public UserAiRecordDto.Response saveUserAnswer(UserAiRecordDto.Request request) {
         // 연관 엔티티 조회
         Question question = questionRepository.findById(request.getQuestionId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, request.getQuestionId()));
+                .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, request.getQuestionId()));
 
         Users user = adminRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
@@ -67,7 +66,7 @@ public class UserAiRecordService {
     public UserAiRecordDto.Response saveBookedmarked(UserAiRecordDto.BookmarkedRequest request) {
         // 유저와 문제 조회
         Question question = questionRepository.findById(request.getQuestionId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, request.getQuestionId()));
+                .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, request.getQuestionId()));
 
         Users user = adminRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
@@ -108,7 +107,6 @@ public class UserAiRecordService {
         return records.stream()
                 .map(UserAiRecordDto.Response::fromEntity)
                 .toList();
-
     }
 }
 
