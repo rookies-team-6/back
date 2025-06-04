@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Map;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/chat")
@@ -13,10 +16,17 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    // test : json으로 prompt 요청 -> 응답
-    @PostMapping("/test/{userId}")
-    public ResponseEntity<ChatDto.Response> testGroq(@PathVariable Long userId) {
+    // chat gpt api 요청
+    @PostMapping("/gpt/{userId}")
+    public ResponseEntity<ChatDto.Response> getGptAnswer(@PathVariable Long userId) {
         ChatDto.Response response = chatService.processChatAnswer(userId);
         return ResponseEntity.ok(response);
+    }
+
+    // groq api 요청
+    @PostMapping("/groq/{userId}")
+    public ResponseEntity<Map<String, String>> getGroqAnswer(@PathVariable Long userId) {
+        chatService.processGroqAnswer(userId);
+        return ResponseEntity.ok(Collections.singletonMap("message", "ok"));
     }
 }

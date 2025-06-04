@@ -7,13 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users,Long> {
-    //Optional<Users> findByUsername(String username);
     Optional<Users> findByEmail(String email);
     Optional<Users> findByEmployeeNumber(EmployeeNumber employeeNumber);
+    List<Users> findAllByGroupNum(Long groupNum);
+
+    @Query("SELECT u.groupNum FROM Users u WHERE u.id = :id")
+    Long findGroupNumById(@Param("id") Long id);
 
     @Query("SELECT u FROM Users u JOIN FETCH u.employeeNumber WHERE u.email = :email")
     Optional<Users> findByEmailWithEmployeeNumber(@Param("email") String email);
