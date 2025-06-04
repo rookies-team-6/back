@@ -39,7 +39,7 @@ public class QuestionService {
         Long index = user.getCurrentQuestionIndex();
 
         Question question = questionRepository.findById(index)
-                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
+                .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, index));
 
         boolean canSolve = !user.getQuestionSolveDeadline().isBefore(LocalDate.now());
 
