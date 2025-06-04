@@ -8,4 +8,5 @@ import lombok.Getter;
 public class SignInResponseDTO {
     private String token;
     private String tokenType;
+    private String refreshToken;
 }
