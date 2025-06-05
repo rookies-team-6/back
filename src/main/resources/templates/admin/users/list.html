@@ -175,17 +175,14 @@
 <!-- FullCalendar용 이벤트 배열 구성 -->
 <script th:inline="javascript">
   const calendarEvents = [
-    /*[# th:each="user, stat : ${users}" ]*/
+    /*[# th:each="user, stat : ${allUsers}" ]*/
     {
       title: '[[${user.username}]]',
-      date: [[${#temporals.format(user.questionSolveDeadline, 'yyyy-MM-dd')}]]
+      date: [[${#temporals.format(user.newDeadline, 'yyyy-MM-dd')}]]
     }/*[# th:if="${!stat.last}"]*/,/*[/]*/
     /*[/]*/
   ];
-  console.log(calendarEvents);
 </script>
-
-
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
