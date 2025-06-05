@@ -19,6 +19,7 @@ public class AdminProgressService {
     private final AdminRepository adminRepository;
     private final QuestionRepository questionRepository;
 
+    //모든 회원의 학습률 조회
     public List<AdminProgressDto.Response> getAllUserProgress() {
         long totalQuestions = questionRepository.count();
 
@@ -27,6 +28,7 @@ public class AdminProgressService {
                 .collect(Collectors.toList());
     }
 
+    //해당 id 회원의 학습률 조회
     public AdminProgressDto.Response getUserProgress(Long userId) {
         Users user = adminRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
