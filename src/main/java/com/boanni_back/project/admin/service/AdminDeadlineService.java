@@ -3,6 +3,7 @@ package com.boanni_back.project.admin.service;
 import com.boanni_back.project.admin.controller.dto.AdminDeadlineDto;
 import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
+import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,14 @@ import java.util.List;
 public class AdminDeadlineService {
 
     private final AdminRepository adminRepository;
+    private final UsersRepository usersRepository;
+
+    //list.html 달력용(페이징 제거)
+    public List<AdminDeadlineDto.Response> getAllUserDeadlines() {
+        return usersRepository.findAll().stream()
+                .map(user -> AdminDeadlineDto.Response.fromEntity(user, user.getQuestionSolveDeadline()))
+                .toList();
+    }
 
     // 마감일 조회
     public AdminDeadlineDto.Response getDeadline(Long userId) {
