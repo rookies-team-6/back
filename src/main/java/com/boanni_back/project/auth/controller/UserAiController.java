@@ -2,12 +2,13 @@ package com.boanni_back.project.auth.controller;
 
 import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
 import com.boanni_back.project.ai.service.UserAiRecordService;
+import com.boanni_back.project.auth.entity.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/ai")
@@ -21,4 +22,5 @@ public class UserAiController {
             @RequestBody UserAiRecordDto.Request requestDto){
         return ResponseEntity.ok(userAiRecordService.saveUserAnswer(requestDto));
     }
+
 }
