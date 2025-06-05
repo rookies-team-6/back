@@ -48,7 +48,9 @@ public enum ErrorCode {
     //User 학습 기간 관련 에러
     USER_DEADLINE_BEFORE_TODAY("U010", "입력하신 날짜는 과거 날짜입니다.", HttpStatus.BAD_REQUEST),
     USER_DEADLINE_SAME_AS_BEFORE("U011", "입력하신 날짜가 기존 날짜와 동일합니다.", HttpStatus.BAD_REQUEST),
-    USER_DEADLINE_EXPIRED("U012", "학습 마감일이 지나 문제를 풀 수 없습니다. 관리자에게 문의하세요.", HttpStatus.FORBIDDEN);
+    USER_DEADLINE_EXPIRED("U012", "학습 마감일이 지나 문제를 풀 수 없습니다. 관리자에게 문의하세요.", HttpStatus.FORBIDDEN),
+    //Group 관련 에러
+    GROUP_NOT_FOUND("G001", "해당 groupNum을 가진 그룹이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
 
     private final String code;
     private final String message;
