@@ -48,7 +48,6 @@ public class UsersService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.EMPLOYEE_AUTH_ERROR));
 
         Long groupNum = getGroupNum(employeeNumber.getDepartmentCode());
-        System.out.println(groupNum);
 
         String rawPassword = request.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
