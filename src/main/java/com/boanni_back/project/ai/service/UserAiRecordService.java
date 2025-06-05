@@ -76,8 +76,8 @@ public class UserAiRecordService {
 
         // isBookMarked 값 설정
         record.setBookMarked(!record.isBookMarked());
-
         userAiRecordRepository.save(record);
+
         return UserAiRecordDto.Response.fromEntity(record);
 
     }
