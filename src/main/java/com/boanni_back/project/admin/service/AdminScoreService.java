@@ -3,13 +3,10 @@ package com.boanni_back.project.admin.service;
 import com.boanni_back.project.admin.controller.dto.AdminScoreDto;
 import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.ai.repository.QuestionRepository;
-import com.boanni_back.project.auth.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
