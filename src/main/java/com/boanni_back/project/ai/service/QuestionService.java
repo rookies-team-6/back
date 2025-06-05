@@ -1,7 +1,7 @@
 package com.boanni_back.project.ai.service;
 
-import com.boanni_back.project.admin.repository.AdminRepository;
 import com.boanni_back.project.auth.entity.Users;
+import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import com.boanni_back.project.ai.controller.dto.QuestionDto;
@@ -9,7 +9,6 @@ import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ import java.util.List;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
-    private final AdminRepository adminRepository;
+    private final UsersRepository usersRepository;
 
     // 보안 문제 전체 조회 페이지네이션 추가
     public Page<QuestionDto.Response> getAllQuestions(Pageable pageable) {
@@ -34,12 +33,12 @@ public class QuestionService {
     // 보안 문제 개별 조회
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
-        Users user = adminRepository.findById(userId)
+        Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
         Long index = user.getCurrentQuestionIndex();
 
         Question question = questionRepository.findById(index)
-                .orElseThrow(() -> new BusinessException(ErrorCode.INDEX_NOT_FOUND, index));
+                .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, index));
 
         boolean canSolve = !user.getQuestionSolveDeadline().isBefore(LocalDate.now());
 
@@ -47,22 +46,17 @@ public class QuestionService {
             throw new BusinessException(ErrorCode.USER_DEADLINE_EXPIRED, userId);
         }
 
-        adminRepository.save(user);
+        usersRepository.save(user);
 
         return QuestionDto.Response.fromEntity(question, canSolve);
     }
 
     // 보안 문제 생성
-    public QuestionDto.Response createQuestion(QuestionDto.Request request) {
+    public void createQuestion(QuestionDto.Request request) {
         // 문제 비어있을 때
         if (request.getQuestion() == null || request.getQuestion().trim().isEmpty()) {
             throw new BusinessException(ErrorCode.NO_QUESTION);
         }
-
-        Question question = Question.builder()
-                .question(request.getQuestion())
-                .build();
-        return QuestionDto.Response.fromEntity(questionRepository.save(question));
     }
 
     //문제 키워드 검색

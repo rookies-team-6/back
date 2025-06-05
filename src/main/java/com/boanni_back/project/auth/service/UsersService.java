@@ -11,11 +11,14 @@ import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import com.boanni_back.project.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,9 @@ public class UsersService {
         EmployeeNumber employeeNumber = employeeNumberRepository.findByEmployeeNum(request.getEmployeeNum())
                 .orElseThrow(() -> new BusinessException(ErrorCode.EMPLOYEE_AUTH_ERROR));
 
+        Long groupNum = getGroupNum(employeeNumber.getDepartmentCode());
+        System.out.println(groupNum);
+
         String rawPassword = request.getPassword();
         String encodedPassword = passwordEncoder.encode(rawPassword);
         Users user = Users.builder()
@@ -49,6 +55,7 @@ public class UsersService {
                 .employeeNumber(employeeNumber)
                 .password(encodedPassword)
                 .employeeType(employeeType)
+                .groupNum(groupNum)
                 .build();
 
         usersRepository.save(user);
@@ -57,6 +64,10 @@ public class UsersService {
         employeeNumberRepository.save(employeeNumber);
 
         return new SignUpResponseDTO(employeeNumber.getEmployeeNum(),user.getEmail());
+    }
+
+    private static Long getGroupNum(String departmentCode) {
+        return Long.parseLong(departmentCode.substring(1));
     }
 
     public SignInResponseDTO signIn(SignInRequestDTO request) {

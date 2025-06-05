@@ -9,6 +9,7 @@ import com.boanni_back.project.board.controller.dto.WriteBoardRequestDTO;
 import com.boanni_back.project.board.controller.dto.WriteBoardResponseDTO;
 import com.boanni_back.project.board.service.BoardService;
 
+import com.boanni_back.project.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,36 +46,36 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SingleBoardResponseDTO> getSingleBoard(@PathVariable Long id,Authentication authentication){
-        Long userId = extractUserId(authentication);
+        Long userId = SecurityUtil.extractUserId(authentication);
         SingleBoardResponseDTO response = boardService.getSingleBoard(id,userId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<WriteBoardResponseDTO> writeBoard(@RequestBody WriteBoardRequestDTO request, Authentication authentication) {
-        Long userId = extractUserId(authentication);
+        Long userId = SecurityUtil.extractUserId(authentication);
         WriteBoardResponseDTO response = boardService.writeBoard(request, userId);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBoard(@PathVariable Long id,
+    public ResponseEntity<Long> updateBoard(@PathVariable Long id,
                                             @RequestBody WriteBoardRequestDTO request,
                                             Authentication authentication) {
-        Long userId = extractUserId(authentication);
-        boardService.updateBoard(id, request, userId);
-        return ResponseEntity.ok().build();
+        Long userId = SecurityUtil.extractUserId(authentication);
+        Long response=boardService.updateBoard(id, request, userId);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id, Authentication authentication) {
-        Long userId = extractUserId(authentication);
-        boardService.deleteBoard(id, userId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Long> deleteBoard(@PathVariable Long id, Authentication authentication) {
+        Long userId = SecurityUtil.extractUserId(authentication);
+        Long response=boardService.deleteBoard(id, userId);
+        return ResponseEntity.ok(response);
     }
 
-    private Long extractUserId(Authentication authentication) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        return userDetails.getId();
-    }
+//    private Long extractUserId(Authentication authentication) {
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//        return userDetails.getId();
+//    }
 }

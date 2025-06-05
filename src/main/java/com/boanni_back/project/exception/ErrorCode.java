@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
+
     USER_NOT_FOUND("U001", "해당 사용자를 찾을 수 없습니다. ID: %s", HttpStatus.NOT_FOUND),
     USER_NOT_FOUND_BY_EMAIL("U002", "해당 사용자를 찾을 수 없습니다. Email: %s", HttpStatus.NOT_FOUND),
     EMPLOYEE_AUTH_ERROR("EA001","존재하지 않는 사번이거나 가입 완료된 사번입니다.",HttpStatus.NOT_FOUND),
@@ -31,7 +32,7 @@ public enum ErrorCode {
     BOARD_PAGE_OUT_ERROR("B003","해당 페이지에 게시글이 존재하지 않습니다.",HttpStatus.NOT_FOUND),
 
     // Question 관련 에러
-    INDEX_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
+    QUESTION_NOT_FOUND("Q001", "해당 문제를 찾을 수 없습니다. INDEX : %s", HttpStatus.NOT_FOUND),
     NO_MORE_QUESTION("Q002", "더 이상 문제가 없습니다. 마지막 문제 INDEX : %s", HttpStatus.NOT_FOUND),
     NO_QUESTION("Q003", "문제 내용이 비어있습니다. 문제를 입력해주세요.", HttpStatus.NOT_FOUND),
 
@@ -42,11 +43,14 @@ public enum ErrorCode {
     BOOKMARKED_RECORD_NOT_FOUND("A004", "해당 사용자가 북마크한 기록을 찾을 수 없습니다. User ID : %s", HttpStatus.NOT_FOUND),
     // Chat ai 응답 처리
     API_SERVER_ERROR("AI001", "AI 응답 처리 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-    API_RESPONSE_TYPE_ERROR("AI002", "응답에 JSON 형식이 포함되어 있지 않습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    API_RESPONSE_TYPE_ERROR("AI002", "응답에 JSON 형식이 포함되어 있지 않습니다.", HttpStatus.BAD_GATEWAY),
+    API_REVERSE_JSON_ERROR("AI003", "정상적인 JSON 형식 응답이 아닙니다.", HttpStatus.BAD_REQUEST),
     //User 학습 기간 관련 에러
     USER_DEADLINE_BEFORE_TODAY("U010", "입력하신 날짜는 과거 날짜입니다.", HttpStatus.BAD_REQUEST),
     USER_DEADLINE_SAME_AS_BEFORE("U011", "입력하신 날짜가 기존 날짜와 동일합니다.", HttpStatus.BAD_REQUEST),
-    USER_DEADLINE_EXPIRED("U012", "학습 마감일이 지나 문제를 풀 수 없습니다. 관리자에게 문의하세요.", HttpStatus.FORBIDDEN);
+    USER_DEADLINE_EXPIRED("U012", "학습 마감일이 지나 문제를 풀 수 없습니다. 관리자에게 문의하세요.", HttpStatus.FORBIDDEN),
+    //Group 관련 에러
+    GROUP_NOT_FOUND("G001", "해당 groupNum을 가진 그룹이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
 
     private final String code;
     private final String message;
