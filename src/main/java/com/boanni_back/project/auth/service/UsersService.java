@@ -1,5 +1,6 @@
 package com.boanni_back.project.auth.service;
 
+import com.boanni_back.project.ai.service.UserService;
 import com.boanni_back.project.auth.controller.dto.*;
 import com.boanni_back.project.auth.entity.CustomUserDetails;
 import com.boanni_back.project.auth.entity.EmployeeNumber;
@@ -32,6 +33,7 @@ public class UsersService {
 
     private final RefreshTokenService refreshTokenService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final UserService userService;
 
 
     public SignUpResponseDTO saveUser(SignUpRequestDTO request, EmployeeType employeeType) {
@@ -86,9 +88,9 @@ public class UsersService {
         return new SignInResponseDTO(accessToken, "Bearer", refreshToken);
     }
 
-    public SignInResponseDTO refreshToken(RefreshTokenRequestDTO request) {
-        String refreshToken = request.getRefreshToken();
+    public SignInResponseDTO refreshToken(String refreshToken) {
 
+        // 토큰 유효성 검증
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new BusinessException(ErrorCode.AUTH_INVALID_TOKEN);
         }
@@ -96,16 +98,22 @@ public class UsersService {
         String email = jwtTokenProvider.getUsername(refreshToken);
         CustomUserDetails userDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(email);
 
-        // DB에 저장된 refreshToken과 비교
+        // DB의 RefreshToken과 일치하는지 확인
         refreshTokenService.validateRefreshToken(userDetails.getId(), refreshToken);
 
         String newAccessToken = jwtTokenProvider.generateAccessToken(userDetails);
         String newRefreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
 
-        // 새 refreshToken DB 갱신
+        // 새 RefreshToken DB 갱신
         refreshTokenService.updateRefreshToken(userDetails.getId(), newRefreshToken, 7);
 
         return new SignInResponseDTO(newAccessToken, "Bearer", newRefreshToken);
+    }
+
+
+    public UserInfoResponseDTO getUserInfo(Long userId){
+        Users users = usersRepository.findById(userId).orElseThrow(() -> new BusinessException(ErrorCode.AUTH_NOT_FOUND_BY_ID));
+        return new UserInfoResponseDTO(users.getEmployeeNumber().getUsername(),users.getEmployeeType(),users.getScore());
     }
 
 
