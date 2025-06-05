@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,7 @@ public interface UsersRepository extends JpaRepository<Users,Long> {
     // groupNum별로 groupScore(총합) 구하기
     @Query("SELECT u.groupNum, SUM(u.score) FROM Users u GROUP BY u.groupNum")
     List<Object[]> findAllGroupScores();
+
+    @Query("SELECT u.groupNum, AVG(u.score) FROM Users u GROUP BY u.groupNum")
+    List<Object[]> findGroupAverages();
 }
