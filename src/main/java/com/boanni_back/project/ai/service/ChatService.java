@@ -11,10 +11,10 @@ import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly=true)
 @RequiredArgsConstructor
 @Slf4j
 public class ChatService {
@@ -37,6 +37,7 @@ public class ChatService {
     private final AiConditionService aiConditionService;
 
     // 기본
+    @Transactional
     public ChatDto.Response processChatAnswer(Long userId) {
         // 사용자 정보 조회
         Users user = usersRepository.findById(userId)
@@ -77,6 +78,7 @@ public class ChatService {
     }
 
     // 그룹 별 키워드 지정
+    @Transactional
     public void processGroqAnswer(Long userId) {
 
         // userId로 groupNum 가져오기
