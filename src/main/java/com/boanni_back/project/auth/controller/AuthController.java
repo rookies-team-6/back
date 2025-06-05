@@ -5,10 +5,12 @@ import com.boanni_back.project.auth.entity.CustomUserDetails;
 import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.service.CustomUserDetailsService;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
+import com.boanni_back.project.auth.service.RefreshTokenService;
 import com.boanni_back.project.auth.service.UsersService;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import com.boanni_back.project.jwt.JwtTokenProvider;
+import com.boanni_back.project.util.SecurityUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController  {
     private final EmployeeAuthService employeeAuthService;
     private final UsersService usersService;
+    private final RefreshTokenService refreshTokenService;
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -68,6 +71,15 @@ public class AuthController  {
     public ResponseEntity<SignInResponseDTO> refreshToken(@RequestBody RefreshTokenRequestDTO request) {
         SignInResponseDTO response = usersService.refreshToken(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<Void> signOut(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = SecurityUtil.extractUserId(authentication);
+        refreshTokenService.deleteRefreshToken(userId);
+
+        return ResponseEntity.noContent().build();
     }
 }
 
