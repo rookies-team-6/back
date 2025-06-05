@@ -1,5 +1,7 @@
 package com.boanni_back.project.admin.controller;
 
+import com.boanni_back.project.admin.controller.dto.AdminDeadlineDto;
+import com.boanni_back.project.admin.service.AdminDeadlineService;
 import com.boanni_back.project.admin.service.AdminService;
 import com.boanni_back.project.auth.controller.dto.UsersDto;
 import com.boanni_back.project.auth.entity.EmployeeType;
@@ -23,13 +25,17 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+    private final AdminDeadlineService adminDeadlineService;
 
     //모든 회원 조회
     @GetMapping
     public String getAllUsers(@PageableDefault(size = 5) Pageable pageable, Model model) {
         Page<UsersDto.Response> page = adminService.getAllUsers(pageable);
-        model.addAttribute("users", page.getContent());
+        List<AdminDeadlineDto.Response> allUsers = adminDeadlineService.getAllUserDeadlines(); // 👈 모든 마감일
+
+        model.addAttribute("users", page.getContent()); // 테이블용
         model.addAttribute("page", page);
+        model.addAttribute("allUsers", allUsers);       // 달력용
         return "admin/users/list";
     }
 
