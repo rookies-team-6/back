@@ -33,5 +33,4 @@ public class Group {
         this.title = title;
         this.summary = summary;
     }
-
 }
