@@ -17,9 +17,10 @@ public interface UserAiRecordRepository extends JpaRepository<UserAiRecord, Long
     List<UserAiRecord> findAllWithQuestion();
 
     @EntityGraph(attributePaths = {"question"})
-    Optional<List<UserAiRecord>> findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(Long userId, Long questionId);
+    List<UserAiRecord> findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(Long userId, Long questionId);
 
-    Optional<List<UserAiRecord>> findByUsersIdAndIsBookMarkedTrue(Long userId);
+    @EntityGraph(attributePaths = {"question"})
+    List<UserAiRecord> findByUsersIdAndIsBookMarkedTrue(Long userId);
 
     List<UserAiRecord> findAllByUsersIn(List<Users> users);
 }
