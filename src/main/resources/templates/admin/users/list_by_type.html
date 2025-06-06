@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${type} + ' 목록'"></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #FFFCEE;">
+<!-- 상단 바 -->
+<nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;">
+</nav>
+<div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
+  <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
+    <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
+    <strong style="font-size: 18px;">관리자 페이지-회원 유형별 조회</strong>
+  </a>
+  <div class="me-4">
+    <a href="/admin/users" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
+      관리자 메인 페이지로 돌아가기
+    </a>
+  </div>
+</div>
+<div class="container-fluid mt-5" style="max-width: 95%; margin: 0 auto;">
+<h1 class="mb-4" th:text="${type} + ' 목록'"></h1>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle text-center" style="background-color: #FFFFFF; min-width: 1200px;">
+      <thead class="table-light">
+  <tr>
+    <th>ID</th>
+    <th>이메일</th>
+    <th>이름</th>
+    <th>사번</th>
+    <th>회원 유형</th>
+    <th>부서 코드</th>
+    <th>현재 문제 번호</th>
+    <th>점수</th>
+    <th>진행률</th>
+    <th>가입일</th>
+    <th>학습 마감일</th>
+    <th>마감일 수정</th>
+    <th>회원 탈퇴</th>
+    <th>권한 변경</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.email}"></td>
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.employeeNumber}"></td>
+    <td th:text="${user.employeeType}"></td>
+    <td th:text="${user.departmentCode + '팀'}"></td>
+    <td th:text="${user.currentQuestionIndex + '번 문제'}"></td>
+    <td th:text="${user.score + '점'}"></td>
+    <td style="min-width: 140px;">
+      <div class="progress" style="height: 24px; position: relative;">
+        <div class="progress-bar"
+             th:style="'width:' + ${user.progressPercent} + '%; background-color:' +
+              (${user.progressPercent} >= 80 ? '#28a745' :
+              (${user.progressPercent} >= 50 ? '#ffc107' : '#dc3545'))">
+        </div>
+        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+          <span class="fw-bold" th:text="${user.progress}"></span>
+        </div>
+      </div>
+    </td>
+    <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${user.questionSolveDeadline}"></td>
+    <td>
+      <form th:action="@{/admin/users/deadline/{id}/edit(id=${user.id})}" method="get">
+        <button type="submit" class="btn btn-primary btn-sm">마감일 수정</button>
+      </form>
+    </td>
+    <td>
+      <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post">
+        <button type="submit" class="btn btn-danger btn-sm">강제 탈퇴</button>
+      </form>
+    </td>
+    <td>
+      <form th:action="@{/admin/users/{id}/role(id=${user.id})}" method="post">
+        <input type="hidden" name="_method" value="patch"/>
+        <button type="submit" class="btn btn-success btn-sm">관리자 승격</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a href="/admin/users" class="btn btn-secondary mt-3">← 목록으로</a>
+</div>
+</div>
+</body>
+
+</html>

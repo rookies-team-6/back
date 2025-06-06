@@ -20,11 +20,20 @@ configurations {
 }
 
 repositories {
+	// 기본 중앙 저장소
 	mavenCentral()
+	//저장소 정보 추가
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven {
+		name = 'Central Portal Snapshots'
+		url = 'https://central.sonatype.com/repository/maven-snapshots/'
+	}
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -32,6 +41,14 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	// JJWT API
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	// 런타임 시 실제 구현체
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	// JSON 파싱 (Jackson 사용 시)
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	// properties 값 자동 바인딩
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	// 자동 재시작
@@ -40,6 +57,11 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
+
+	// Groq(OpenAI compatible) Spring AI 의존성
+	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6'
+	//thymelesf 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {
