@@ -24,14 +24,6 @@ public class AdminDeadlineController {
 
     private final AdminDeadlineService adminDeadlineService;
 
-    //해당 id 회원의 마감일 조회 -개별 조회는 제외했습니다.
-//    @GetMapping("/{id}")
-//    public String getDeadlineForm(@PathVariable Long id, Model model) {
-//        AdminDeadlineDto.Response dto = adminDeadlineService.getDeadline(id);
-//        model.addAttribute("deadlineDto", dto);
-//        return "admin/deadline/detail";
-//    }
-
     //수정 form view
     @GetMapping("/{id}/edit")
     public String getEditDeadlineForm(@PathVariable Long id, Model model) {

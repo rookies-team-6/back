@@ -1,12 +1,11 @@
 package com.boanni_back.project.auth.controller.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.Setter;
 
-@Getter
+@Data
 @AllArgsConstructor
-public class SignInResponseDTO {
+public class AccessTokenResponseDTO {
     private String accessToken;
-    private String tokenType;
-    private String refreshToken;
 }

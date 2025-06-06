@@ -28,7 +28,7 @@ public class QuestionService {
         return questionRepository.findAll(pageable)
                 .map(QuestionDto.Response::fromEntity);
     }
-    
+
     // 보안 문제 개별 조회
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
