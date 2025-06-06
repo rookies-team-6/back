@@ -15,7 +15,6 @@ import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly=true)
 @RequiredArgsConstructor
-@Slf4j
 public class ChatService {
 
     private final UsersRepository usersRepository;
@@ -35,11 +33,10 @@ public class ChatService {
     private final GroupRepository groupRepository;
     private final GlobalSummaryRepository globalSummaryRepository;
 
-    private final GptPromptService gptPromptService;
-    private final GroqPromptService groqPromptService;
+    private final PromptService promptService;
     private final AiConditionService aiConditionService;
 
-    // 기본
+    // chat gpt로 모범답안, 채점 점수 받기
     @Transactional
     public ChatDto.Response processChatAnswer(Long userId) {
         // 사용자 정보 조회
@@ -56,7 +53,7 @@ public class ChatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.ANSWER_NOT_FOUND, userId, index));
 
         // Groq API에 전송할 프롬프트 구성
-        String prompt = gptPromptService.buildPrompt(question.getQuestion(), userRecord.getUserAnswer());
+        String prompt = promptService.buildGptPrompt(question.getQuestion(), userRecord.getUserAnswer());
 
         // Groq API 호출
         ChatDto.Response response = aiConditionService.getChatResponse(prompt);
@@ -80,102 +77,58 @@ public class ChatService {
         return (int) (total / num);
     }
 
-    // 그룹 별 키워드 지정
+    // groq으로 그룹 별 요약 내용 제공
+    // 요약된 것이 이미 있으면 요약된 것과 비교
     @Transactional
     public void processGroqAnswer(Long userId) {
-
-        // userId로 groupNum 가져오기
-        Long groupNum = usersRepository.findGroupNumById(userId);
-        if (groupNum == null) {
-            throw new BusinessException(ErrorCode.USER_NOT_FOUND, userId);
-        }
-
-        List<Users> departmentUsers = usersRepository.findAllByGroupNum(groupNum);
-
-        // user로 user가 답한 질문들 모두 가져오기
-        Map<Long, List<String>> answersGroupedByQuestion = userAiRecordRepository.findAllByUsersIn(departmentUsers)
-                .stream()
-                .collect(Collectors.groupingBy(
-                        record -> record.getQuestion().getId(),  // questionId 기준으로 나눔
-                        Collectors.mapping(UserAiRecord::getUserAnswer, Collectors.toList())
-                ));
-
-        // 각 질문에 대해 Groq 응답 생성
-        for (Map.Entry<Long, List<String>> entry : answersGroupedByQuestion.entrySet()) {
-            Long questionId = entry.getKey();
-            List<String> answers = entry.getValue();
-
-            String prompt = groqPromptService.buildPrompt(answers);
-            ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
-
-            Question question = questionRepository.findById(questionId)
-                    .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, questionId));
-
-            Optional<Group> existingGroup = groupRepository.findByQuestionIdAndGroupNum(questionId, groupNum);
-
-            // 기존에 있는거면 업데이트, 아니면 추가
-            existingGroup.ifPresentOrElse(
-                    group -> {
-                        group.updateContent(response.getTitle(), response.getSummary());
-                        groupRepository.save(group);
-                    },
-                    () -> {
-                        Group group = Group.builder()
-                                .title(response.getTitle())
-                                .summary(response.getSummary())
-                                .question(question)
-                                .groupNum(groupNum)
-                                .build();
-                        groupRepository.save(group);
-                    }
-            );
-        }
-    }
-
-    // 요약된 것이 이미 있으면 요약된 것과 비교
-    // 그룹 별 키워드 지정
-    @Transactional
-    public void processGroqAnswer2(Long userId) {
         Long groupNum = usersRepository.findGroupNumById(userId);
         if (groupNum == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND, userId);
         }
         List<UserAiRecord> userRecords = userAiRecordRepository.findAllByUsers_Id(userId);
 
-        // 3. questionId 반복
+        List<Long> questionIds = userRecords.stream()
+                .map(record -> record.getQuestion().getId())
+                .distinct()
+                .collect(Collectors.toList());
+
+        // 한 번에 그룹 조회
+        List<Group> groups = groupRepository.findAllByQuestionIdInAndGroupNum(questionIds, groupNum);
+
+        Map<Long, Group> groupMap = groups.stream()
+                .collect(Collectors.toMap(g -> g.getQuestion().getId(), g -> g));
+
         for (UserAiRecord userRecord : userRecords) {
             Long questionId = userRecord.getQuestion().getId();
             String userAnswer = userRecord.getUserAnswer();
             Question question = userRecord.getQuestion();
 
-            Optional<Group> optionalGroup = groupRepository.findByQuestionIdAndGroupNum(questionId, groupNum);
+            Group group = groupMap.get(questionId);
 
-            if (optionalGroup.isPresent() &&
-                    optionalGroup.get().getTitle() != null &&
-                    optionalGroup.get().getSummary() != null) {
+            if (group != null && group.getTitle() != null && group.getSummary() != null) {
+                String oldTitle = group.getTitle();
+                String oldSummary = group.getSummary();
 
-                // 기존 내용
-                String oldTitle = optionalGroup.get().getTitle();
-                String oldSummary = optionalGroup.get().getSummary();
-
-                // 프롬프트 빌드
-                String prompt = groqPromptService.buildPrompt2(oldTitle, oldSummary, userAnswer);
+                String prompt = promptService.buildGroqPrompt(oldTitle, oldSummary, userAnswer);
                 ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
 
-                optionalGroup.get().updateContent(response.getTitle(), response.getSummary());
+                group.updateContent(response.getTitle(), response.getSummary());
             } else {
-                // 4-2. 요약본이 없으면: 사용자의 답변을 그대로 저장
-                Group group = optionalGroup.orElseGet(() -> Group.builder()
-                        .question(question)
-                        .groupNum(groupNum)
-                        .build());
-                group.updateContent(null, userAnswer); // title은 null, summary만 저장
+                if (group == null) {
+                    group = Group.builder()
+                            .question(question)
+                            .groupNum(groupNum)
+                            .build();
+                    groupMap.put(questionId, group);
+                }
+                group.updateContent(null, userAnswer);
                 groupRepository.save(group);
             }
         }
     }
 
     // 전체 요청 조회
+    @Transactional
     public List<GlobalSummaryDto.Response> processGroqAllAnswer() {
         List<Group> allGroup = groupRepository.findAll();
 
@@ -217,7 +170,7 @@ public class ChatService {
                 String onlyTitle = groups.get(0).getTitle();
                 summary.updateContent(onlyTitle, onlySummary);
             } else {
-                String prompt = groqPromptService.buildGlobalPrompt(summaries);
+                String prompt = promptService.buildGlobalPrompt(summaries);
                 ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
                 summary.updateContent(response.getTitle(), response.getSummary());
             }

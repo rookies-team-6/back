@@ -13,6 +13,7 @@ public class GlobalSummaryDto {
     @Builder
     public static class Response {
         private Long id;
+        private Long question_id;
         private String title;
         private String question;
         private String summary;
@@ -20,6 +21,7 @@ public class GlobalSummaryDto {
         public static Response fromEntity(GlobalSummary summary) {
             return Response.builder()
                     .id(summary.getId())
+                    .question_id(summary.getQuestion().getId())
                     .title(summary.getTitle())
                     .summary(summary.getSummary())
                     .question(summary.getQuestion().getQuestion())
