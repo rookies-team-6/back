@@ -7,18 +7,17 @@ import com.boanni_back.project.exception.ErrorCode;
 import com.boanni_back.project.ai.controller.dto.QuestionDto;
 import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.repository.QuestionRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
+@Transactional(readOnly = true)
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -29,7 +28,7 @@ public class QuestionService {
         return questionRepository.findAll(pageable)
                 .map(QuestionDto.Response::fromEntity);
     }
-    
+
     // 보안 문제 개별 조회
     @Transactional
     public QuestionDto.Response getQuestionByIndex(Long userId) {
@@ -52,6 +51,7 @@ public class QuestionService {
     }
 
     // 보안 문제 생성
+    @Transactional
     public void createQuestion(QuestionDto.Request request) {
         // 문제 비어있을 때
         if (request.getQuestion() == null || request.getQuestion().trim().isEmpty()) {
