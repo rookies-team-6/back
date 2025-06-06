@@ -23,4 +23,6 @@ public interface UserAiRecordRepository extends JpaRepository<UserAiRecord, Long
     List<UserAiRecord> findByUsersIdAndIsBookMarkedTrue(Long userId);
 
     List<UserAiRecord> findAllByUsersIn(List<Users> users);
+
+    List<UserAiRecord> findAllByUsers_Id(Long userId);
 }

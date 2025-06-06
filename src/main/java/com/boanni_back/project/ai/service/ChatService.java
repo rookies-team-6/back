@@ -1,9 +1,12 @@
 package com.boanni_back.project.ai.service;
 
 import com.boanni_back.project.ai.controller.dto.ChatDto;
+import com.boanni_back.project.ai.controller.dto.GlobalSummaryDto;
+import com.boanni_back.project.ai.entity.GlobalSummary;
 import com.boanni_back.project.ai.entity.Group;
 import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.entity.UserAiRecord;
+import com.boanni_back.project.ai.repository.GlobalSummaryRepository;
 import com.boanni_back.project.ai.repository.GroupRepository;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import com.boanni_back.project.ai.repository.UserAiRecordRepository;
@@ -16,10 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly=true)
@@ -31,6 +33,7 @@ public class ChatService {
     private final QuestionRepository questionRepository;
     private final UserAiRecordRepository userAiRecordRepository;
     private final GroupRepository groupRepository;
+    private final GlobalSummaryRepository globalSummaryRepository;
 
     private final GptPromptService gptPromptService;
     private final GroqPromptService groqPromptService;
@@ -129,4 +132,100 @@ public class ChatService {
         }
     }
 
+    // 요약된 것이 이미 있으면 요약된 것과 비교
+    // 그룹 별 키워드 지정
+    @Transactional
+    public void processGroqAnswer2(Long userId) {
+        Long groupNum = usersRepository.findGroupNumById(userId);
+        if (groupNum == null) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND, userId);
+        }
+        List<UserAiRecord> userRecords = userAiRecordRepository.findAllByUsers_Id(userId);
+
+        // 3. questionId 반복
+        for (UserAiRecord userRecord : userRecords) {
+            Long questionId = userRecord.getQuestion().getId();
+            String userAnswer = userRecord.getUserAnswer();
+            Question question = userRecord.getQuestion();
+
+            Optional<Group> optionalGroup = groupRepository.findByQuestionIdAndGroupNum(questionId, groupNum);
+
+            if (optionalGroup.isPresent() &&
+                    optionalGroup.get().getTitle() != null &&
+                    optionalGroup.get().getSummary() != null) {
+
+                // 기존 내용
+                String oldTitle = optionalGroup.get().getTitle();
+                String oldSummary = optionalGroup.get().getSummary();
+
+                // 프롬프트 빌드
+                String prompt = groqPromptService.buildPrompt2(oldTitle, oldSummary, userAnswer);
+                ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
+
+                optionalGroup.get().updateContent(response.getTitle(), response.getSummary());
+            } else {
+                // 4-2. 요약본이 없으면: 사용자의 답변을 그대로 저장
+                Group group = optionalGroup.orElseGet(() -> Group.builder()
+                        .question(question)
+                        .groupNum(groupNum)
+                        .build());
+                group.updateContent(null, userAnswer); // title은 null, summary만 저장
+                groupRepository.save(group);
+            }
+        }
+    }
+
+    // 전체 요청 조회
+    public List<GlobalSummaryDto.Response> processGroqAllAnswer() {
+        List<Group> allGroup = groupRepository.findAll();
+
+        // questionId별
+        Map<Long, List<Group>> groupsByQuestionId = allGroup.stream()
+                .collect(Collectors.groupingBy(g -> g.getQuestion().getId()));
+
+        List<GlobalSummaryDto.Response> resultList = new ArrayList<>();
+
+        for(Map.Entry<Long, List<Group>> entry : groupsByQuestionId.entrySet()){
+            Long questionId = entry.getKey();
+            List<Group> groups = entry.getValue();
+
+            List<String> summaries = groups.stream()
+                    .map(Group::getSummary)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+            if (summaries.isEmpty()) continue;
+
+            // question 엔티티 조회
+            Question question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, questionId));
+
+            // GlobalSummary가 이미 있는지 확인
+            Optional<GlobalSummary> optionalGlobal = globalSummaryRepository.findByQuestionId(questionId);
+            GlobalSummary summary;
+            if (summaries.size() == 1) {
+                // summary가 1개면 그대로 저장
+                String onlySummary = summaries.get(0);
+                String onlyTitle = groups.get(0).getTitle();
+
+                summary = optionalGlobal.orElseGet(() -> GlobalSummary.builder()
+                        .question(question)
+                        .build());
+                summary.updateContent(onlyTitle, onlySummary);
+                globalSummaryRepository.save(summary);
+            } else {
+                // summary가 2개 이상이면
+                String prompt = groqPromptService.buildGlobalPrompt(summaries);
+                ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
+
+                summary = optionalGlobal.orElseGet(() -> GlobalSummary.builder()
+                        .question(question)
+                        .build());
+                summary.updateContent(response.getTitle(), response.getSummary());
+                globalSummaryRepository.save(summary);
+            }
+            resultList.add(GlobalSummaryDto.Response.fromEntity(summary));
+        }
+        return resultList;
+    }
 }
