@@ -53,7 +53,7 @@ class UserAiRecordServiceTest {
         // Id 1이면 index 3으로, 그 조건으로 푼 문제 찾기
         when(adminRepository.findCurrentQuestionIndexById(1L)).thenReturn(3L);
         when(userAiRecordRepository.findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(1L, 3L))
-                .thenReturn(Optional.of(List.of(record)));
+                .thenReturn(List.of(record));
         List<UserAiRecordDto.Response> result = userAiRecordService.getSolvedRecord(1L);
 
         assertEquals(1, result.size());
@@ -80,7 +80,7 @@ class UserAiRecordServiceTest {
     void getBookMarkedRecord_success() {
         // user id 1, isBookMarked true일 때
         when(userAiRecordRepository.findByUsersIdAndIsBookMarkedTrue(1L))
-                .thenReturn(Optional.of(List.of(record)));
+                .thenReturn(List.of(record));
         List<UserAiRecordDto.Response> result = userAiRecordService.getBookMarkedRecord(1L);
 
         // 확인
@@ -95,7 +95,7 @@ class UserAiRecordServiceTest {
     void getBookMarkedRecord_notFound() {
         // isBookMarked false이도록 만듦
         when(userAiRecordRepository.findByUsersIdAndIsBookMarkedTrue(1L))
-                .thenReturn(Optional.empty());
+                .thenReturn(null);
 
         BusinessException ex = assertThrows(BusinessException.class, () ->
                 userAiRecordService.getBookMarkedRecord(1L)
