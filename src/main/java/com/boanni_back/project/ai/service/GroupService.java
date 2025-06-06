@@ -2,11 +2,9 @@ package com.boanni_back.project.ai.service;
 
 import com.boanni_back.project.ai.controller.dto.GroupAverageScoreDto;
 import com.boanni_back.project.ai.controller.dto.GroupDto;
-import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
 import com.boanni_back.project.ai.entity.Group;
 import com.boanni_back.project.ai.repository.GroupRepository;
 import com.boanni_back.project.ai.repository.QuestionRepository;
-import com.boanni_back.project.ai.repository.UserAiRecordRepository;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;

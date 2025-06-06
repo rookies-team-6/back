@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly=true)
@@ -179,13 +179,20 @@ public class ChatService {
     public List<GlobalSummaryDto.Response> processGroqAllAnswer() {
         List<Group> allGroup = groupRepository.findAll();
 
-        // questionId별
         Map<Long, List<Group>> groupsByQuestionId = allGroup.stream()
                 .collect(Collectors.groupingBy(g -> g.getQuestion().getId()));
 
+        List<Long> questionIds = new ArrayList<>(groupsByQuestionId.keySet());
+
+        List<GlobalSummary> globalSummaries = globalSummaryRepository.findByQuestionIds(questionIds);
+
+        // questionId -> GlobalSummary 매핑
+        Map<Long, GlobalSummary> globalSummaryMap = globalSummaries.stream()
+                .collect(Collectors.toMap(gs -> gs.getQuestion().getId(), Function.identity()));
+
         List<GlobalSummaryDto.Response> resultList = new ArrayList<>();
 
-        for(Map.Entry<Long, List<Group>> entry : groupsByQuestionId.entrySet()){
+        for (Map.Entry<Long, List<Group>> entry : groupsByQuestionId.entrySet()) {
             Long questionId = entry.getKey();
             List<Group> groups = entry.getValue();
 
@@ -194,38 +201,31 @@ public class ChatService {
                     .filter(Objects::nonNull)
                     .toList();
 
+            // 비어있으면 groq 요청 하지 않도록 함
             if (summaries.isEmpty()) continue;
 
-            // question 엔티티 조회
             Question question = questionRepository.findById(questionId)
                     .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, questionId));
 
-            // GlobalSummary가 이미 있는지 확인
-            Optional<GlobalSummary> optionalGlobal = globalSummaryRepository.findByQuestionId(questionId);
-            GlobalSummary summary;
+            // 기존 GlobalSummary 가져오기
+            GlobalSummary summary = globalSummaryMap.getOrDefault(questionId,
+                    GlobalSummary.builder().question(question).build());
+
+            // summary가 1개만 있으면 그대로 넣기
             if (summaries.size() == 1) {
-                // summary가 1개면 그대로 저장
                 String onlySummary = summaries.get(0);
                 String onlyTitle = groups.get(0).getTitle();
-
-                summary = optionalGlobal.orElseGet(() -> GlobalSummary.builder()
-                        .question(question)
-                        .build());
                 summary.updateContent(onlyTitle, onlySummary);
-                globalSummaryRepository.save(summary);
             } else {
-                // summary가 2개 이상이면
                 String prompt = groqPromptService.buildGlobalPrompt(summaries);
                 ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
-
-                summary = optionalGlobal.orElseGet(() -> GlobalSummary.builder()
-                        .question(question)
-                        .build());
                 summary.updateContent(response.getTitle(), response.getSummary());
-                globalSummaryRepository.save(summary);
             }
+
+            globalSummaryRepository.save(summary);
             resultList.add(GlobalSummaryDto.Response.fromEntity(summary));
         }
+
         return resultList;
     }
 }
