@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,7 +96,7 @@ class UserAiRecordServiceTest {
     void getBookMarkedRecord_notFound() {
         // isBookMarked false이도록 만듦
         when(userAiRecordRepository.findByUsersIdAndIsBookMarkedTrue(1L))
-                .thenReturn(null);
+                .thenReturn(Collections.emptyList());
 
         BusinessException ex = assertThrows(BusinessException.class, () ->
                 userAiRecordService.getBookMarkedRecord(1L)
