@@ -1,6 +1,5 @@
 package com.boanni_back.project.ai.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -32,7 +32,7 @@ public class ChatController {
     @PostMapping("/groq")
     public ResponseEntity<Map<String, String>> getGroqAnswer(Authentication authentication) {
         Long userId = SecurityUtil.extractUserId(authentication);
-        chatService.processGroqAnswer2(userId);
+        chatService.processGroqAnswer(userId);
         return ResponseEntity.ok(Collections.singletonMap("message", "ok"));
     }
 
