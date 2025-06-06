@@ -6,7 +6,6 @@ import com.boanni_back.project.auth.entity.EmployeeType;
 import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
-import com.boanni_back.project.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+// 홈 화면 서비스 테스트
 class UserServiceTest {
 
     @Mock
