@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 학습 진행률</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background-color: #FFFCEE;">
+<!-- 상단 바 -->
+<nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;">
+</nav>
+<div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
+  <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
+    <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
+    <strong style="font-size: 18px;">관리자 페이지-학습 진행률 개별 조회</strong>
+  </a>
+  <div class="me-4">
+    <a href="/admin/users" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
+      관리자 메인 페이지로 돌아가기
+    </a>
+  </div>
+</div>
+<div class="container mt-4">
+  <h2 th:text="${progress.username + ' 회원 학습 진행률'}"></h2>
+
+  <table class="table table-bordered" style="background-color: #FFFFFF;">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>이름</th>
+      <th>부서 코드</th>
+      <th>문제 번호</th>
+      <th>진행률</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td th:text="${progress.userId}"></td>
+      <td th:text="${progress.username}"></td>
+      <td th:text="${progress.departmentCode + '팀'}"></td>
+      <td th:text="${progress.currentQuestionIndex + '번 문제'}"></td>
+      <td>
+        <div class="progress" style="height: 20px;">
+          <div class="progress-bar"
+               th:style="'width:' + ${progress.progressPercent} + '%; background-color:' +
+                (${progress.progressPercent} >= 80 ? '#28a745' :
+                (${progress.progressPercent} >= 50 ? '#ffc107' : '#dc3545'))"
+               th:text="${progress.progress}">
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <a href="/admin/users/progress" class="btn btn-secondary mt-3">← 목록으로</a>
+</div>
+</body>
+</html>
