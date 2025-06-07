@@ -16,12 +16,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfiguration;
+
+
 
 import java.util.List;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .cors(cors->cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 // csrf 인증 비활성화, 나중에 비활성화 코드 지우기
@@ -49,7 +50,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
-                    .requestMatchers("/auth/**", "/h2-console/**", "/images/**", "/admin/**", "/api/group/**", "/api/record/**").permitAll()
+                    .requestMatchers("/auth/**", "/h2-console/**", "/images/**", "/admin/**", "/api/group/**", "/api/record/**", "/api/chat/groq/all").permitAll()
 ////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
                     .anyRequest().authenticated()
             )
@@ -59,13 +60,23 @@ public class SecurityConfig {
 
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration config=new CorsConfiguration();
-//        허용할 도메인만 추후에 명시
-        config.setAllowedOrigins(List.of("*")); // 모든 Origin 허용 (개발용, 배포 시는 제한 권장)
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*")); // 모든 헤더 허용
-        config.setAllowCredentials(true); // 쿠키 사용 허용 (JWT는 true/false 가능)
+        CorsConfiguration config = new CorsConfiguration();
+        // 프론트엔드 도메인 명시
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
 
+        // 허용 메서드
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // 허용 헤더
+        config.setAllowedHeaders(List.of("*"));
+
+        // Authorization 헤더 프론트에서 읽을 수 있도록
+        config.setExposedHeaders(List.of("Authorization"));
+
+        // 인증정보 포함 허용 (Refresh Token을 쿠키로 쓰기 때문에 필요)
+        config.setAllowCredentials(true);
+
+        // 등록
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
