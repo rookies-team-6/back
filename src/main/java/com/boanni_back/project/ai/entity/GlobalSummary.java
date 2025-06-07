@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
-@Builder
-@Table(name = "groups")
-public class Group {
+@Table(name = "global_summary")
+public class GlobalSummary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,18 +17,15 @@ public class Group {
     @Column
     private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String summary;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Column(name = "group_num", nullable = false)
-    private Long groupNum;
+    @Column(columnDefinition = "TEXT")
+    private String summary;
 
-    public void updateContent(String title, String summary) {
-        this.title = title;
-        this.summary = summary;
+    public void updateContent(String onlyTitle, String onlySummary) {
+        this.title = onlyTitle;
+        this.summary = onlySummary;
     }
 }

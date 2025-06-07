@@ -1,9 +1,12 @@
 package com.boanni_back.project.ai.service;
 
 import com.boanni_back.project.ai.controller.dto.ChatDto;
+import com.boanni_back.project.ai.controller.dto.GlobalSummaryDto;
+import com.boanni_back.project.ai.entity.GlobalSummary;
 import com.boanni_back.project.ai.entity.Group;
 import com.boanni_back.project.ai.entity.Question;
 import com.boanni_back.project.ai.entity.UserAiRecord;
+import com.boanni_back.project.ai.repository.GlobalSummaryRepository;
 import com.boanni_back.project.ai.repository.GroupRepository;
 import com.boanni_back.project.ai.repository.QuestionRepository;
 import com.boanni_back.project.ai.repository.UserAiRecordRepository;
@@ -11,32 +14,30 @@ import com.boanni_back.project.auth.entity.Users;
 import com.boanni_back.project.auth.repository.UsersRepository;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly=true)
 @RequiredArgsConstructor
-@Slf4j
 public class ChatService {
 
     private final UsersRepository usersRepository;
     private final QuestionRepository questionRepository;
     private final UserAiRecordRepository userAiRecordRepository;
     private final GroupRepository groupRepository;
+    private final GlobalSummaryRepository globalSummaryRepository;
 
-    private final GptPromptService gptPromptService;
-    private final GroqPromptService groqPromptService;
+    private final PromptService promptService;
     private final AiConditionService aiConditionService;
 
-    // 기본
+    // chat gpt로 모범답안, 채점 점수 받기
+    @Transactional
     public ChatDto.Response processChatAnswer(Long userId) {
         // 사용자 정보 조회
         Users user = usersRepository.findById(userId)
@@ -52,7 +53,7 @@ public class ChatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.ANSWER_NOT_FOUND, userId, index));
 
         // Groq API에 전송할 프롬프트 구성
-        String prompt = gptPromptService.buildPrompt(question.getQuestion(), userRecord.getUserAnswer());
+        String prompt = promptService.buildGptPrompt(question.getQuestion(), userRecord.getUserAnswer());
 
         // Groq API 호출
         ChatDto.Response response = aiConditionService.getChatResponse(prompt);
@@ -76,55 +77,108 @@ public class ChatService {
         return (int) (total / num);
     }
 
-    // 그룹 별 키워드 지정
+    // groq으로 그룹 별 요약 내용 제공
+    // 요약된 것이 이미 있으면 요약된 것과 비교
+    @Transactional
     public void processGroqAnswer(Long userId) {
-
-        // userId로 groupNum 가져오기
         Long groupNum = usersRepository.findGroupNumById(userId);
         if (groupNum == null) {
             throw new BusinessException(ErrorCode.USER_NOT_FOUND, userId);
         }
+        List<UserAiRecord> userRecords = userAiRecordRepository.findAllByUsers_Id(userId);
 
-        List<Users> departmentUsers = usersRepository.findAllByGroupNum(groupNum);
+        List<Long> questionIds = userRecords.stream()
+                .map(record -> record.getQuestion().getId())
+                .distinct()
+                .collect(Collectors.toList());
 
-        // user로 user가 답한 질문들 모두 가져오기
-        Map<Long, List<String>> answersGroupedByQuestion = userAiRecordRepository.findAllByUsersIn(departmentUsers)
-                .stream()
-                .collect(Collectors.groupingBy(
-                        record -> record.getQuestion().getId(),  // questionId 기준으로 나눔
-                        Collectors.mapping(UserAiRecord::getUserAnswer, Collectors.toList())
-                ));
+        // 한 번에 그룹 조회
+        List<Group> groups = groupRepository.findAllByQuestionIdInAndGroupNum(questionIds, groupNum);
 
-        // 각 질문에 대해 Groq 응답 생성
-        for (Map.Entry<Long, List<String>> entry : answersGroupedByQuestion.entrySet()) {
+        Map<Long, Group> groupMap = groups.stream()
+                .collect(Collectors.toMap(g -> g.getQuestion().getId(), g -> g));
+
+        for (UserAiRecord userRecord : userRecords) {
+            Long questionId = userRecord.getQuestion().getId();
+            String userAnswer = userRecord.getUserAnswer();
+            Question question = userRecord.getQuestion();
+
+            Group group = groupMap.get(questionId);
+
+            if (group != null && group.getTitle() != null && group.getSummary() != null) {
+                String oldTitle = group.getTitle();
+                String oldSummary = group.getSummary();
+
+                String prompt = promptService.buildGroqPrompt(oldTitle, oldSummary, userAnswer);
+                ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
+
+                group.updateContent(response.getTitle(), response.getSummary());
+            } else {
+                if (group == null) {
+                    group = Group.builder()
+                            .question(question)
+                            .groupNum(groupNum)
+                            .build();
+                    groupMap.put(questionId, group);
+                }
+                group.updateContent(null, userAnswer);
+                groupRepository.save(group);
+            }
+        }
+    }
+
+    // 전체 요청 조회
+    @Transactional
+    public List<GlobalSummaryDto.Response> processGroqAllAnswer() {
+        List<Group> allGroup = groupRepository.findAll();
+
+        Map<Long, List<Group>> groupsByQuestionId = allGroup.stream()
+                .collect(Collectors.groupingBy(g -> g.getQuestion().getId()));
+
+        List<Long> questionIds = new ArrayList<>(groupsByQuestionId.keySet());
+
+        List<GlobalSummary> globalSummaries = globalSummaryRepository.findByQuestionIds(questionIds);
+
+        // questionId -> GlobalSummary 매핑
+        Map<Long, GlobalSummary> globalSummaryMap = globalSummaries.stream()
+                .collect(Collectors.toMap(gs -> gs.getQuestion().getId(), Function.identity()));
+
+        List<GlobalSummaryDto.Response> resultList = new ArrayList<>();
+
+        for (Map.Entry<Long, List<Group>> entry : groupsByQuestionId.entrySet()) {
             Long questionId = entry.getKey();
-            List<String> answers = entry.getValue();
+            List<Group> groups = entry.getValue();
 
-            String prompt = groqPromptService.buildPrompt(answers);
-            ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
+            List<String> summaries = groups.stream()
+                    .map(Group::getSummary)
+                    .filter(Objects::nonNull)
+                    .toList();
+
+            // 비어있으면 groq 요청 하지 않도록 함
+            if (summaries.isEmpty()) continue;
 
             Question question = questionRepository.findById(questionId)
                     .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, questionId));
 
-            Optional<Group> existingGroup = groupRepository.findByQuestionIdAndGroupNum(questionId, groupNum);
+            // 기존 GlobalSummary 가져오기
+            GlobalSummary summary = globalSummaryMap.getOrDefault(questionId,
+                    GlobalSummary.builder().question(question).build());
 
-            // 기존에 있는거면 업데이트, 아니면 추가
-            existingGroup.ifPresentOrElse(
-                    group -> {
-                        group.updateContent(response.getTitle(), response.getSummary());
-                        groupRepository.save(group);
-                    },
-                    () -> {
-                        Group group = Group.builder()
-                                .title(response.getTitle())
-                                .summary(response.getSummary())
-                                .question(question)
-                                .groupNum(groupNum)
-                                .build();
-                        groupRepository.save(group);
-                    }
-            );
+            // summary가 1개만 있으면 그대로 넣기
+            if (summaries.size() == 1) {
+                String onlySummary = summaries.get(0);
+                String onlyTitle = groups.get(0).getTitle();
+                summary.updateContent(onlyTitle, onlySummary);
+            } else {
+                String prompt = promptService.buildGlobalPrompt(summaries);
+                ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
+                summary.updateContent(response.getTitle(), response.getSummary());
+            }
+
+            globalSummaryRepository.save(summary);
+            resultList.add(GlobalSummaryDto.Response.fromEntity(summary));
         }
-    }
 
+        return resultList;
+    }
 }
