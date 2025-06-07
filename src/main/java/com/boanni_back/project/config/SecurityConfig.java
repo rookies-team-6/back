@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
-                    .requestMatchers("/auth/**", "/h2-console/**", "/images/**", "/admin/**", "/api/group/**", "/api/record/**").permitAll()
+                    .requestMatchers("/auth/**", "/h2-console/**", "/images/**", "/admin/**", "/api/group/**", "/api/record/**", "/api/chat/groq/all").permitAll()
 ////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
                     .anyRequest().authenticated()
             )

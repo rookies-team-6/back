@@ -1,6 +1,5 @@
 package com.boanni_back.project.ai.controller;
 
-
 import com.boanni_back.project.ai.controller.dto.UserAiRecordDto;
 import com.boanni_back.project.ai.service.UserAiRecordService;
 import com.boanni_back.project.util.SecurityUtil;

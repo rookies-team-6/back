@@ -8,8 +8,7 @@ public class UserAiRecordDto {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    @Getter
-    @Builder
+    @Getter @Builder
     public static class Request {
         private Long questionId;
         private Long userId;
@@ -18,8 +17,7 @@ public class UserAiRecordDto {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    @Getter
-    @Builder
+    @Getter @Builder
     public static class BookmarkedRequest{
         private Long questionId;
         private Long userId;
@@ -27,8 +25,7 @@ public class UserAiRecordDto {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    @Getter
-    @Builder
+    @Getter @Builder
     public static class Response {
         private Long id;
         private String userAnswer;
