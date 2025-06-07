@@ -65,7 +65,7 @@ public class AuthController  {
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
                 .httpOnly(true)
                 .secure(false)  // 개발환경 http에서는 false, 운영에서는 true
-                .sameSite("Lax") // 개발에서는 Lax (운영은 None)
+                .sameSite("None") // 개발에서는 Lax (운영은 None)
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .build();
