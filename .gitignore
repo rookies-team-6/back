@@ -6,6 +6,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 logs/
+*.properties
+
 
 ### STS ###
 .apt_generated
