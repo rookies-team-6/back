@@ -101,6 +101,7 @@ public class AuthController  {
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60);
+        refreshTokenCookie.setAttribute("SameSite", "None");
         return refreshTokenCookie;
     }
 
