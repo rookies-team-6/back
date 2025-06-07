@@ -96,7 +96,7 @@ public class AuthController  {
         // 새로운 RefreshToken으로 쿠키 재설정
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", newTokens.getRefreshToken())
                 .httpOnly(true)
-                .secure(false)  // 개발환경
+                .secure(true)
                 .sameSite("None")
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
