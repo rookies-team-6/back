@@ -94,9 +94,15 @@ public class AuthController  {
         SignInResponseDTO newTokens = usersService.refreshToken(refreshToken);
 
         // 새로운 RefreshToken으로 쿠키 재설정
-        Cookie refreshTokenCookie = getCookie(newTokens.getRefreshToken());
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", newTokens.getRefreshToken())
+                .httpOnly(true)
+                .secure(false)  // 개발환경
+                .sameSite("None")
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
 
-        response.addCookie(refreshTokenCookie);
+        response.setHeader("Set-Cookie", refreshTokenCookie.toString());
 
         // AccessToken만 응답
         return ResponseEntity.ok(new AccessTokenResponseDTO(newTokens.getAccessToken()));
