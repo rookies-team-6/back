@@ -37,3 +37,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# 설정 파일 무시
+src/main/resources/application*.properties
