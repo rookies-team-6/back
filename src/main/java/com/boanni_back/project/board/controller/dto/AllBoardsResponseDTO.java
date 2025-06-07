@@ -11,13 +11,15 @@ import java.time.LocalDateTime;
 public class AllBoardsResponseDTO {
     private Long id;
     private String title;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private String role;
+    private String author;
 
     public AllBoardsResponseDTO(Board board) {
         this.id = board.getId();
         this.title = board.getTitle();
-        this.createdAt = board.getCreatedAt();
+        this.createdAt = board.getCreatedAt().toString().replace("T", " ");
         this.role = board.getUsers().getEmployeeType().name(); // Enum → String으로 변환
+        this.author = board.getUsers().getEmployeeNumber().getUsername();
     }
 }
