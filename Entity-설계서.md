@@ -212,7 +212,7 @@ public class Users {
     @Column(nullable = false)
     @Builder.Default
     private int score = 0;
-    
+
     // 문제 인덱스는 1로 시작
     @Column(nullable = false)
     @Builder.Default
