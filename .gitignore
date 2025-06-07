@@ -39,4 +39,7 @@ out/
 .vscode/
 
 ### application.properties ###
-*.properties
+src/main/resources/application.properties
+src/main/resources/application-admin.properties
+src/main/resources/application-prod.properties
+src/main/resources/application-test.properties
