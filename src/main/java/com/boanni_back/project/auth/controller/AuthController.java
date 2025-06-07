@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,9 +62,16 @@ public class AuthController  {
         SignInResponseDTO tokenResponse = usersService.signIn(request);
 
         // RefreshToken을 HttpOnly 쿠키로 설정
-        Cookie refreshTokenCookie = getCookie(tokenResponse.getRefreshToken());
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
+                .httpOnly(true)
+                .secure(false)  // 개발환경 http에서는 false, 운영에서는 true
+                .sameSite("Lax") // 개발에서는 Lax (운영은 None)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
 
-        response.addCookie(refreshTokenCookie);
+        response.setHeader("Set-Cookie", refreshTokenCookie.toString());
+
 
         return ResponseEntity.ok(new AccessTokenResponseDTO(tokenResponse.getAccessToken()));
     }
