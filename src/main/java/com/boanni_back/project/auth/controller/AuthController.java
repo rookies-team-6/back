@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -60,9 +62,16 @@ public class AuthController  {
         SignInResponseDTO tokenResponse = usersService.signIn(request);
 
         // RefreshToken을 HttpOnly 쿠키로 설정
-        Cookie refreshTokenCookie = getCookie(tokenResponse.getRefreshToken());
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
+                .httpOnly(true)
+                .secure(true)  // 개발환경 http에서는 false, 운영에서는 true
+                .sameSite("None") // 개발에서는 Lax (운영은 None)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
 
-        response.addCookie(refreshTokenCookie);
+        response.setHeader("Set-Cookie", refreshTokenCookie.toString());
+
 
         return ResponseEntity.ok(new AccessTokenResponseDTO(tokenResponse.getAccessToken()));
     }
@@ -85,9 +94,15 @@ public class AuthController  {
         SignInResponseDTO newTokens = usersService.refreshToken(refreshToken);
 
         // 새로운 RefreshToken으로 쿠키 재설정
-        Cookie refreshTokenCookie = getCookie(newTokens.getRefreshToken());
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", newTokens.getRefreshToken())
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .build();
 
-        response.addCookie(refreshTokenCookie);
+        response.setHeader("Set-Cookie", refreshTokenCookie.toString());
 
         // AccessToken만 응답
         return ResponseEntity.ok(new AccessTokenResponseDTO(newTokens.getAccessToken()));
@@ -97,9 +112,10 @@ public class AuthController  {
     private static Cookie getCookie(String newTokens) {
         Cookie refreshTokenCookie = new Cookie("refreshToken", newTokens);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setSecure(false);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60);
+        refreshTokenCookie.setAttribute("SameSite", "Lax");
         return refreshTokenCookie;
     }
 
