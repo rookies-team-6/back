@@ -287,85 +287,74 @@ graph TD
 
 ### 4.1 개념적 관계도
 ```mermaid
-USERS ||--o{ BOARD : "게시글 작성"
-USERS ||--o{ USER_AI_RECORD : "문제풀이"
-USERS ||--o{ REFRESH_TOKEN : "토큰"
-USERS ||--o{ GROUP : "그룹 소속"
-USERS ||--o{ USER_AI_RECORD : "풀이기록"
-USERS ||--|| EMPLOYEE_NUMBER : "사원번호"
-USERS ||--o{ USER_AI_RECORD : "풀이기록"
-USERS ||--o{ REFRESH_TOKEN : "리프레시토큰"
-QUESTION ||--o{ GROUP : "그룹문제"
-QUESTION ||--o{ USER_AI_RECORD : "풀이기록"
-QUESTION ||--o{ GLOBAL_SUMMARY : "통합요약"
-GROUP ||--o{ GLOBAL_SUMMARY : "요약대상"
-GROUP ||--o{ USERS : "그룹소속"
-EMPLOYEE_NUMBER ||--|| USERS : "사원연결"
+erDiagram
+    USERS ||--|| EMPLOYEE_NUMBER : "사원번호"
+    USERS ||--o{ REFRESH_TOKEN : "토큰"
+    USERS ||--o{ BOARD : "게시글 작성"
+    USERS ||--o{ USER_AI_RECORD : "문제풀이"
+    USERS ||--o{ GROUP : "그룹 소속"
+    QUESTION ||--o{ GROUP : "그룹문제"
+    QUESTION ||--o{ USER_AI_RECORD : "풀이기록"
+    QUESTION ||--o{ GLOBAL_SUMMARY : "통합요약"
+    GROUP ||--o{ GLOBAL_SUMMARY : "요약대상"
 
-USERS {
-    Long id PK
-    String email UK
-    String password
-    Enum employeeType
-    int score
-    Long currentQuestionIndex
-    LocalDateTime createAt
-    Long groupNum
-    LocalDate questionSolveDeadline
-    Long employeeNumber FK
-}
-
-EMPLOYEE_NUMBER {
-    String employeeNum PK
-    String username
-    String departmentCode
-    boolean used
-}
-
-QUESTION {
-    Long id PK
-    String question
-}
-
-GROUP {
-    Long id PK
-    String title
-    String summary
-    Long question_id FK
-    Long groupNum
-}
-
-USER_AI_RECORD {
-    Long id PK
-    String userAnswer
-    String aiAnswer
-    boolean isBookMarked
-    Long question_id FK
-    Long user_id FK
-}
-
-GLOBAL_SUMMARY {
-    Long id PK
-    String title
-    Long question_id FK
-    String summary
-}
-
-BOARD {
-    Long id PK
-    Long user_id FK
-    String title
-    String contents
-    LocalDateTime createdAt
-}
-
-REFRESH_TOKEN {
-    Long id PK
-    Long userId UK
-    String refreshToken
-    LocalDateTime createdAt
-    LocalDateTime expiresAt
-}
+    USERS {
+        id LONG PK
+        email STRING UK
+        password STRING
+        employeeType STRING
+        score INT
+        currentQuestionIndex LONG
+        createAt DATETIME
+        groupNum LONG
+        questionSolveDeadline DATE
+        employeeNumber STRING FK
+    }
+    EMPLOYEE_NUMBER {
+        employeeNum STRING PK
+        username STRING
+        departmentCode STRING
+        used BOOLEAN
+    }
+    QUESTION {
+        id LONG PK
+        question STRING
+    }
+    GROUP {
+        id LONG PK
+        title STRING
+        summary STRING
+        question_id LONG FK
+        groupNum LONG
+    }
+    USER_AI_RECORD {
+        id LONG PK
+        userAnswer STRING
+        aiAnswer STRING
+        isBookMarked BOOLEAN
+        question_id LONG FK
+        user_id LONG FK
+    }
+    GLOBAL_SUMMARY {
+        id LONG PK
+        title STRING
+        question_id LONG FK
+        summary STRING
+    }
+    BOARD {
+        id LONG PK
+        user_id LONG FK
+        title STRING
+        contents STRING
+        createdAt DATETIME
+    }
+    REFRESH_TOKEN {
+        id LONG PK
+        userId LONG UK
+        refreshToken STRING
+        createdAt DATETIME
+        expiresAt DATETIME
+    }
 ```
 
 ### 4.2 관계 상세 설명
