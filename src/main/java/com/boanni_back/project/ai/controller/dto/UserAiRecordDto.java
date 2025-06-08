@@ -9,6 +9,14 @@ public class UserAiRecordDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter @Builder
+    public static class AnswerRequest {
+        private Long questionId;
+        private String userAnswer;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter @Builder
     public static class Request {
         private Long questionId;
         private Long userId;
