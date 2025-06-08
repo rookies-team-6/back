@@ -110,10 +110,10 @@ graph TD
 |---------------------------|------|-----|-----|-----------|
 | **EmployeeNumber (직원)**   | Entity | 높음  | 중간  | 조직 임직원과 수강생 |
 | **Users (회원)**            | Entity | 높음  | 높음  | 사용자       |
-| **Question (문제)**       | Entity | 중간  | 낮음  | 핵심 자원     |
+| **Question (문제)**       | Entity | 높음  | 낮음  | 핵심 자원     |
 | **Group (그룹요약)**          | Entity | 중간  | 중간  | 그룹 요약 관리  |
-| **UserAiRecord (문제답변)** | Entity | 높음  | 높음  | 핵심 비즈니스   |
-| **GlobalSummary (전체요약)**  | Entity | 중간  | 높음  | 전체 요약 관리  |
+| **UserAiRecord (문제답변)** | Entity | 중간  | 높음  | 핵심 비즈니스   |
+| **GlobalSummary (전체요약)**  | Entity | 중간  | 중간  | 전체 요약 관리  |
 | **Board (게시판)**           | Entity | 낮음  | 낮음  | 관리자 및 사용자 게시판 |
 | **RefreshToken (토큰)**     | Entity | 높음  | 높음  | 회원 토큰     |
 | **EmployeeType (회원유형)**   | Value Object | 낮음  | 낮음  | 확장 가능성    |
