@@ -44,7 +44,7 @@ class PromptServiceTest {
         given(resourceLoader.getResource("classpath:prompt/groqGroupPrompt.txt")).willReturn(resource);
         given(resource.getInputStream()).willReturn(new ByteArrayInputStream(template.getBytes(StandardCharsets.UTF_8)));
 
-        String result = promptService.buildGroqPrompt("title", "summary", "answer");
+        String result = promptService.buildGroqPrompt("question", "title", "summary", "answer");
 
         assertThat(result).isEqualTo("제목: title\n요약: summary\n답변: answer");
     }
