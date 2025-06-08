@@ -25,8 +25,9 @@ public class UserAiRecordController {
 
     // 이용자 답변 등록
     @PostMapping
-    public ResponseEntity<UserAiRecordDto.Response> saveUserAnswer(@RequestBody UserAiRecordDto.Request request) {
-        UserAiRecordDto.Response response = userAiRecordService.saveUserAnswer(request);
+    public ResponseEntity<UserAiRecordDto.Response> saveUserAnswer(Authentication authentication, @RequestBody UserAiRecordDto.AnswerRequest request) {
+        Long userId = SecurityUtil.extractUserId(authentication);
+        UserAiRecordDto.Response response = userAiRecordService.saveUserAnswer(userId, request);
         return ResponseEntity.ok(response);
     }
 

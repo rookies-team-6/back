@@ -26,13 +26,13 @@ public class UserAiRecordService {
 
     // 사용자 답변 등록(저장)
     @Transactional
-    public UserAiRecordDto.Response saveUserAnswer(UserAiRecordDto.Request request) {
+    public UserAiRecordDto.Response saveUserAnswer(Long userId, UserAiRecordDto.AnswerRequest request) {
         // 연관 엔티티 조회
         Question question = questionRepository.findById(request.getQuestionId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, request.getQuestionId()));
 
-        Users user = adminRepository.findById(request.getUserId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
+        Users user = adminRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
 
         // 엔티티 생성 및 저장
         UserAiRecord record = UserAiRecord.builder()
