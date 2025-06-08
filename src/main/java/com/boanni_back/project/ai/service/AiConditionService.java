@@ -41,7 +41,7 @@ public class AiConditionService {
     }
 
     public ChatDto.GroqResponse getGroqResponse(String userPrompt) {
-        String systemInstruction = "당신은 조직 내 보안 전문가입니다. JSON 형식으로 결과를 제공합니다.\n";
+        String systemInstruction = "당신은 사내 보안 전문가입니다. JSON 형식으로 결과를 제공합니다.\n";
         JsonNode json = callAiModel(groqChatModel, systemInstruction, userPrompt);
 
         // groq json 응답 확인용 로그 (삭제 가능)
