@@ -7,7 +7,7 @@
 - **버전**: [v2.0]
 - **검토자**: [박효영]
 - **API 버전**: v1
-- **Base URL**: https://localhost:8080/auth, https://localhost:8080/api, https://localhost:8080/board
+- **Base URL**: https://server.boaniserver.kro.kr
 
 ---
 
@@ -51,21 +51,21 @@
 | **DELETE** | 리소스 삭제 | ✅ | ❌ | `DELETE /board/2`           |
 
 ### 2.3 HTTP 상태 코드 가이드
-| 코드 | 상태 | 설명 | 사용 예시 |
-|------|------|------|----------|
-| **200** | OK | 성공 (데이터 포함) | GET 요청 성공 |
-| **201** | Created | 리소스 생성 성공 | POST 요청 성공 |
-| **400** | Bad Request | 잘못된 요청 | 검증 실패 |
-| **401** | Unauthorized | 인증 필요 | 토큰 없음/만료 |
-| **403** | Forbidden | 권한 없음 | 접근 거부 |
-| **404** | Not Found | 리소스 없음 | 존재하지 않는 ID |
-| **500** | Internal Server Error | 서버 오류 | 예기치 못한 오류 |
+| 코드      | 상태                    | 설명          | 사용 예시 |
+|---------|-----------------------|-------------|----------|
+| **200** | OK                    | 성공 (데이터 포함) | GET 요청 성공 |
+| **201** | Created               | 리소스 생성 성공   | POST 요청 성공 |
+| **204** | No Content            | 리소스 삭제 성공   | POST 요청 성공 |
+| **400** | Bad Request           | 잘못된 요청      | 검증 실패 |
+| **401** | Unauthorized          | 인증 필요       | 토큰 없음/만료 |
+| **403** | Forbidden             | 권한 없음       | 접근 거부 |
+| **404** | Not Found             | 리소스 없음      | 존재하지 않는 ID |
+| **500** | Internal Server Error | 서버 오류       | 예기치 못한 오류 |
 
 ### 2.4 공통 요청 헤더
 ```
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer {JWT_TOKEN}
 X-Request-ID: {UUID}  // 요청 추적용
 Accept-Language: ko-KR
 User-Agent: LibraryApp/1.0.0
