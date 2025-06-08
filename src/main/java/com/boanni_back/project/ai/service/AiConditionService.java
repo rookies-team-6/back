@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @Service
 @Slf4j
@@ -75,20 +78,58 @@ public class AiConditionService {
     private static JsonNode parseJsonFromResponse(ChatResponse response) throws JsonProcessingException {
         String resultText = response.getResult().getOutput().getText();
 
-        // JSON 코드 블록 제거
+        // ```json ``` 코드 블록 제거
         resultText = resultText.replaceAll("(?s)```json.*?```", "").trim();
 
-        // JSON 문자열 추출
-        int startIndex = resultText.indexOf("{");
-        int endIndex = resultText.lastIndexOf("}");
-        if (startIndex == -1 || endIndex == -1 || endIndex <= startIndex) {
-            throw new BusinessException(ErrorCode.API_REVERSE_JSON_ERROR);
-        }
-        String jsonString = resultText.substring(startIndex, endIndex + 1);
+        // 자잘한 오류 보정 (예: 중복 쌍따옴표)
+        resultText = resultText.replaceAll("\"\"", "\"");
 
         ObjectMapper mapper = new ObjectMapper();
-        // unknown 필드 무시
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapper.readTree(jsonString);
+
+        // 1차 : JSON 블록 추출
+        int startIndex = resultText.indexOf("{");
+        int endIndex = resultText.lastIndexOf("}");
+
+        if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
+            String jsonString = resultText.substring(startIndex, endIndex + 1);
+            try {
+                return mapper.readTree(jsonString);
+            } catch (JsonProcessingException e) {
+                log.warn("기본 JSON 파싱 실패: {}", jsonString);
+            }
+        }
+
+        // 2차 : metadata={...} 추출 시도
+        Pattern metadataPattern = Pattern.compile("metadata=\\{.*?\\}", Pattern.DOTALL);
+        Matcher matcher = metadataPattern.matcher(resultText);
+
+        if (matcher.find()) {
+            final String fixed = getFixed(matcher);
+
+            try {
+                log.info("metadata fallback 사용: {}", fixed);
+                return mapper.readTree(fixed);
+            } catch (JsonProcessingException e) {
+                log.error("fallback JSON 변환 실패: {}", fixed);
+            }
+        }
+
+        // 최종 실패
+        throw new BusinessException(ErrorCode.API_REVERSE_JSON_ERROR);
+    }
+
+    private static String getFixed(Matcher matcher) {
+        String metadataBlock = matcher.group(); // metadata={ id: ..., index: 0 }
+
+        // metadata={...} → {...}
+        String jsonLike = metadataBlock.replaceFirst("metadata=", "").trim();
+
+        // key=value → "key":"value"
+        String fixed = jsonLike
+                .replaceAll("(\\w+)=([^,}\\s]+)", "\"$1\":\"$2\"") // key=value → "key":"value"
+                .replaceAll("(\\w+)=\\{", "\"$1\":{")              // key={ → "key":{
+                .replaceAll(",\\s*}", "}");                        // 끝 콤마 제거
+        return fixed;
     }
 }

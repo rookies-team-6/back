@@ -21,13 +21,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 // 홈 화면 서비스 테스트
-class UserServiceTest {
+class HomeServiceTest {
 
     @Mock
     private UsersRepository usersRepository;
 
     @InjectMocks
-    private UserService userService;
+    private HomeService homeService;
 
     @BeforeEach
     void setUp() {
@@ -63,7 +63,7 @@ class UserServiceTest {
         when(usersRepository.findGroupAverages()).thenReturn(groupAverages);
 
 
-        UsersDto.UserGroupScoresResponse response = userService.getUserWithGroupScores(userId);
+        UsersDto.UserGroupScoresResponse response = homeService.getUserWithGroupScores(userId);
 
         assertThat(response.getUser().getUserId()).isEqualTo(userId);
         assertThat(response.getUser().getName()).isEqualTo("김관리");
@@ -83,7 +83,7 @@ class UserServiceTest {
         Long userId = 990L;
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.getUserWithGroupScores(userId))
+        assertThatThrownBy(() -> homeService.getUserWithGroupScores(userId))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining("해당 사용자를 찾을 수 없습니다");
     }
