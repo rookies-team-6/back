@@ -8,19 +8,7 @@
 </head>
 <body style="background-color: #FFFCEE;">
 <!-- 상단 바 -->
-<nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;">
-</nav>
-<div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
-  <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
-    <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
-    <strong style="font-size: 18px;">관리자 페이지-학습 진행률 조회</strong>
-  </a>
-  <div class="me-4">
-    <a href="/admin/users" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
-      관리자 메인 페이지로 돌아가기
-    </a>
-  </div>
-</div>
+<div th:replace="fragments/header-detail :: adminHeader('회원 학습 진행률 조회')"></div>
 <div class="container mt-4">
   <h2>회원 학습 진행률 목록</h2>
 
@@ -76,7 +64,7 @@
   </table>
 
   <!-- 페이지네이션 -->
-  <nav aria-label="Page navigation example" class="mt-4">
+  <nav aria-label="Page navigation example" class="pagination-nav mt-4">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
         <a class="page-link" th:href="@{'/admin/users/progress'(page=${currentPage - 1})}">이전</a>
@@ -168,7 +156,8 @@
   renderUserTable(filtered);
 
   // 페이지네이션 숨기기 (필터 적용 중일 땐)
-  document.querySelector("nav").style.display = "none";
+  const pagination = document.querySelector(".pagination-nav");
+  if (pagination) pagination.style.display = "none";
 }
 
 
