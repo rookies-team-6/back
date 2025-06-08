@@ -87,10 +87,17 @@ public class ChatService {
         }
         List<UserAiRecord> userRecords = userAiRecordRepository.findAllByUsers_Id(userId);
 
+        // 한 번에 questionId 조회
         List<Long> questionIds = userRecords.stream()
                 .map(record -> record.getQuestion().getId())
                 .distinct()
                 .collect(Collectors.toList());
+
+        // 한번에 question 조회
+        List<Question> questions = questionRepository.findAllById(questionIds);
+        Map<Long, Question> questionMap = questions.stream()
+                .collect(Collectors.toMap(Question::getId, Function.identity()));
+
 
         // 한 번에 그룹 조회
         List<Group> groups = groupRepository.findAllByQuestionIdInAndGroupNum(questionIds, groupNum);
@@ -101,7 +108,7 @@ public class ChatService {
         for (UserAiRecord userRecord : userRecords) {
             Long questionId = userRecord.getQuestion().getId();
             String userAnswer = userRecord.getUserAnswer();
-            Question question = userRecord.getQuestion();
+            Question question = questionMap.get(questionId);
 
             Group group = groupMap.get(questionId);
 
@@ -109,7 +116,7 @@ public class ChatService {
                 String oldTitle = group.getTitle();
                 String oldSummary = group.getSummary();
 
-                String prompt = promptService.buildGroqPrompt(oldTitle, oldSummary, userAnswer);
+                String prompt = promptService.buildGroqPrompt(question.getQuestion(), oldTitle, oldSummary, userAnswer);
                 ChatDto.GroqResponse response = aiConditionService.getGroqResponse(prompt);
 
                 group.updateContent(response.getTitle(), response.getSummary());

@@ -1,27 +1,19 @@
 package com.boanni_back.project.auth.controller;
 
-import com.boanni_back.project.ai.service.UserService;
 import com.boanni_back.project.auth.controller.dto.*;
-import com.boanni_back.project.auth.entity.CustomUserDetails;
 import com.boanni_back.project.auth.entity.EmployeeType;
-import com.boanni_back.project.auth.service.CustomUserDetailsService;
 import com.boanni_back.project.auth.service.EmployeeAuthService;
 import com.boanni_back.project.auth.service.RefreshTokenService;
 import com.boanni_back.project.auth.service.UsersService;
 import com.boanni_back.project.exception.BusinessException;
 import com.boanni_back.project.exception.ErrorCode;
-import com.boanni_back.project.jwt.JwtTokenProvider;
 import com.boanni_back.project.util.SecurityUtil;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
