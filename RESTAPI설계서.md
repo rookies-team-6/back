@@ -2,10 +2,10 @@
 
 ##  문서 정보
 - **프로젝트명**: [제대로 보안니]
-- **작성자**: [팀명/최지은]
-- **작성일**: [YYYY-MM-DD]
-- **버전**: [v1.0]
-- **검토자**: [박효영, 이무현]
+- **작성자**: [육하원칙/최지은]
+- **작성일**: [2025-06-08]
+- **버전**: [v2.0]
+- **검토자**: [박효영]
 - **API 버전**: v1
 - **Base URL**: https://localhost:8080/auth, https://localhost:8080/api, https://localhost:8080/board
 
@@ -28,19 +28,18 @@
 - **프레임워크**: Spring Boot 3.4.6
 - **인증**: JWT (JSON Web Token)
 - **직렬화**: JSON
-- **API 문서**: OpenAPI 3.0 (Swagger)
 
 ---
 
 ## 2. API 공통 규칙
 
 ### 2.1 URL 설계 규칙
-| 규칙 | 설명 | 좋은 예                        | 나쁜 예                  |
-|------|------|-----------------------------|-----------------------|
-| **명사 사용** | 동사가 아닌 명사로 리소스 표현 | `/auth/verify`              | `/auth/getVerifies`   |
-| **복수형 사용** | 컬렉션은 복수형으로 표현 | `/admin/users`              | `/admin/user`         |
-| **계층 구조** | 리소스 간 관계를 URL로 표현 | `/admin/users/TRAINEE/type` | `/admin/getUserTypes` |
-| **동작 표현** | HTTP 메서드로 동작 구분 | `POST /api/signin`          | `/api/createSignin`   |
+| 규칙 | 설명                | 좋은 예                          | 나쁜 예                    |
+|------|-------------------|-------------------------------|-------------------------|
+| **명사 사용** | 동사가 아닌 명사로 리소스 표현 | `/auth/verify`                | `/auth/getVerifies`     |
+| **복수형 사용** | 컬렉션은 복수형으로 표현     | `/admin/users`                | `/admin/user`           |
+| **계층 구조** | 리소스 간 관계를 URL로 표현 | `/admin/users/TRAINEE/type`   | `/admin/getUserTypes`   |
+| **동작 표현** | HTTP 메서드로 동작 구분   | `POST /api/signin`            | `/api/createSignin`     |
 
 ### 2.2 HTTP 메서드 사용 규칙
 | 메서드 | 용도 | 멱등성 | 안전성 | 예시                          |
@@ -565,61 +564,7 @@ Response (404 Not Found):
 }
 ```
 
-#### 4.3.2 전체 답변 요약
-```yaml
-POST /api/chat/groq/all
-Content-Type: application/json
-Authorization: Bearer {JWT_TOKEN}
-Required Role: TRAINEE, EMPLOYEE
-
-Response (200 OK):
-{
-  "success": true,
-  "code": 200,
-  "data": [
-    {
-      "id": 1,
-      "question_id": 2,
-      "title": "보안 강화 방안",
-      "question": "피싱 공격을 예방하기 위한 방법을 설명하세요.",
-      "summary": "실시간 탐지 솔루션 도입, 백업 정책 강화, 피싱 대책, 2단계 인증 설정, 의심스러운 링크나 첨부파일에 대한 주의"
-    },
-    {
-      "id": 2,
-      "question_id": 3,
-      "title": "강화된 보안 의식",
-      "question": "2단계 인증(Two-factor authentication)의 장점은 무엇인가요?",
-      "summary": "의심스러운 링크나 첨부파일 클릭금지, 출처 확인, 2단계 인증 설정, 최신 보안 패치 적용, 주기적 보안 교육, 2단계 인증은 비밀번호 외에 추가 인증 수단을 요구해 계정 탈취 위험을 획기적으로 줄이고, 피싱·크리덴셜 스터핑 등 공격에 강력한 방어막을 제공합니다."
-    },
-    {
-      "id": 3,
-      "question_id": 4,
-      "title": "랜섬웨어 위협 완화를 위한 대응 방안",
-      "question": "랜섬웨어가 정교해지고 있습니다. 보안 담당자로서 감염 탐지 및 대응 방안을 기술하시오. (기술적/정책적/교육 측면)",
-      "summary": "랜섬웨어 감염 탐지, 의심스러운 파일 암호화·프로세스 이상 행위 모니터링, 중요 데이터 정기 백업 및 분리 보관, 네트워크 격리 및 IOC 기반 전파 차단"
-    },
-    {
-      "id": 4,
-      "question_id": 5,
-      "title": "비밀번호 암호화 미비의 위험",
-      "question": "모 기업은 고객 정보를 DB에 저장하고 있습니다. 다만, DB에 값을 저장할 때 비밀번호를 암호화하지 않고, 문자열 그대로 저장하는 방식으로 고객 정보를 저장하고 있습니다. 이런 방식은 어떤 문제를 야기할 수 있을까요?",
-      "summary": "암호화되지 않은 비밀번호로 인해 개인정보 유출, 계정 탈취 등 연쇄 위험이 발생할 수 있습니다."
-    },
-    {
-      "id": 5,
-      "question_id": 9,
-      "title": "APT 공격 탐지 및 예방 전략: UEBA, EADR/XDR, 위협 인텔리전스 및 Zero Trust 모델",
-      "question": "APT 공격(Advanced Persistent Threat)이 일반적인 공격과 다른 점은 무엇이며, 조직 내에서 이를 탐지하고 대응하기 위한 효과적인 전략은 무엇인가?",
-      "summary": "APT 공격은 장기간에 걸쳐 은밀하게 침투해 정보를 탈취하는 고도화된 공격입니다. 탐지를 위해 이상 행위 기반 탐지(UEBA), EDR/XDR 도입, 위협 인텔리전스 연계, Zero Trust 모델 적용 등이 효과적입니다. 주요 키워드는 UEBA, EDR/XDR, 위협 인텔리전스, Zero Trust 모델입니다."
-    }
-  ],
-  "message": "요청이 성공적으로 처리되었습니다.",
-  "timestamp": "2025-06-06T21:54:47.0342424",
-  "requestId": "b8560d02-81ef-42e4-85a0-0327b24ad69c"
-}
-```
-
-#### 4.3.3 그룹별 답변 요약
+#### 4.3.2 그룹별 답변 요약
 ```yaml
 POST /api/chat/groq
 Content-Type: application/json
@@ -929,7 +874,61 @@ Response (200 OK):
 
 ### 4.5 그룹 관리 API
 
-#### 4.5.1 그룹 정보 조회
+#### 4.5.1 그룹 전체 조회
+```yaml
+POST /api/chat/groq/all
+Content-Type: application/json
+Authorization: Bearer {JWT_TOKEN}
+Required Role: TRAINEE, EMPLOYEE
+
+Response (200 OK):
+{
+  "success": true,
+  "code": 200,
+  "data": [
+    {
+      "id": 1,
+      "question_id": 2,
+      "title": "보안 강화 방안",
+      "question": "피싱 공격을 예방하기 위한 방법을 설명하세요.",
+      "summary": "실시간 탐지 솔루션 도입, 백업 정책 강화, 피싱 대책, 2단계 인증 설정, 의심스러운 링크나 첨부파일에 대한 주의"
+    },
+    {
+      "id": 2,
+      "question_id": 3,
+      "title": "강화된 보안 의식",
+      "question": "2단계 인증(Two-factor authentication)의 장점은 무엇인가요?",
+      "summary": "의심스러운 링크나 첨부파일 클릭금지, 출처 확인, 2단계 인증 설정, 최신 보안 패치 적용, 주기적 보안 교육, 2단계 인증은 비밀번호 외에 추가 인증 수단을 요구해 계정 탈취 위험을 획기적으로 줄이고, 피싱·크리덴셜 스터핑 등 공격에 강력한 방어막을 제공합니다."
+    },
+    {
+      "id": 3,
+      "question_id": 4,
+      "title": "랜섬웨어 위협 완화를 위한 대응 방안",
+      "question": "랜섬웨어가 정교해지고 있습니다. 보안 담당자로서 감염 탐지 및 대응 방안을 기술하시오. (기술적/정책적/교육 측면)",
+      "summary": "랜섬웨어 감염 탐지, 의심스러운 파일 암호화·프로세스 이상 행위 모니터링, 중요 데이터 정기 백업 및 분리 보관, 네트워크 격리 및 IOC 기반 전파 차단"
+    },
+    {
+      "id": 4,
+      "question_id": 5,
+      "title": "비밀번호 암호화 미비의 위험",
+      "question": "모 기업은 고객 정보를 DB에 저장하고 있습니다. 다만, DB에 값을 저장할 때 비밀번호를 암호화하지 않고, 문자열 그대로 저장하는 방식으로 고객 정보를 저장하고 있습니다. 이런 방식은 어떤 문제를 야기할 수 있을까요?",
+      "summary": "암호화되지 않은 비밀번호로 인해 개인정보 유출, 계정 탈취 등 연쇄 위험이 발생할 수 있습니다."
+    },
+    {
+      "id": 5,
+      "question_id": 9,
+      "title": "APT 공격 탐지 및 예방 전략: UEBA, EADR/XDR, 위협 인텔리전스 및 Zero Trust 모델",
+      "question": "APT 공격(Advanced Persistent Threat)이 일반적인 공격과 다른 점은 무엇이며, 조직 내에서 이를 탐지하고 대응하기 위한 효과적인 전략은 무엇인가?",
+      "summary": "APT 공격은 장기간에 걸쳐 은밀하게 침투해 정보를 탈취하는 고도화된 공격입니다. 탐지를 위해 이상 행위 기반 탐지(UEBA), EDR/XDR 도입, 위협 인텔리전스 연계, Zero Trust 모델 적용 등이 효과적입니다. 주요 키워드는 UEBA, EDR/XDR, 위협 인텔리전스, Zero Trust 모델입니다."
+    }
+  ],
+  "message": "요청이 성공적으로 처리되었습니다.",
+  "timestamp": "2025-06-06T21:54:47.0342424",
+  "requestId": "b8560d02-81ef-42e4-85a0-0327b24ad69c"
+}
+```
+
+#### 4.5.2 그룹 정보 조회
 ```yaml
 GET /api/group/{groupNum}
 Content-Type: application/json
@@ -939,26 +938,69 @@ Required Role: TRAINEE, EMPLOYEE
 Path Parameters:
   - groupNum: Long (required) - 그룹 번호
     
-Request Body:
-{
-  "groupNum": 1
-}
-
 Response (200 OK):
-{
-  "success": true,
-  "code": 200,
-  "data": {
-    "id": 1,
-    "title": "보안 기본 원칙",
-    "summary": "CIA, SQL Injection 등 보안 개념에 대해 토의한 내용을 정리했습니다.",
-    "questionId": 1,
-    "groupNum": 1
-  },
-  "message": "요청이 성공적으로 처리되었습니다.",
-  "timestamp": "2025-06-05T09:42:40.2604538",
-  "requestId": "40404e14-a31b-428b-87b7-564265609503"
-}
+  {
+    "success": true,
+    "code": 200,
+    "data": [
+      {
+        "id": 1,
+        "title": "랜섬웨어 위협 완화를 위한 종합 대응 방안",
+        "summary": "랜섬웨어 감염 탐지 및 대응 방안을 위해 EDR 및 행위 기반 탐지 시스템을 도입하고, 의심스러운 파일 암호화·프로세스 이상 행위를 모니터링하여 중요 데이터 정기 백업 및 분리 보관을 시행하고, 감염 시 네트워크 격리 및 IOC 기반 전파 차단을 수행할 수 있도록 한다. 또한, 보안 담당자는 랜섬웨어에 대응하기 위해 정기적인 보안 교육과 정책을 시행하여 직원의 보안 意識을 높이는 데 초점을 두어야 한다.",
+        "questionId": 4,
+        "questionName": "랜섬웨어가 정교해지고 있습니다. 보안 담당자로서 감염 탐지 및 대응 방안을 기술하시오. (기술적/정책적/교육 측면)",
+        "groupNum": 4
+      },
+      {
+        "id": 2,
+        "title": "보안 위험 요인: 고객 정보 유출 및 연쇄 피해",
+        "summary": "고객 정보를 암호화하지 않고 문자열로 저장하는 것은 개인정보 유출 및 연쇄 피해 가능성을 높입니다. 이 방식은 계정 탈취 등 다른 서비스로의 연쇄 피해를 야기할 수 있습니다. 중요 보안 포인트는 고객 정보를 안전하게 저장하는 것입니다.",
+        "questionId": 5,
+        "questionName": "SK쉴더스는 고객 정보를 DB에 저장하고 있습니다. 다만, DB에 값을 저장할 때 비밀번호를 암호화하지 않고, 문자열 그대로 저장하는 방식으로 고객 정보를 저장하고 있습니다. 이런 방식은 어떤 문제를 야기할 수 있을까요?",
+        "groupNum": 4
+      },
+      {
+        "id": 3,
+        "title": "APT 공격 탐지 및 대응 전략",
+        "summary": "APT 공격은 장기간에 걸쳐 은밀하게 침투해 정보를 탈취하는 고도화된 공격입니다. 탐지를 위해 이상 행위 기반 탐지(UEBA), EDR/XDR 도입, 위협 인텔리전스 연계, Zero Trust 모델 적용 등이 효과적입니다. 조직 내에서는 지속적인 모니터링, 위협 분석, 취약점 관리 등이 필요합니다. 특히, UEBA, EDR/XDR, 위협 인텔리전스, Zero Trust 모델이 주요 키워드입니다. APT 공격에 대응하기 위해서는 지속적인 모니터링과 위협 분석이 필요하며, 조직 내에서는 취약점 관리 등이 필요합니다.",
+        "questionId": 9,
+        "questionName": "APT 공격(Advanced Persistent Threat)이 일반적인 공격과 다른 점은 무엇이며, 조직 내에서 이를 탐지하고 대응하기 위한 효과적인 전략은 무엇인가?",
+        "groupNum": 4
+      }
+    ],
+    "message": "요청이 성공적으로 처리되었습니다.",
+    "timestamp": "2025-06-08T14:28:41.1331352",
+    "requestId": "73a0da3a-ca60-4aa0-bcaa-5425a4edeef9"
+  }
+```
+
+#### 4.5.3 그룹 디테일 정보 조회
+```yaml
+GET /api/group/{groupNum}/{questionId}
+Content-Type: application/json
+Authorization: Bearer {JWT_TOKEN}
+Required Role: TRAINEE, EMPLOYEE
+
+Path Parameters:
+  - groupNum: Long (required) - 그룹 번호
+  - questionId: Long (required) - 문제 번호    
+    
+Response (200 OK):
+  {
+    "success": true,
+    "code": 200,
+    "data": {
+        "id": 1,
+        "title": "랜섬웨어 위협 완화를 위한 종합 대응 방안",
+        "summary": "랜섬웨어 감염 탐지 및 대응 방안을 위해 EDR 및 행위 기반 탐지 시스템을 도입하고, 의심스러운 파일 암호화·프로세스 이상 행위를 모니터링하여 중요 데이터 정기 백업 및 분리 보관을 시행하고, 감염 시 네트워크 격리 및 IOC 기반 전파 차단을 수행할 수 있도록 한다. 또한, 보안 담당자는 랜섬웨어에 대응하기 위해 정기적인 보안 교육과 정책을 시행하여 직원의 보안 意識을 높이는 데 초점을 두어야 한다.",
+        "questionId": 4,
+        "questionName": "랜섬웨어가 정교해지고 있습니다. 보안 담당자로서 감염 탐지 및 대응 방안을 기술하시오. (기술적/정책적/교육 측면)",
+        "groupNum": 4
+      },
+    "message": "요청이 성공적으로 처리되었습니다.",
+    "timestamp": "2025-06-08T14:28:41.1331352",
+    "requestId": "73a0da3a-ca60-4aa0-bcaa-5425a4edeef9"
+  }
 ```
 
 ### 4.6 게시판 API
@@ -981,60 +1023,49 @@ Request Body:
 }
 
 Response (200 OK):
-{
-  "success": true,
-  "code": 200,
-  "data": {
-    "content": [
-      {
-        "id": 6,
-        "title": "1번째 제목",
-        "createdAt": "2025-06-03T18:42:38.250554",
-        "role": "TRAINEE"
+  {
+    "success": true,
+    "code": 200,
+    "data": {
+      "content": [
+        {
+          "id": 1,
+          "title": "첫 번째 게시글",
+          "createdAt": "2025-06-07 20:42:16",
+          "role": "TRAINEE",
+          "author": "최직원"
+        }
+      ],
+      "pageable": {
+        "pageNumber": 0,
+        "pageSize": 10,
+        "sort": {
+          "empty": false,
+          "sorted": true,
+          "unsorted": false
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
       },
-      {
-        "id": 5,
-        "title": "0번째 제목",
-        "createdAt": "2025-06-03T18:42:38.206143",
-        "role": "TRAINEE"
-      },
-      {
-        "id": 4,
-        "title": "zz",
-        "createdAt": "2025-06-03T15:47:14.086089",
-        "role": "TRAINEE"
-      }
-    ],
-    "pageable": {
-      "pageNumber": 20,
-      "pageSize": 10,
+      "last": true,
+      "totalPages": 1,
+      "totalElements": 1,
+      "size": 10,
+      "number": 0,
       "sort": {
         "empty": false,
         "sorted": true,
         "unsorted": false
       },
-      "offset": 200,
-      "paged": true,
-      "unpaged": false
+      "first": true,
+      "numberOfElements": 1,
+      "empty": false
     },
-    "last": true,
-    "totalElements": 203,
-    "totalPages": 21,
-    "first": false,
-    "size": 10,
-    "number": 20,
-    "sort": {
-      "empty": false,
-      "sorted": true,
-      "unsorted": false
-    },
-    "numberOfElements": 3,
-    "empty": false
-  },
-  "message": "요청이 성공적으로 처리되었습니다.",
-  "timestamp": "2025-06-04T16:47:09.564345",
-  "requestId": "f03697c6-600f-41fa-9e45-e231135132ff"
-}
+    "message": "요청이 성공적으로 처리되었습니다.",
+    "timestamp": "2025-06-07T20:42:55.025425",
+    "requestId": "dd6eeadd-40de-490e-84b2-445a41fc9428"
+  }
 
 Request Body:
 {
@@ -1074,10 +1105,10 @@ Response (200 OK):
   "code": 200,
   "data": {
     "id": 50,
-    "username": "홍길동",
+    "author": "홍길동",
     "title": "45번째 제목",
     "contents": "45번째 본문",
-    "createdAt": "2025-06-03T18:42:38.454277",
+    "createdAt": "2025-06-03 18:42:38.454277",
     "mine": false
   },
   "message": "요청이 성공적으로 처리되었습니다.",
@@ -1243,6 +1274,7 @@ Response (404 Not Found):
 }
 ```
 
+
 ---
 
 ## 5. 에러 코드 및 처리
@@ -1306,136 +1338,6 @@ Response (404 Not Found):
 | **BOARD_PAGE_OUT_ERROR** | 해당 페이지에 게시글이 없음   | 페이지 이동         |
 ---
 
-## 6. API 문서화
-
-### 6.1 OpenAPI 3.0 스펙 예시
-```yaml
-openapi: 3.0.3
-info:
-  title: Library Management API
-  description: 도서관 관리 시스템 REST API
-  version: 1.0.0
-  contact:
-    name: API 지원팀
-    email: api-support@library.com
-  license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
-
-servers:
-  - url: https://api.library.com/v1
-    description: 운영 서버
-  - url: https://staging-api.library.com/v1
-    description: 스테이징 서버
-
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
-  schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-
-    Book:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 1
-        isbn:
-          type: string
-          pattern: '^[0-9]{13}
-          example: "9788932917245"
-        title:
-          type: string
-          maxLength: 200
-          example: "82년생 김지영"
-
-paths:
-  /books:
-    get:
-      summary: 도서 목록 조회
-      tags: [Books]
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-      responses:
-        '200':
-          description: 성공
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PagedBooksResponse'
-```
-
-### 6.2 API 문서 생성 도구
-```java
-// Spring Boot + Swagger 설정
-@Configuration
-@EnableOpenApi
-public class SwaggerConfig {
-
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("Library Management API")
-                        .version("v1.0.0")
-                        .description("도서관 관리 시스템 REST API"))
-                .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
-                .components(new Components()
-                        .addSecuritySchemes("BearerAuth", 
-                                new SecurityScheme()
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")));
-    }
-}
-
-// Controller 어노테이션 예시
-@RestController
-@RequestMapping("/api/v1/books")
-@Tag(name = "Books", description = "도서 관리 API")
-public class BookController {
-
-    @GetMapping
-    @Operation(summary = "도서 목록 조회", description = "페이지네이션된 도서 목록을 조회합니다")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "성공",
-                content = @Content(schema = @Schema(implementation = PagedBooksResponse.class))),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청",
-                content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    public ResponseEntity<ApiResponse<Page<BookDTO>>> getBooks(
-            @Parameter(description = "페이지 번호", example = "0")
-            @RequestParam(defaultValue = "0") int page,
-            
-            @Parameter(description = "페이지 크기", example = "20")
-            @RequestParam(defaultValue = "20") int size,
-            
-            @Parameter(description = "검색어", example = "김지영")
-            @RequestParam(required = false) String search) {
-        // 구현 코드
-    }
-}
-```
-
----
-
 ## 7. 마무리
 
 ### 7.1 주요 포인트 요약
@@ -1445,7 +1347,7 @@ public class BookController {
 4. **문서화**: 명확하고 완전한 API 문서 제공
 
 ### 7.2 추천 도구 및 라이브러리
-- **문서화**: Swagger, Postman
+- **문서화**: Postman
 - **보안**: Spring Security, JWT
 
 ### 7.3 향후 고도화 방안
@@ -1455,5 +1357,3 @@ public class BookController {
 - **API 게이트웨이**: 중앙화된 API 관리
 - **테스트**: REST Assured, WireMock, TestContainers
 - **모니터링**: 로깅, 메트릭을 통한 운영 상황 파악 Micrometer, Prometheus, Grafana
-
-            
