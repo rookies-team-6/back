@@ -30,4 +30,10 @@ public class GroupController {
     public ResponseEntity<List<GroupDto.Response>> getGroupInfo(@PathVariable Long groupNum) {
         return ResponseEntity.ok(groupService.getGroupInfoByGroupNum(groupNum));
     }
+
+    // 특정 groupNum과 questionId로 정보 디테일 조회
+    @GetMapping("/{groupNum}/{questionId}")
+    public ResponseEntity<GroupDto.Response> getGroupDetail(@PathVariable Long groupNum,@PathVariable Long questionId) {
+        return ResponseEntity.ok(groupService.getGroupDetail(groupNum, questionId));
+    }
 }

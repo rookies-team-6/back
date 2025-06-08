@@ -13,4 +13,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     @Query("SELECT g FROM Group g JOIN FETCH g.question WHERE g.groupNum = :groupNum")
     List<Group> findByGroupNumWithQuestion(@Param("groupNum") Long groupNum);
+
+    Optional<Group> findByGroupNumAndQuestion_Id(Long groupNum, Long questionId);
 }
