@@ -52,6 +52,11 @@ public class ChatService {
         UserAiRecord userRecord = userAiRecordRepository.findByUsersIdAndQuestionId(userId, question.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ANSWER_NOT_FOUND, userId, index));
 
+        // 이미 AI 답변이 있는 경우 재처리 방지
+        if (userRecord.getAiAnswer() != null && !userRecord.getAiAnswer().isBlank()) {
+            throw new BusinessException(ErrorCode.ALREADY_ANSWERED, userId, index);
+        }
+
         // Groq API에 전송할 프롬프트 구성
         String prompt = promptService.buildGptPrompt(question.getQuestion(), userRecord.getUserAnswer());
 
@@ -63,6 +68,13 @@ public class ChatService {
 
         // 점수 누적
         user.setScore(calculateNewScore(user.getScore(), response.getScore(), question.getId()));
+
+        // 인덱스 설정
+        long nextIndex = user.getCurrentQuestionIndex() + 1;
+        if (nextIndex <= questionRepository.count()) {
+            // 인덱스 다음 문제 넘어감
+            user.setCurrentQuestionIndex(nextIndex);
+        }
 
         // 저장
         userAiRecordRepository.save(userRecord);
