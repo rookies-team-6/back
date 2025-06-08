@@ -55,13 +55,13 @@ public class UserAiRecordService {
 
     // 북마크 체크
     @Transactional
-    public UserAiRecordDto.Response saveBookedmarked(UserAiRecordDto.BookmarkedRequest request) {
+    public UserAiRecordDto.Response saveBookedmarked(UserAiRecordDto.BookmarkedRequest request, Long userId) {
         // 유저와 문제 조회
         Question question = questionRepository.findById(request.getQuestionId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, request.getQuestionId()));
 
-        Users user = adminRepository.findById(request.getUserId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
+        Users user = adminRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
 
         // 기록 조회
         UserAiRecord record = userAiRecordRepository.findByUsersIdAndQuestionId(user.getId(), question.getId())

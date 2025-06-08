@@ -67,10 +67,7 @@ public class ChatService {
         // 인덱스 확인 후 예외 발생
         // 인덱스 설정
         long nextIndex = user.getCurrentQuestionIndex() + 1;
-        if (nextIndex <= questionRepository.count()) {
-            // 인덱스 다음 문제 넘어감
-            user.setCurrentQuestionIndex(nextIndex);
-        }
+        user.setCurrentQuestionIndex(nextIndex);
 
         return response;
     }

@@ -45,7 +45,7 @@ public class QuestionService {
             throw new BusinessException(ErrorCode.USER_DEADLINE_EXPIRED, userId);
         }
 
-        if (index + 1 > questionRepository.count()) {
+        if (index > questionRepository.count()) {
             throw new BusinessException(ErrorCode.NO_MORE_QUESTION, index - 1);
         }
         usersRepository.save(user);

@@ -33,8 +33,9 @@ public class UserAiRecordController {
 
     // 북마크 체크
     @PostMapping("/bookmarked")
-    public ResponseEntity<UserAiRecordDto.Response> saveBookmarked(@RequestBody UserAiRecordDto.BookmarkedRequest request){
-        UserAiRecordDto.Response response = userAiRecordService.saveBookedmarked(request);
+    public ResponseEntity<UserAiRecordDto.Response> saveBookmarked(@RequestBody UserAiRecordDto.BookmarkedRequest request, Authentication authentication){
+        Long userId = SecurityUtil.extractUserId(authentication);
+        UserAiRecordDto.Response response = userAiRecordService.saveBookedmarked(request, userId);
         return ResponseEntity.ok(response);
     }
 
