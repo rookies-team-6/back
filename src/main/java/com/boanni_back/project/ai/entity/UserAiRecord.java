@@ -8,7 +8,7 @@ import lombok.*;
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "user_ai_record")
+    @Table(name = "user_ai_record")
 public class UserAiRecord {
 
     @Id
