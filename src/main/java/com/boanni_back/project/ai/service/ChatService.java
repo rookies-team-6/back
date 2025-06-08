@@ -79,17 +79,6 @@ public class ChatService {
         // 저장
         userAiRecordRepository.save(userRecord);
         usersRepository.save(user);
-
-        // 문제 인덱스 증가
-        long nextIndex = user.getCurrentQuestionIndex() + 1;
-        if (nextIndex > questionRepository.count()){    // 다음 문제 index가 등록된 문제 개수보다 클 경우
-            throw new BusinessException(ErrorCode.NO_MORE_QUESTION, nextIndex - 1);
-        }
-
-        // 문제 인덱스 다음 문제로 넘어감
-        user.setCurrentQuestionIndex(nextIndex);
-
-
         return response;
     }
 
