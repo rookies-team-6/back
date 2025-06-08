@@ -28,7 +28,6 @@ public class UserAiRecordDto {
     @Getter @Builder
     public static class BookmarkedRequest{
         private Long questionId;
-        private Long userId;
     }
 
     @NoArgsConstructor

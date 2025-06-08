@@ -1,102 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>회원 점수 조회</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>회원 점수 조회</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body style="background-color: #FFFCEE;">
 <!-- 상단 바 -->
 <div th:replace="fragments/header-detail :: adminHeader('회원 점수 조회')"></div>
 
 <div class="container mt-4">
-  <h2>회원 점수 목록</h2>
+    <h2>회원 점수 목록</h2>
 
-  <!-- 검색 필터 -->
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <div class="d-flex align-items-center gap-2">
-      <!-- 이름 검색 -->
-      <label for="nameInput" class="me-1">이름:</label>
-      <input type="text" id="nameInput" class="form-control form-control-sm" style="width: 150px;">
-      <button class="btn btn-secondary btn-sm" onclick="filterByName()">검색</button>
+    <!-- 검색 필터 -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <!-- 이름 검색 -->
+            <label for="nameInput" class="me-1">이름:</label>
+            <input type="text" id="nameInput" class="form-control form-control-sm" style="width: 150px;">
+            <button class="btn btn-secondary btn-sm" onclick="filterByName()">검색</button>
 
-      <!-- 부서 검색 -->
-      <label for="deptInput" class="ms-3 me-1">부서 코드:</label>
-      <input type="text" id="deptInput" class="form-control form-control-sm" style="width: 100px;">
-      <button class="btn btn-secondary btn-sm" onclick="filterByDepartment()">검색</button>
+            <!-- 부서 검색 -->
+            <label for="deptInput" class="ms-3 me-1">부서 코드:</label>
+            <input type="text" id="deptInput" class="form-control form-control-sm" style="width: 100px;">
+            <button class="btn btn-secondary btn-sm" onclick="filterByDepartment()">검색</button>
 
-      <button class="btn btn-warning btn-sm ms-4" onclick="resetTable()">🔄 전체 목록</button>
+            <button class="btn btn-warning btn-sm ms-4" onclick="resetTable()">🔄 전체 목록</button>
+        </div>
+
+        <!-- 점수 순위 조회 -->
+        <a href="/admin/users/scores/sorted" class="btn btn-primary btn-sm">점수 순위 조회 👑</a>
     </div>
 
-    <!-- 점수 순위 조회 -->
-    <a href="/admin/users/scores/sorted" class="btn btn-primary btn-sm">점수 순위 조회 👑</a>
-  </div>
+    <table class="table table-bordered" id="scoreTable" style="background-color: #FFFFFF;">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>이름</th>
+            <th>부서 코드</th>
+            <th>점수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="score : ${scores}">
+            <td th:text="${score.userId}"></td>
+            <td th:text="${score.username}"></td>
+            <td th:text="${score.departmentCode + '팀'}"></td>
+            <td th:text="${score.score + '점'}"></td>
+        </tr>
+        </tbody>
+    </table>
 
-  <table class="table table-bordered" id="scoreTable" style="background-color: #FFFFFF;">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>이름</th>
-      <th>부서 코드</th>
-      <th>점수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="score : ${scores}">
-      <td th:text="${score.userId}"></td>
-      <td th:text="${score.username}"></td>
-      <td th:text="${score.departmentCode + '팀'}"></td>
-      <td th:text="${score.score + '점'}"></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <a href="/admin/users" class="btn btn-secondary mt-3">← 관리자 메인 페이지로</a>
+    <a href="/admin/users" class="btn btn-secondary mt-3">← 관리자 메인 페이지로</a>
 </div>
 <script>
-  function filterByName() {
-    const keyword = document.getElementById("nameInput").value.trim();
-    const rows = document.querySelectorAll("#scoreTable tbody tr");
-    let found = false;
+    function filterByName() {
+      const keyword = document.getElementById("nameInput").value.trim();
+      const rows = document.querySelectorAll("#scoreTable tbody tr");
+      let found = false;
 
-    rows.forEach(row => {
-      const name = row.children[1]?.textContent.trim();
-      const match = name.includes(keyword);
-      row.style.display = match ? "" : "none";
-      if (match) found = true;
-    });
+      rows.forEach(row => {
+        const name = row.children[1]?.textContent.trim();
+        const match = name.includes(keyword);
+        row.style.display = match ? "" : "none";
+        if (match) found = true;
+      });
 
-    if (!found) {
-      alert(`해당 사용자를 찾을 수 없습니다. 이름: ${keyword}`);
+      if (!found) {
+        alert(`해당 사용자를 찾을 수 없습니다. 이름: ${keyword}`);
+      }
     }
-  }
 
-  function filterByDepartment() {
-    const keyword = document.getElementById("deptInput").value.trim().toUpperCase();
-    const rows = document.querySelectorAll("#scoreTable tbody tr");
-    let found = false;
+    function filterByDepartment() {
+      const keyword = document.getElementById("deptInput").value.trim().toUpperCase();
+      const rows = document.querySelectorAll("#scoreTable tbody tr");
+      let found = false;
 
-    rows.forEach(row => {
-      const dept = row.children[2]?.textContent.trim().toUpperCase();
-      const match = dept.includes(keyword);
-      row.style.display = match ? "" : "none";
-      if (match) found = true;
-    });
+      rows.forEach(row => {
+        const dept = row.children[2]?.textContent.trim().toUpperCase();
+        const match = dept.includes(keyword);
+        row.style.display = match ? "" : "none";
+        if (match) found = true;
+      });
 
-    if (!found) {
-      alert(`해당 부서를 찾을 수 없습니다. 부서코드: ${keyword}`);
+      if (!found) {
+        alert(`해당 부서를 찾을 수 없습니다. 부서코드: ${keyword}`);
+      }
     }
-  }
 
-  function resetTable() {
-    document.getElementById("nameInput").value = "";
-    document.getElementById("deptInput").value = "";
+    function resetTable() {
+      document.getElementById("nameInput").value = "";
+      document.getElementById("deptInput").value = "";
 
-    const rows = document.querySelectorAll("#scoreTable tbody tr");
-    rows.forEach(row => {
-      row.style.display = "";
-    });
-  }
+      const rows = document.querySelectorAll("#scoreTable tbody tr");
+      rows.forEach(row => {
+        row.style.display = "";
+      });
+    }
 </script>
 </body>
 </html>

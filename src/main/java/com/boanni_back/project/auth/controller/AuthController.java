@@ -127,7 +127,5 @@ public class AuthController  {
         UserInfoResponseDTO response = usersService.getUserInfo(userId);
         return ResponseEntity.ok(response);
     }
-
-
 }
 

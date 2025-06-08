@@ -45,6 +45,9 @@ public class QuestionService {
             throw new BusinessException(ErrorCode.USER_DEADLINE_EXPIRED, userId);
         }
 
+        if (index > questionRepository.count()) {
+            throw new BusinessException(ErrorCode.NO_MORE_QUESTION, index - 1);
+        }
         usersRepository.save(user);
 
         return QuestionDto.Response.fromEntity(question, canSolve);
@@ -57,6 +60,12 @@ public class QuestionService {
         if (request.getQuestion() == null || request.getQuestion().trim().isEmpty()) {
             throw new BusinessException(ErrorCode.NO_QUESTION);
         }
+
+        Question question = Question.builder()
+                .question(request.getQuestion())
+                .build();
+
+        questionRepository.save(question);
     }
 
     //문제 키워드 검색
