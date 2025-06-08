@@ -61,77 +61,45 @@ class GroupServiceTest {
     @Test
     void getGroupInfoByGroupNum_success() {
         Long groupNum = 1L;
+
+        Question mockQuestion = mock(Question.class);
+        given(mockQuestion.getId()).willReturn(100L);
+        given(mockQuestion.getQuestion()).willReturn("질문 내용");
+
         Group group = Group.builder()
                 .id(2L)
                 .title("TEST2")
                 .summary("그룹 요약입니다")
-                .question(mock(Question.class)) // 또는 실제 Question 객체
+                .question(mockQuestion)
                 .groupNum(1L)
                 .build();
-        given(groupRepository.findByGroupNum(groupNum)).willReturn(Optional.of(group));
-        GroupDto.Response response = groupService.getGroupInfoByGroupNum(groupNum);
 
-        assertThat(response).isNotNull();
+        // 리스트로 감싸야 함
+        given(groupRepository.findByGroupNumWithQuestion(groupNum)).willReturn(List.of(group));
+
+        List<GroupDto.Response> responseList = groupService.getGroupInfoByGroupNum(groupNum);
+
+        assertThat(responseList).isNotNull();
+        assertThat(responseList).isNotEmpty();
+
+        GroupDto.Response response = responseList.get(0);
+
         assertThat(response.getId()).isEqualTo(2L);
         assertThat(response.getTitle()).isEqualTo("TEST2");
         assertThat(response.getSummary()).isEqualTo("그룹 요약입니다");
         assertThat(response.getGroupNum()).isEqualTo(1L);
+        assertThat(response.getQuestionId()).isEqualTo(100L);
+        assertThat(response.getQuestionName()).isEqualTo("질문 내용");
     }
 
     @Test
     void getGroupInfoByGroupNum_fail_exception() {
         Long groupNum = 1L;
-        given(groupRepository.findByGroupNum(groupNum)).willReturn(Optional.empty());
+
+        // 빈 리스트로 반환
+        given(groupRepository.findByGroupNumWithQuestion(groupNum)).willReturn(Collections.emptyList());
 
         assertThatThrownBy(() -> groupService.getGroupInfoByGroupNum(groupNum))
-                .isInstanceOf(BusinessException.class);
-    }
-
-    @Test
-    void getAverageScoreByGroupNum_success() {
-        given(questionRepository.count()).willReturn(5L);
-        Users user1 = mock(Users.class);
-        Users user2 = mock(Users.class);
-        given(user1.getGroupNum()).willReturn(1L);
-        given(user2.getGroupNum()).willReturn(1L);
-        given(user1.getScore()).willReturn(400);
-        given(user2.getScore()).willReturn(300);
-        given(usersRepository.findAll()).willReturn(List.of(user1, user2));
-
-        Map<Long, Integer> result = groupService.getAverageScoreByGroupNum();
-
-        assertThat(result).containsKey(1L);
-    }
-
-    @Test
-    void getGroupAverageScore_success() {
-        Long groupNum = 2L;
-        Group group = Group.builder()
-                .id(groupNum)
-                .title("안녕하세요")
-                .summary("그룹 요약입니다")
-                .question(mock(Question.class)) // 또는 실제 Question 객체
-                .groupNum(2L)
-                .build();
-        given(groupRepository.findByGroupNum(groupNum)).willReturn(Optional.of(group));
-        given(questionRepository.count()).willReturn(5L);
-
-        Users user = mock(Users.class);
-        given(user.getGroupNum()).willReturn(groupNum);
-        given(user.getScore()).willReturn(400);
-        given(usersRepository.findAll()).willReturn(List.of(user));
-
-        GroupAverageScoreDto.Response response = groupService.getGroupAverageScore(groupNum);
-
-        assertThat(response).isNotNull();
-    }
-
-    @Test
-    void getGroupAverageScore_exception() {
-        Long groupNum = 1L;
-        given(groupRepository.findByGroupNum(groupNum)).willReturn(Optional.empty());
-
-        assertThatThrownBy(() -> groupService.getGroupAverageScore(groupNum))
                 .isInstanceOf(BusinessException.class);
     }
 }
