@@ -4,6 +4,7 @@ import com.boanni_back.project.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -51,7 +52,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 //                        해당 경로는 모두 접근 가능하다.
                     .requestMatchers("/auth/**", "/h2-console/**", "/images/**", "/admin/**", "/api/group/**", "/api/record/**", "/api/chat/groq/all").permitAll()
-////                        이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
+                    .requestMatchers(HttpMethod.GET, "/api/record").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/record/bookmarked").permitAll()
+////                이외 요청은 jwt 토큰이 없으면 접근 불가능하다.
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // 🔥 조립

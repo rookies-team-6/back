@@ -45,6 +45,7 @@ public enum ErrorCode {
     API_SERVER_ERROR("AI001", "AI 응답 처리 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     API_RESPONSE_TYPE_ERROR("AI002", "응답에 JSON 형식이 포함되어 있지 않습니다.", HttpStatus.BAD_GATEWAY),
     API_REVERSE_JSON_ERROR("AI003", "정상적인 JSON 형식 응답이 아닙니다.", HttpStatus.BAD_REQUEST),
+    ALREADY_ANSWERED("AI004", "이미 이 문제에 대한 AI 분석이 완료되었습니다.", HttpStatus.CONFLICT),
     //User 학습 기간 관련 에러
     USER_DEADLINE_BEFORE_TODAY("U010", "입력하신 날짜는 과거 날짜입니다.", HttpStatus.BAD_REQUEST),
     USER_DEADLINE_SAME_AS_BEFORE("U011", "입력하신 날짜가 기존 날짜와 동일합니다.", HttpStatus.BAD_REQUEST),
