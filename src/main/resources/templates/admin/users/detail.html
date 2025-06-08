@@ -6,21 +6,9 @@
 </head>
 <body style="background-color: #FFFCEE;">
 <!-- 상단 바 -->
-<nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;">
-</nav>
-<div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
-  <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
-    <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
-    <strong style="font-size: 18px;">관리자 페이지-이메일 조회</strong>
-  </a>
-  <div class="me-4">
-    <a href="/admin/users" style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
-      관리자 메인 페이지로 돌아가기
-    </a>
-  </div>
-</div>
+<div th:replace="fragments/header-detail :: adminHeader('회원 상세정보 조회')"></div>
 <div class="container-fluid mt-5" style="max-width: 95%; margin: 0 auto;">
-<h1 class="mb-4" th:text="${user.username} + '님의 상세 정보'" style="background-color: #FFFCEE;"></h1>
+<h1 class="mb-4" th:text="${user.username} + '님의 상세정보'" style="background-color: #FFFCEE;"></h1>
 
   <div class="table-responsive">
     <table class="table table-bordered table-hover align-middle text-center" style="background-color: #FFFFFF; min-width: 1200px;">

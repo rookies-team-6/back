@@ -1,0 +1,20 @@
+<div th:fragment="adminHeader(subTitle)">
+  <!-- 상단 바 -->
+  <nav class="navbar navbar-expand-lg" style="background-color: #fdb82c; height: 30px;"></nav>
+
+  <div class="container-fluid d-flex align-items-center justify-content-between" style="background-color: #f8f7f3;">
+    <a class="navbar-brand d-flex align-items-center" href="/" style="margin-left: 16px;">
+      <img src="/images/logo.png" alt="제대로 보안니" width="110" height="50" class="me-2">
+      <strong style="font-size: 18px;">
+        관리자 페이지 <span th:if="${subTitle}">- [[${subTitle}]]</span>
+      </strong>
+    </a>
+
+    <div class="me-4 d-flex gap-3">
+      <a href="/admin/users"
+         style="font-size: 15px; font-weight: 500; color: #333; text-decoration: none;">
+        관리자 메인 페이지로 돌아가기
+      </a>
+    </div>
+  </div>
+</div>
