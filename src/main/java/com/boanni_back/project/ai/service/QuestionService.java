@@ -60,6 +60,12 @@ public class QuestionService {
         if (request.getQuestion() == null || request.getQuestion().trim().isEmpty()) {
             throw new BusinessException(ErrorCode.NO_QUESTION);
         }
+
+        Question question = Question.builder()
+                .question(request.getQuestion())
+                .build();
+
+        questionRepository.save(question);
     }
 
     //문제 키워드 검색

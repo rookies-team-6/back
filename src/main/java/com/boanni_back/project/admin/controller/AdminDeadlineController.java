@@ -19,7 +19,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users/deadline")
-//@PreAuthorize("hasRole('ADMIN')")
 public class AdminDeadlineController {
 
     private final AdminDeadlineService adminDeadlineService;
