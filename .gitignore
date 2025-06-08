@@ -39,3 +39,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+# env
+src/main/resources/application.properties
+src/main/resources/application-test.properties
+src/main/resources/application-prod.properties
+src/main/resources/application-admin.properties
