@@ -2,11 +2,10 @@
 
 ## 문서 정보
 - **프로젝트명**: [제대로 보안니]
-- **작성자**: [팀명/최지은]
+- **작성자**: [육하원칙/최지은]
 - **작성일**: [2025-06-07]
-- **버전**: [v1.0]
+- **버전**: [v2.0]
 - **검토자**: [박효영, 최지은]
-- **승인자**: [이무현]
 
 ---
 ## 1. 공통 설계 규칙
@@ -32,15 +31,15 @@ public class EntityName extends BaseEntity {
 ```
 
 ### 1.3 ID 생성 전략
-| Entity           | 전략 | 이유                        | 예시 |
-|------------------|------|---------------------------|------|
-| **Users**        | IDENTITY | MariaDB Auto Increment 활용 | 1, 2, 3, ... |
-| **Question**     | IDENTITY | MariaDB Auto Increment 활용 | 1, 2, 3, ... |
-| **Group**        | IDENTITY | 그룹별 답변 요약 순서 보장           | 1, 2, 3, ... |
-| **UserAiRecord**        | IDENTITY | 회원별 답변 저장 순서 보장           | 1, 2, 3, ... |
-| **GlobalSummary** | IDENTITY | MariaDB Auto Increment 활용 | 1, 2, 3, ... |
-| **Board**        | IDENTITY | 작성일 기준 게시글 순서 보장          | 1, 2, 3, ... |
-| **RefreshToken** | IDENTITY | MariaDB Auto Increment 활용 | 1, 2, 3, ... |
+| Entity             | 전략 | 이유                         | 예시             |
+|--------------------|------|----------------------------|----------------|
+| **Users**          | IDENTITY | MariaDB Auto Increment 활용  | 1, 2, 3, ...   |
+| **Question**       | IDENTITY | MariaDB Auto Increment 활용  | 1, 2, 3, ...   |
+| **Group**          | IDENTITY | 그룹별 답변 요약 순서 보장            | 1, 2, 3, ...   |
+| **UserAiRecord**   | IDENTITY | 회원별 답변 저장 순서 보장            | 1, 2, 3, ...   |
+| **GlobalSummary**  | IDENTITY | MariaDB Auto Increment 활용  | 1, 2, 3, ...   |
+| **Board**          | IDENTITY | 작성일 기준 게시글 순서 보장           | 1, 2, 3, ...   |
+| **RefreshToken**   | IDENTITY | MariaDB Auto Increment 활용  | 1, 2, 3, ...   |
 ---
 
 ## 2. Entity 목록
@@ -58,86 +57,86 @@ public class EntityName extends BaseEntity {
 | **RefreshToken**  | 지원 | 높음 | 높음      | 1개     | 2순위  |
 
 ### 2.2 Entity 목록
-| Entity명           | 설명                              |
-|-------------------|---------------------------------|
+| Entity명            | 설명                              |
+|--------------------|---------------------------------|
 | **EmployeeNumber** | Rookies 수강생과 조직 내 임직원의 사원 번호 정보 |
-| **Users**         | 회원가입을 한 사용자 정보                  |
-| **Question**      | 질문 시나리오 정보                      |
-| **Group**         | 그룹 정보 및 사용자 답변 요약 내용            |
-| **UserAiRecord**  | 회원 및 AI의 답변 내용, 질문 북마크 여부 등의 정보 |
-| **GlobalSummary**         | 그룹별 답변 요약 내용                    |
-| **Board**         | 게시글 정보                          |
-| **RefreshToken**  | 사용자의 refresh 토큰 정보              |
+| **Users**          | 회원가입을 한 사용자 정보                  |
+| **Question**       | 질문 시나리오 정보                      |
+| **Group**          | 그룹 정보 및 그룹에 속한 회원 문제 답변 요약 내용   |
+| **UserAiRecord**   | 회원 및 AI의 답변 내용, 질문 북마크 여부 등의 정보 |
+| **GlobalSummary**  | 문제별 그룹 답변 요약 내용                 |
+| **Board**          | 게시글 정보                          |
+| **RefreshToken**   | 사용자의 refresh 토큰 정보              |
 
 ### 2.3 Entity 구조
 ```mermaid
 erDiagram
-    USERS ||--o{ BOARD : writes
-    USERS ||--o{ REFRESH_TOKEN : owns
-    USERS ||--o{ USER_AI_RECORD : records
-    USERS }o--|| EMPLOYEE_NUMBER : has
-
-    GROUPS }o--|| QUESTION : includes
-    USERS }o--|| GROUPS : belongs_to
-
-    USER_AI_RECORD }o--|| QUESTION : relates_to
-
-    BOARD {
-        Long id PK
-        Long user_id FK
-        String title
-        String content
-        LocalDateTime created_at
-    }
+    USERS ||--|| EMPLOYEE_NUMBER : "사원번호"
+    USERS ||--o{ REFRESH_TOKEN : "토큰"
+    USERS ||--o{ BOARD : "게시글 작성"
+    USERS ||--o{ USER_AI_RECORD : "문제풀이"
+    USERS ||--o{ GROUP : "그룹 소속"
+    QUESTION ||--o{ GROUP : "그룹문제"
+    QUESTION ||--o{ USER_AI_RECORD : "풀이기록"
+    QUESTION ||--o{ GLOBAL_SUMMARY : "통합요약"
+    GROUP ||--o{ GLOBAL_SUMMARY : "요약대상"
 
     USERS {
-        Long id PK
-        String email
-        String password
-        Enum employee_type
-        Int score
-        Long current_question_index
-        LocalDateTime create_at
-        Long group_num
-        LocalDate question_solve_deadline
-        String employee_num FK
+        id LONG PK
+        email STRING UK
+        password STRING
+        employeeType STRING
+        score INT
+        currentQuestionIndex LONG
+        createAt DATETIME
+        groupNum LONG
+        questionSolveDeadline DATE
+        employeeNumber STRING FK
     }
-
     EMPLOYEE_NUMBER {
-        String employee_number PK
-        String username
-        String department_code
-        Boolean used
+        employeeNum STRING PK
+        username STRING
+        departmentCode STRING
+        used BOOLEAN
     }
-
-    GROUPS {
-        Long id PK
-        String title
-        String summary
-        Long question_id FK
-        Long group_num
-    }
-
     QUESTION {
-        Long id PK
-        String question
+        id LONG PK
+        question STRING
     }
-
+    GROUP {
+        id LONG PK
+        title STRING
+        summary STRING
+        question_id LONG FK
+        groupNum LONG
+    }
     USER_AI_RECORD {
-        Long id PK
-        String user_answer
-        String ai_answer
-        Boolean is_book_marked
-        Long question_id FK
-        Long user_id FK
+        id LONG PK
+        userAnswer STRING
+        aiAnswer STRING
+        isBookMarked BOOLEAN
+        question_id LONG FK
+        user_id LONG FK
     }
-
+    GLOBAL_SUMMARY {
+        id LONG PK
+        title STRING
+        question_id LONG FK
+        summary STRING
+    }
+    BOARD {
+        id LONG PK
+        user_id LONG FK
+        title STRING
+        contents STRING
+        createdAt DATETIME
+    }
     REFRESH_TOKEN {
-        Long id PK
-        Long user_id FK
-        String refresh_token
-        LocalDateTime created_at
-        LocalDateTime expires_at
+        id LONG PK
+        userId LONG UK
+        refreshToken STRING
+        createdAt DATETIME
+        expiresAt DATETIME
     }
 ```
 ---
@@ -508,9 +507,7 @@ public enum EmployeeType {
 | 관계 유형 | 기본 전략 | 이유 | 예외 상황 |
 |----------|-----------|------|-----------|
 | **@ManyToOne** | LAZY | 성능 최적화 | 필수 조회 데이터는 EAGER |
-| **@OneToMany** | LAZY | N+1 문제 방지 | 소량 데이터는 EAGER |
 | **@OneToOne** | LAZY | 일관성 유지 | 항상 함께 조회하는 경우 EAGER |
-| **@ManyToMany** | 사용 금지 | 복잡성 증가 | 중간 테이블로 대체 |
 
 ### 4.2 Entity 연관관계 매핑
 
@@ -576,6 +573,14 @@ public interface GlobalSummaryRepository extends JpaRepository<GlobalSummary, Lo
     @Query("SELECT gs FROM GlobalSummary gs WHERE gs.question.id IN :ids")
     List<GlobalSummary> findByQuestionIds(@Param("ids") List<Long> ids);
 }
+```
+
+```java
+// ChatService 코드 - for문으로 인한 N+1문제 발생
+// N+1 문제 방지를 위해 Question 정보를 list형식으로 일괄 불러옴
+List<Question> questions = questionRepository.findAllById(questionIds);
+Map<Long, Question> questionMap = questions.stream()
+    .collect(Collectors.toMap(Question::getId, Function.identity()));
 ```
 
 ### 5.2 쿼리 최적화
@@ -736,10 +741,10 @@ spring.mvc.hiddenmethod.filter.enabled=true
 #log level
 logging.level.com.basic.myspringboot=WARN
 
-# mariadb db 설정
-spring.datasource.url=jdbc:mariadb://[database ip]:3307/boanni_db
-spring.datasource.username=boot
-spring.datasource.password=boot
+#mariadb db 설정
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
 spring.datasource.driverClassName=org.mariadb.jdbc.Driver
 
 spring.jpa.hibernate.ddl-auto=update
@@ -749,11 +754,10 @@ spring.sql.init.mode=always
 spring.jpa.defer-datasource-initialization=true
 logging.level.org.springframework.jdbc.datasource.init.ScriptUtils=DEBUG
 
-# ai api 설정
 spring.ai.openai.api-key=${GPT_API_KEY}
 spring.ai.groq.api-key=${GROQ_API_KEY}
 
-# thymeleaf 설정
+#thymeleaf 설정
 spring.thymeleaf.prefix=classpath:/templates/
 spring.thymeleaf.suffix=.html
 spring.thymeleaf.mode=HTML
@@ -761,7 +765,6 @@ spring.thymeleaf.encoding=UTF-8
 spring.thymeleaf.cache=false
 spring.thymeleaf.check-template-location=true
 
-# html에서 patch 매핑 동작하기 위한 설정
 spring.mvc.hiddenmethod.filter.enabled=true
 ```
 

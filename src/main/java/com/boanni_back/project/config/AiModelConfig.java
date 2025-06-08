@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class AiModelConfig {
 
@@ -26,6 +28,7 @@ public class AiModelConfig {
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model("llama3-70b-8192")
                         .temperature(0.7)
+                        .stop(List.of("metadata", "```", "\n\n", "###"))
                         .build())
                 .build();
     }
@@ -38,7 +41,7 @@ public class AiModelConfig {
                         .apiKey(openaiApiKey)
                         .build())
                 .defaultOptions(OpenAiChatOptions.builder()
-                        .model("gpt-3.5-turbo")
+                        .model("gpt-4.1-nano")
                         .build())
                 .build();
     }
