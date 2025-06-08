@@ -39,36 +39,32 @@ public class ChatService {
     // chat gpt로 모범답안, 채점 점수 받기
     @Transactional
     public ChatDto.Response processChatAnswer(Long userId) {
-        // 사용자 정보 조회
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
         Long index = user.getCurrentQuestionIndex();
 
-        // 문제 인덱스로 질문지 가져오기
         Question question = questionRepository.findById(index)
                 .orElseThrow(() -> new BusinessException(ErrorCode.QUESTION_NOT_FOUND, index));
 
-        // UserAiRecord에서 사용자 답변 가져오기
         UserAiRecord userRecord = userAiRecordRepository.findByUsersIdAndQuestionId(userId, question.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.ANSWER_NOT_FOUND, userId, index));
 
-        // 이미 AI 답변이 있는 경우 재처리 방지
         if (userRecord.getAiAnswer() != null && !userRecord.getAiAnswer().isBlank()) {
             throw new BusinessException(ErrorCode.ALREADY_ANSWERED, userId, index);
         }
 
-        // Groq API에 전송할 프롬프트 구성
         String prompt = promptService.buildGptPrompt(question.getQuestion(), userRecord.getUserAnswer());
-
         // Groq API 호출
         ChatDto.Response response = aiConditionService.getChatResponse(prompt);
 
         // UserAiRecord와 Users 업데이트
         userRecord.setAiAnswer(response.getModel_answer());
-
-        // 점수 누적
         user.setScore(calculateNewScore(user.getScore(), response.getScore(), question.getId()));
 
+        userAiRecordRepository.save(userRecord);
+        usersRepository.save(user);
+
+        // 인덱스 확인 후 예외 발생
         // 인덱스 설정
         long nextIndex = user.getCurrentQuestionIndex() + 1;
         if (nextIndex <= questionRepository.count()) {
@@ -76,22 +72,11 @@ public class ChatService {
             user.setCurrentQuestionIndex(nextIndex);
         }
 
-        // 저장
-        userAiRecordRepository.save(userRecord);
-        usersRepository.save(user);
-
-        // 문제 인덱스 증가
-        long nextIndex = user.getCurrentQuestionIndex() + 1;
-        if (nextIndex > questionRepository.count()){    // 다음 문제 index가 등록된 문제 개수보다 클 경우
-            throw new BusinessException(ErrorCode.NO_MORE_QUESTION, nextIndex - 1);
-        }
-
-        // 문제 인덱스 다음 문제로 넘어감
-        user.setCurrentQuestionIndex(nextIndex);
-
-
         return response;
     }
+
+
+
 
     private int calculateNewScore(int currentScore, int addedScore, long num) {
         // 가중 평균으로 점수 누적
