@@ -27,7 +27,7 @@ public class GroupController {
 
     // 특정 groupNum의 정보 조회
     @GetMapping("/{groupNum}")
-    public ResponseEntity<GroupDto.Response> getGroupInfo(@PathVariable Long groupNum) {
+    public ResponseEntity<List<GroupDto.Response>> getGroupInfo(@PathVariable Long groupNum) {
         return ResponseEntity.ok(groupService.getGroupInfoByGroupNum(groupNum));
     }
 }

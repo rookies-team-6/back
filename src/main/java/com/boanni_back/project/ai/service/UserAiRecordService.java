@@ -88,11 +88,13 @@ public class UserAiRecordService {
     public List<UserAiRecordDto.Response> getSolvedRecord(Long userId) {
         // users에서 currentIndex만 필요함
         Long currentIndex = adminRepository.findCurrentQuestionIndexById(userId);
-        if(currentIndex<=1){
+        if(currentIndex==null || currentIndex<=1){
             throw new BusinessException(ErrorCode.SOLVED_RECORD_NOT_FOUND, userId);
         }
 
-        List<UserAiRecord> records = userAiRecordRepository.findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(userId, currentIndex);
+        List<UserAiRecord> records = userAiRecordRepository
+                .findByUsersIdAndQuestionIdLessThanEqualOrderByQuestionIdAsc(userId, currentIndex);
+
         if (records.isEmpty()) {
             throw new BusinessException(ErrorCode.SOLVED_RECORD_NOT_FOUND, userId);
         }
