@@ -17,6 +17,7 @@ public class GroupDto {
         private String title;
         private String summary;
         private Long questionId;       // Question 엔티티 대신 ID만 사용
+        private String questionName;
         private Long groupNum;
 
         public static GroupDto.Response fromEntity(Group group) {
@@ -25,6 +26,7 @@ public class GroupDto {
                     .title(group.getTitle())
                     .summary(group.getSummary())
                     .questionId(group.getQuestion().getId())
+                    .questionName(group.getQuestion().getQuestion())
                     .groupNum(group.getGroupNum())
                     .build();
         }
