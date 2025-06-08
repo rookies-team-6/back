@@ -112,7 +112,7 @@ public class ChatService {
 
             Group group = groupMap.get(questionId);
 
-            if (group != null && group.getTitle() != null && group.getSummary() != null) {
+            if (group != null && group.getSummary() != null) {
                 String oldTitle = group.getTitle();
                 String oldSummary = group.getSummary();
 
@@ -128,7 +128,7 @@ public class ChatService {
                             .build();
                     groupMap.put(questionId, group);
                 }
-                group.updateContent(null, userAnswer);
+                group.updateContent(question.getQuestion(), userAnswer);
                 groupRepository.save(group);
             }
         }
