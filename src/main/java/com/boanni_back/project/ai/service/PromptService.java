@@ -38,13 +38,14 @@ public class PromptService {
     }
 
     // groq prompt
-    public String buildGroqPrompt(String oldTitle, String oldSummary, String userAnswer) {
+    public String buildGroqPrompt(String question, String oldTitle, String oldSummary, String userAnswer) {
+        log.info("프롬프트 문제 : " + question);
         try {
             String template = loadTemplate("prompt/groqGroupPrompt.txt");
 
             // 확인
             log.info("프롬프트 : " + template);
-            return String.format(template, oldTitle, oldSummary, userAnswer);
+            return String.format(template, question, oldTitle, oldSummary, userAnswer);
         } catch (IOException e) {
             throw new RuntimeException("프롬프트 템플릿 로딩 실패", e);
         }
