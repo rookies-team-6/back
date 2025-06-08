@@ -48,4 +48,9 @@ public class HomeService {
                 user.getScore()
         );
     }
+
+    public Users getUserEntityById(Long userId) {
+        return usersRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, userId));
+    }
 }
