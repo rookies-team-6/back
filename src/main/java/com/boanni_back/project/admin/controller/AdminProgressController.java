@@ -16,7 +16,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/users/progress")
-//@PreAuthorize("hasRole('ADMIN')")
 public class AdminProgressController {
 
     private final AdminProgressService adminProcessService;
