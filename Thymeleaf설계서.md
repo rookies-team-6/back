@@ -1,13 +1,12 @@
 # Thymeleaf 화면 설계
 
 ## 1. 템플릿 레이아웃
-
 ### 1.1 템플릿 구조
 ```
 templates/
 ├── fragments/
-│   ├── header-main.html            # 메인 페이지 상단 헤더 프래그먼트
-│   └── header-detail.html            # 상세 페이지 상단 헤더 프래그먼트
+│   ├── header-main.html       # 메인 페이지 상단 헤더 프래그먼트
+│   └── header-detail.html     # 상세 페이지 상단 헤더 프래그먼트
 └── admin/
     ├── users/                 # 사용자 관련 템플릿
     │   ├── list.html            # 메인 페이지(회원 목록 및 학습 마감일 달력)
@@ -49,10 +48,10 @@ templates/
 
 ## 2. 프래그먼트
 **templates/fragments/...**
-```
+
 - header-main.html: 메인 페이지 프래그먼트
 - header-detail.html: 상세 페이지 프래그먼트
-```
+
 
 ### 2.1 메인 페이지
 ```html
@@ -105,20 +104,17 @@ templates/
   </div>
 </div>
 ```
-## 3. Spring Security 연동
 
+## 3. Spring Security 연동
 ### 3.1 인증 (Authentication)
 
 - JWT 기반 로그인 인증 구현
 - 로그인 성공 시 JWT 토큰 발급
 - 클라이언트는 이후 모든 요청 시 `Authorization: Bearer <token>` 헤더 포함
 
----
-
 ### 3.2 인가 (Authorization)
 
 #### 3.2.1 URL 접근 제어 (`SecurityFilterChain`)
-
 ```java
 http.authorizeHttpRequests(auth -> auth
     .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -134,12 +130,11 @@ http.authorizeHttpRequests(auth -> auth
 @RequestMapping("/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
-    // 모든 메서드는 ADMIN만 접근 가능
+    // 모든 메서드는 ADMIN만 접근 가능하다.
 }
 ```
 
 ## 4. 폼 검증
-
 ### 4.1 구조 개요
 - Thymeleaf 템플릿 내에서 `<form>` 직접 정의
 - DTO 객체(`QuestionDto.Request`)를 `@ModelAttribute`로 바인딩
@@ -147,7 +142,6 @@ public class AdminController {
 - 예외 발생 시 `RedirectAttributes`를 통해 에러 메시지 전달
 
 ### 4.1.1 Controller 처리 흐름
-
 ```java
 // GET: 문제 생성 폼 요청
 @GetMapping("/create")
